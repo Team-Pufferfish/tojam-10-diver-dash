@@ -11,16 +11,16 @@ var Player = (function () {
         this.MAX_BREATH = 200;
         this.MIN_BREATH = 50;
         this.MAX_SPEED = 200;
-        this.ROTATION_SPEED = 120;
+        this.ROTATION_SPEED = 350;
         this.ACCELERATION = 100;
         this.DRAG = 150;
         this.SHOW_DEBUG = false;
-        this.cursors = Phaser.CursorKeys;
         this.changed = false;
         this.game = game;
         this.sprite = this.game.add.sprite(x, y, 'player');
         this.sprite.anchor.setTo(0.5, 0.5);
         this.game.physics.arcade.enable(this.sprite);
+        this.gamepad = game.input.gamepad.pad1;
         this.setupModel();
         this.setupDebug();
         this.setupControls();
@@ -68,16 +68,16 @@ var Player = (function () {
         }
     };
     Player.prototype.updateControls = function () {
-        if (this.cursors.up.isDown) {
+        if (this.cursors.up.isDown || this.gamepad.isDown(Phaser.Gamepad.XBOX360_A)) {
             this.game.physics.arcade.accelerationFromRotation(this.sprite.rotation - 1.5, this.MAX_SPEED, this.sprite.body.acceleration);
         }
         else {
             this.sprite.body.acceleration.set(0);
         }
-        if (this.cursors.left.isDown) {
+        if (this.cursors.left.isDown || this.gamepad.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_X) < -0.1) {
             this.sprite.body.angularVelocity = -this.ROTATION_SPEED;
         }
-        else if (this.cursors.right.isDown) {
+        else if (this.cursors.right.isDown || this.gamepad.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_X) > 0.1) {
             this.sprite.body.angularVelocity = this.ROTATION_SPEED;
         }
         else {
