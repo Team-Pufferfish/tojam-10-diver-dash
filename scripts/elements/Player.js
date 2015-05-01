@@ -1,50 +1,32 @@
 /**
  * Created by myabko on 15-05-01.
  */
-
 /*create the reference paths for our components. this allows typescript to do intellisense-like code completion. should
  * probably be added for each file/class that is referenced below*/
 /// <reference path="../../bower_components/phaser/typescript/phaser.d.ts"/>
 /// <reference path="../model/Heart.ts"/>
 /// <reference path="../model/OxygenTank.ts"/>
-
-class Player  {
-
-    MAX_BREATH :number = 150;
-
-    name: string;
-    colour: string;
-    game: Phaser.Game;
-    sprite: Phaser.Sprite;
-
-    heart: Heart;
-    oxygenTank: OxygenTank;
-
-    constructor(x:number,y:number,game: Phaser.Game, colour? : string, group?:Phaser.Group){
-
-        var image = <Phaser.Image>this.game.cache.getImage('player');
-        this.sprite = game.add.sprite(x,y,'player',0, group);
-
+var Player = (function () {
+    function Player(x, y, game, colour, group) {
+        this.MAX_BREATH = 150;
+        var image = this.game.cache.getImage('player');
+        this.sprite = game.add.sprite(x, y, 'player', 0, group);
         this.oxygenTank = new OxygenTank(100);
-        this.heart = new Heart(80,this.breath,this.game.time);
+        this.heart = new Heart(80, this.breath, this.game.time);
     }
-
-    public setColour(colour: string){
+    Player.prototype.setColour = function (colour) {
         this.colour = colour; //eventually we should set the sprite colour here in a subroutine
-
-    }
-
-    public setInitialOxygenLevel(initialLevel: number) :void{
+    };
+    Player.prototype.setInitialOxygenLevel = function (initialLevel) {
         this.oxygenTank = new OxygenTank(initialLevel);
-    }
-
-    update() {
+    };
+    Player.prototype.update = function () {
         this.heart.update();
         this.oxygenTank.update();
-    }
-
-    private breath(bpm : number){
+    };
+    Player.prototype.breath = function (bpm) {
         this.oxygenTank.use(this.MAX_BREATH - bpm);
-    }
-
-}
+    };
+    return Player;
+})();
+//# sourceMappingURL=Player.js.map
