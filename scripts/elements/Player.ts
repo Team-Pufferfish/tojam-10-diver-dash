@@ -22,8 +22,9 @@ class Player  {
 
     constructor(x:number,y:number,game: Phaser.Game, colour? : string, group?:Phaser.Group){
 
-        var image = <Phaser.Image>this.game.cache.getImage('player');
-        this.sprite = game.add.sprite(x,y,'player',0, group);
+        this.game = game;
+        this.sprite = this.game.add.sprite(x,y,'player');
+        this.game.physics.arcade.enable(this.sprite);
 
         this.oxygenTank = new OxygenTank(100);
         this.heart = new Heart(80,this.breath,this.game.time);

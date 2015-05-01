@@ -5,6 +5,11 @@
 /*create the reference paths for our components. this allows typescript to do intellisense-like code completion. should
  * probably be added for each file/class that is referenced below*/
 /// <reference path="../../bower_components/phaser/typescript/phaser.d.ts"/>
+/// <reference path="../model/Heart.ts"/>
+/// <reference path="../elements/Player.ts"/>
+/// <reference path="../model/Heart.ts"/>
+/// <reference path="../model/OxygenTank.ts"/>
+
 
 class Game extends Phaser.State {
 
@@ -14,7 +19,7 @@ class Game extends Phaser.State {
     items:Phaser.Group;
     doors:Phaser.Group;
     cursors:Phaser.CursorKeys;
-    player:Phaser.Sprite;
+    player: Player;
 
     constructor() {
         super();
@@ -40,12 +45,13 @@ class Game extends Phaser.State {
 
         //create player
         var result = this.findObjectsByType('playerStart', this.map, 'Objects');
-        this.player = this.game.add.sprite(result[0].x, result[0].y, 'player');
-        this.game.physics.arcade.enable(this.player);
+       // this.player = this.game.add.sprite(result[0].x, result[0].y, 'player');
+        this.player = new Player(result[0].x,result[0].y,this.game);
+
         //this.player.body.setSize(10, 14, 2, 1);
 
         //the camera will follow the player in the world
-        this.game.camera.follow(this.player);
+        this.game.camera.follow(this.player.sprite);
 
         //move player with cursor keys
         this.cursors = this.game.input.keyboard.createCursorKeys();
@@ -58,20 +64,20 @@ class Game extends Phaser.State {
         this.game.physics.arcade.overlap(this.player, this.doors, this.enterDoor, null, this);
 
         //player movement
-        this.player.body.velocity.y = 0;
-        this.player.body.velocity.x = 0;
+        this.player.sprite.body.velocity.y = 0;
+        this.player.sprite.body.velocity.x = 0;
 
         if (this.cursors.up.isDown) {
-            this.player.body.velocity.y -= 50;
+            this.player.sprite.body.velocity.y -= 50;
         }
         else if (this.cursors.down.isDown) {
-            this.player.body.velocity.y += 50;
+            this.player.sprite.body.velocity.y += 50;
         }
         if (this.cursors.left.isDown) {
-            this.player.body.velocity.x -= 50;
+            this.player.sprite.body.velocity.x -= 50;
         }
         else if (this.cursors.right.isDown) {
-            this.player.body.velocity.x += 50;
+            this.player.sprite.body.velocity.x += 50;
         }
     }
 
