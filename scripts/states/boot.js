@@ -10,15 +10,15 @@ var __extends = this.__extends || function (d, b) {
 /*create the reference paths for our components. this allows typescript to do intellisense-like code completion. should
  * probably be added for each file/class that is referenced below*/
 /// <reference path="../../bower_components/phaser/typescript/phaser.d.ts"/>
-var boot = (function (_super) {
-    __extends(boot, _super);
-    function boot() {
+var Boot = (function (_super) {
+    __extends(Boot, _super);
+    function Boot() {
         _super.call(this);
     }
-    boot.prototype.preload = function () {
+    Boot.prototype.preload = function () {
         this.load.image('preloadbar', 'assets/images/preloader-bar.png');
     };
-    boot.prototype.create = function () {
+    Boot.prototype.create = function () {
         this.game.stage.backgroundColor = '#fff';
         this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         this.scale.pageAlignHorizontally = true;
@@ -26,6 +26,6 @@ var boot = (function (_super) {
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         this.game.state.start('Preload');
     };
-    return boot;
+    return Boot;
 })(Phaser.State);
-//# sourceMappingURL=boot.js.map
+//# sourceMappingURL=Boot.js.map

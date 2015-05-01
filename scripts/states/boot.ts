@@ -6,7 +6,7 @@
  * probably be added for each file/class that is referenced below*/
 /// <reference path="../../bower_components/phaser/typescript/phaser.d.ts"/>
 
-class boot extends Phaser.State {
+class Boot extends Phaser.State {
 
     constructor(){
         super();
@@ -26,5 +26,4 @@ class boot extends Phaser.State {
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         this.game.state.start('Preload');
     }
-
 }
