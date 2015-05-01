@@ -1,0 +1,23 @@
+{
+  "name": "tojam-10-diver-dash",
+  "version": "1.0.0",
+  "authors": [
+    "yabbi",
+    "furrot"
+  ],
+  "description": "game built for TOJam 10.",
+  "main": "main.ts",
+  "license": "MIT",
+  "homepage": "https://github.com/Team-Pufferfish/tojam-10-diver-dash/tree/master",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "phaser": "2.3.0"
+  }
+}
