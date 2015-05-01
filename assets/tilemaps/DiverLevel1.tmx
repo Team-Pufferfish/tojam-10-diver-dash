@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" nextobjectid="36">
  <tileset firstgid="1" name="RockTile" tilewidth="32" tileheight="32">
-  <image source="../assets/images/RockTile.png" width="320" height="192"/>
+  <image source="../../assets/images/RockTile.png" width="320" height="192"/>
   <terraintypes>
    <terrain name="Rock" tile="31"/>
    <terrain name="Air" tile="0"/>
