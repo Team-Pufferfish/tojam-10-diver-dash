@@ -7,7 +7,7 @@
 /// <reference path="../model/Heart.ts"/>
 /// <reference path="../model/OxygenTank.ts"/>
 var Player = (function () {
-    function Player(x, y, game, colour, group) {
+    function Player(x, y, game, gamepad, colour, group) {
         this.MAX_BREATH = 200;
         this.MIN_BREATH = 50;
         this.MAX_SPEED = 200;
@@ -20,7 +20,7 @@ var Player = (function () {
         this.sprite = this.game.add.sprite(x, y, 'player');
         this.sprite.anchor.setTo(0.5, 0.5);
         this.game.physics.arcade.enable(this.sprite);
-        this.gamepad = game.input.gamepad.pad1;
+        this.gamepad = gamepad;
         this.setupModel();
         this.setupDebug();
         this.setupControls();

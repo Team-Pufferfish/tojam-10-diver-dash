@@ -25,7 +25,7 @@ class Player  {
     game: Phaser.Game;
     sprite: Phaser.Sprite;
     cursors:Phaser.CursorKeys;
-    gamepad: Phaser.Gamepad;
+    gamepad: Phaser.SinglePad;
     oxyText: Phaser.Text;
 
     heart: Heart;
@@ -33,14 +33,14 @@ class Player  {
 
     initialTime: number;
     changed: boolean = false;
-    constructor(x:number,y:number,game: Phaser.Game, colour? : string, group?:Phaser.Group){
+    constructor(x:number,y:number,game: Phaser.Game,gamepad: Phaser.SinglePad, colour? : string, group?:Phaser.Group){
 
         this.game = game;
         this.sprite = this.game.add.sprite(x,y,'player');
         this.sprite.anchor.setTo(0.5,0.5);
         this.game.physics.arcade.enable(this.sprite);
 
-        this.gamepad = game.input.gamepad.pad1;
+        this.gamepad = gamepad;
 
         this.setupModel();
         this.setupDebug();

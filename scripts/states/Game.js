@@ -33,7 +33,7 @@ var Game = (function (_super) {
         //create player
         var result = this.findObjectsByType('playerStart', this.map, 'Objects');
         // this.player = this.game.add.sprite(result[0].x, result[0].y, 'player');
-        this.player = new Player(result[0].x, result[0].y, this.game);
+        this.player = new Player(result[0].x, result[0].y, this.game, this.game.input.gamepad.pad1);
         //this.player.body.setSize(10, 14, 2, 1);
         //the camera will follow the player in the world
         this.game.camera.follow(this.player.sprite);
