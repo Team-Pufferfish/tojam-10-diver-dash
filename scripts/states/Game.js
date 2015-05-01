@@ -21,8 +21,7 @@ var Game = (function (_super) {
         this.map.addTilesetImage('RockTile', 'RockTile');
         //create layer
         this.mapLayer = this.map.createLayer('Tiles');
-        this.map.setCollisionByExclusion([1, 2, 3, 46, 47, 56]);
-        //resizes the game world to match the layer dimensions
+        this.map.setCollisionByExclusion([1, 2, 3, 46, 47, 56], true, "Tiles");
         this.mapLayer.resizeWorld();
         this.createItems();
         this.createDecorations();
@@ -31,7 +30,7 @@ var Game = (function (_super) {
         var result = this.findObjectsByType('playerStart', this.map, 'Objects');
         this.player = this.game.add.sprite(result[0].x, result[0].y, 'player');
         this.game.physics.arcade.enable(this.player);
-        //this.player.body.setSize(10, 14, 2, 1);
+        this.player.body.setSize(21, 28, 5, 2);
         //the camera will follow the player in the world
         this.game.camera.follow(this.player);
         //move player with cursor keys
@@ -39,7 +38,7 @@ var Game = (function (_super) {
     };
     Game.prototype.update = function () {
         //collision
-        this.game.physics.arcade.collide(this.player, this.mapLayer);
+        this.game.physics.arcade.collide(this.player, this.mapLayer, this.environmentCollision, null, this);
         this.game.physics.arcade.overlap(this.player, this.items, this.collect, null, this);
         this.game.physics.arcade.overlap(this.player, this.doors, this.enterDoor, null, this);
         //player movement
@@ -113,6 +112,11 @@ var Game = (function (_super) {
     };
     Game.prototype.enterDoor = function (player, door) {
         console.log('entering door that will take you to ' + door.targetTilemap + ' on x:' + door.targetX + ' and y:' + door.targetY);
+    };
+    Game.prototype.environmentCollision = function (player, tile) {
+        if (tile.index == 26) {
+            console.log("Ouch!");
+        }
     };
     return Game;
 })(Phaser.State);
