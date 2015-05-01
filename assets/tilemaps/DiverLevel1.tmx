@@ -236,7 +236,7 @@
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="32" name="playerStart" type="playerStart" gid="7" x="1850" y="2894">
+  <object id="32" name="playerStart" type="playerStart" gid="7" x="1858" y="2898">
    <properties>
     <property name="type" value="playerStart"/>
    </properties>
