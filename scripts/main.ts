@@ -15,7 +15,7 @@ class main {
     game: Phaser.Game;
 
     constructor() {
-        this.game = new Phaser.Game(160,160,Phaser.AUTO,'');
+        this.game = new Phaser.Game(800,600,Phaser.AUTO,'');
         this.addStates();
     }
 

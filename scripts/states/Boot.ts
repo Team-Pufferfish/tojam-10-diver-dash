@@ -18,7 +18,7 @@ class Boot extends Phaser.State {
     }
 
     create(){
-        this.game.stage.backgroundColor = '#fff';
+        this.game.stage.backgroundColor = '#28539B';
         this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         this.scale.pageAlignHorizontally = true;
         this.scale.pageAlignVertically = true;

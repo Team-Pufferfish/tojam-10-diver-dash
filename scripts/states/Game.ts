@@ -9,8 +9,8 @@
 class Game extends Phaser.State {
 
     map:Phaser.Tilemap;
-    backgroundlayer:Phaser.TilemapLayer;
-    blockedLayer:Phaser.TilemapLayer;
+    mapLayer:Phaser.TilemapLayer;
+    hazardLayer:Phaser.TilemapLayer;
     items:Phaser.Group;
     doors:Phaser.Group;
     cursors:Phaser.CursorKeys;
@@ -22,28 +22,27 @@ class Game extends Phaser.State {
 
     create() {
 
-        this.map = this.game.add.tilemap('level1');
+        this.map = this.game.add.tilemap('DiverLevel1');
 
         //the first parameter is the tileset name as specified in Tiled, the second is the key to the asset
-        this.map.addTilesetImage('tiles', 'gameTiles');
+        this.map.addTilesetImage('RockTile', 'RockTile');
 
         //create layer
-        this.backgroundlayer = this.map.createLayer('backgroundLayer');
-        this.blockedLayer = this.map.createLayer('blockedLayer');
+        this.mapLayer = this.map.createLayer('Tiles');
 
-        //collision on blockedLayer
-        this.map.setCollisionBetween(1, 2000, true, 'blockedLayer');
+        this.map.setCollisionByExclusion([1,2,3,46,47,56]);
 
         //resizes the game world to match the layer dimensions
-        this.backgroundlayer.resizeWorld();
+        this.mapLayer.resizeWorld();
 
         this.createItems();
         this.createDoors();
 
         //create player
-        var result = this.findObjectsByType('playerStart', this.map, 'objectsLayer');
+        var result = this.findObjectsByType('playerStart', this.map, 'Objects');
         this.player = this.game.add.sprite(result[0].x, result[0].y, 'player');
         this.game.physics.arcade.enable(this.player);
+        //this.player.body.setSize(10, 14, 2, 1);
 
         //the camera will follow the player in the world
         this.game.camera.follow(this.player);
@@ -54,7 +53,7 @@ class Game extends Phaser.State {
 
     update() {
         //collision
-        this.game.physics.arcade.collide(this.player, this.blockedLayer);
+        this.game.physics.arcade.collide(this.player, this.mapLayer);
         this.game.physics.arcade.overlap(this.player, this.items, this.collect, null, this);
         this.game.physics.arcade.overlap(this.player, this.doors, this.enterDoor, null, this);
 
@@ -81,7 +80,7 @@ class Game extends Phaser.State {
         this.items = this.game.add.group();
         this.items.enableBody = true;
         var item;
-        var result = this.findObjectsByType('item', this.map, 'objectsLayer');
+        var result = this.findObjectsByType('item', this.map, 'Objects');
         result.forEach(function (element) {
             this.createFromTiledObject(element, this.items);
         }, this);
@@ -91,7 +90,7 @@ class Game extends Phaser.State {
         //create doors
         this.doors = this.game.add.group();
         this.doors.enableBody = true;
-        var result = this.findObjectsByType('door', this.map, 'objectsLayer');
+        var result = this.findObjectsByType('door', this.map, 'Objects');
 
         result.forEach(function (element) {
             this.createFromTiledObject(element, this.doors);
@@ -102,7 +101,7 @@ class Game extends Phaser.State {
     //find objects in a Tiled layer that containt a property called "type" equal to a certain value
     private findObjectsByType(type, map, layer) {
         var result = [];
-        map.objects[layer].forEach(function (element) {
+        this.map.objects[layer].forEach(function (element) {
             if (element.properties.type === type) {
                 //Phaser uses top left, Tiled bottom left so we have to adjust
                 //also keep in mind that the cup images are a bit smaller than the tile which is 16x16
