@@ -19,7 +19,7 @@ var Boot = (function (_super) {
         this.load.image('preloadbar', 'assets/images/preloader-bar.png');
     };
     Boot.prototype.create = function () {
-        this.game.stage.backgroundColor = '#fff';
+        this.game.stage.backgroundColor = '#28539B';
         this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         this.scale.pageAlignHorizontally = true;
         this.scale.pageAlignVertically = true;

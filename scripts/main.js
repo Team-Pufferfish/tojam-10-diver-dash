@@ -9,7 +9,7 @@
 /// <reference path="states/Game.ts"/>
 var main = (function () {
     function main() {
-        this.game = new Phaser.Game(160, 160, Phaser.AUTO, '');
+        this.game = new Phaser.Game(800, 600, Phaser.AUTO, '');
         this.addStates();
     }
     main.prototype.addStates = function () {
