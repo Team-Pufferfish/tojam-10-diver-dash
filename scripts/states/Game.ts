@@ -50,6 +50,7 @@ class Game extends Phaser.State {
         this.game.physics.arcade.enable(this.player);
         this.player.body.setSize(21, 28);
         this.player.anchor.setTo(0.5, 0.5);
+        this.player.angle = 0;;
 
         //the camera will follow the player in the world
         this.game.camera.follow(this.player);
@@ -58,7 +59,7 @@ class Game extends Phaser.State {
         this.cursors = this.game.input.keyboard.createCursorKeys();
 
         //Set up lights
-        this.LIGHT_RADIUS = 100;
+        this.LIGHT_RADIUS = 120;
         // Create the shadow texture
         this.shadowTexture = this.game.add.bitmapData(this.game.width, this.game.height);
         // Draw shadow
@@ -98,7 +99,6 @@ class Game extends Phaser.State {
 
         this.updateLights();
 
-        console.log("player1x:" + this.player.x + " player1y:" + this.player.y + " Light:" + this.lightSprite.x + "/" + this.lightSprite.y)
     }
 
     createItems() {
@@ -172,6 +172,8 @@ class Game extends Phaser.State {
     private environmentCollision(player, tile) {
         if (tile.index == 26){
             console.log("Ouch!");
+        }else if (tile.index == 36 || tile.index == 37){
+            console.log("Escaped!!!");
         }
     }
 
@@ -197,7 +199,7 @@ class Game extends Phaser.State {
             // Draw circle of light with a soft edge
             var gradient =
                 this.shadowTexture.context.createRadialGradient(
-                    screenX, screenY,this.LIGHT_RADIUS * 0.75,
+                    screenX, screenY,this.LIGHT_RADIUS * 0.25,
                     screenX, screenY, radius);
             gradient.addColorStop(0, 'rgba(255, 255, 255, 1.0)');
             gradient.addColorStop(1, 'rgba(255, 255, 255, 0.0)');

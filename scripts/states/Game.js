@@ -32,12 +32,14 @@ var Game = (function (_super) {
         this.game.physics.arcade.enable(this.player);
         this.player.body.setSize(21, 28);
         this.player.anchor.setTo(0.5, 0.5);
+        this.player.angle = 0;
+        ;
         //the camera will follow the player in the world
         this.game.camera.follow(this.player);
         //move player with cursor keys
         this.cursors = this.game.input.keyboard.createCursorKeys();
         //Set up lights
-        this.LIGHT_RADIUS = 100;
+        this.LIGHT_RADIUS = 120;
         // Create the shadow texture
         this.shadowTexture = this.game.add.bitmapData(this.game.width, this.game.height);
         // Draw shadow
@@ -70,7 +72,6 @@ var Game = (function (_super) {
             this.player.body.velocity.x += 150;
         }
         this.updateLights();
-        console.log("player1x:" + this.player.x + " player1y:" + this.player.y + " Light:" + this.lightSprite.x + "/" + this.lightSprite.y);
     };
     Game.prototype.createItems = function () {
         //create items
@@ -132,6 +133,9 @@ var Game = (function (_super) {
         if (tile.index == 26) {
             console.log("Ouch!");
         }
+        else if (tile.index == 36 || tile.index == 37) {
+            console.log("Escaped!!!");
+        }
     };
     Game.prototype.updateLights = function () {
         // This function updates the shadow texture (this.shadowTexture).
@@ -151,7 +155,7 @@ var Game = (function (_super) {
             var screenX = light.x - this.lightSprite.x;
             var screenY = light.y - this.lightSprite.y;
             // Draw circle of light with a soft edge
-            var gradient = this.shadowTexture.context.createRadialGradient(screenX, screenY, this.LIGHT_RADIUS * 0.75, screenX, screenY, radius);
+            var gradient = this.shadowTexture.context.createRadialGradient(screenX, screenY, this.LIGHT_RADIUS * 0.25, screenX, screenY, radius);
             gradient.addColorStop(0, 'rgba(255, 255, 255, 1.0)');
             gradient.addColorStop(1, 'rgba(255, 255, 255, 0.0)');
             this.shadowTexture.context.beginPath();
