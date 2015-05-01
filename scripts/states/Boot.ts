@@ -22,7 +22,7 @@ class Boot extends Phaser.State {
         this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         this.scale.pageAlignHorizontally = true;
         this.scale.pageAlignVertically = true;
-
+        this.game.input.gamepad.start();
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         this.game.state.start('Preload');
     }

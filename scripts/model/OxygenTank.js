@@ -7,6 +7,7 @@
 var OxygenTank = (function () {
     function OxygenTank(initialLevel) {
         this.level = this.InitialLevel = initialLevel;
+        this.callbackAlarms = [];
     }
     OxygenTank.prototype.use = function (amount) {
         this.level = this.level - amount;

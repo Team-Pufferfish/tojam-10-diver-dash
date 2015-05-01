@@ -33,7 +33,7 @@ var Game = (function (_super) {
         //create player
         var result = this.findObjectsByType('playerStart', this.map, 'Objects');
         // this.player = this.game.add.sprite(result[0].x, result[0].y, 'player');
-        this.player = new Player(result[0].x, result[0].y, this.game);
+        this.player = new Player(result[0].x, result[0].y, this.game, this.game.input.gamepad.pad1);
         //this.player.body.setSize(10, 14, 2, 1);
         //the camera will follow the player in the world
         this.game.camera.follow(this.player.sprite);
@@ -42,24 +42,10 @@ var Game = (function (_super) {
     };
     Game.prototype.update = function () {
         //collision
-        this.game.physics.arcade.collide(this.player, this.mapLayer);
-        this.game.physics.arcade.overlap(this.player, this.items, this.collect, null, this);
-        this.game.physics.arcade.overlap(this.player, this.doors, this.enterDoor, null, this);
-        //player movement
-        this.player.sprite.body.velocity.y = 0;
-        this.player.sprite.body.velocity.x = 0;
-        if (this.cursors.up.isDown) {
-            this.player.sprite.body.velocity.y -= 50;
-        }
-        else if (this.cursors.down.isDown) {
-            this.player.sprite.body.velocity.y += 50;
-        }
-        if (this.cursors.left.isDown) {
-            this.player.sprite.body.velocity.x -= 50;
-        }
-        else if (this.cursors.right.isDown) {
-            this.player.sprite.body.velocity.x += 50;
-        }
+        this.game.physics.arcade.collide(this.player.sprite, this.mapLayer);
+        this.game.physics.arcade.overlap(this.player.sprite, this.items, this.collect, null, this);
+        this.game.physics.arcade.overlap(this.player.sprite, this.doors, this.enterDoor, null, this);
+        this.player.update();
     };
     Game.prototype.createItems = function () {
         //create items

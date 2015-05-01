@@ -46,7 +46,7 @@ class Heart {
     public update() {
         var elaspedSince = this.clock.elapsedSecondsSince(this.lastBeat);
 
-        if (elaspedSince > (this.bpm / 60)){
+        if (elaspedSince > (60/ this.bpm)){
             this.beat();
         }
     }
