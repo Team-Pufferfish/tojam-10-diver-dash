@@ -12,6 +12,7 @@ class Game extends Phaser.State {
     mapLayer:Phaser.TilemapLayer;
     hazardLayer:Phaser.TilemapLayer;
     items:Phaser.Group;
+    decorations:Phaser.Group;
     doors:Phaser.Group;
     cursors:Phaser.CursorKeys;
     player:Phaser.Sprite;
@@ -36,6 +37,7 @@ class Game extends Phaser.State {
         this.mapLayer.resizeWorld();
 
         this.createItems();
+        this.createDecorations();
         this.createDoors();
 
         //create player
@@ -79,10 +81,19 @@ class Game extends Phaser.State {
         //create items
         this.items = this.game.add.group();
         this.items.enableBody = true;
-        var item;
         var result = this.findObjectsByType('item', this.map, 'Objects');
         result.forEach(function (element) {
             this.createFromTiledObject(element, this.items);
+        }, this);
+    }
+
+    createDecorations() {
+        //create items
+        this.decorations = this.game.add.group();
+        this.decorations.enableBody = true;
+        var result = this.findObjectsByType('decoration', this.map, 'Objects');
+        result.forEach(function (element) {
+            this.createFromTiledObject(element, this.decorations);
         }, this);
     }
 

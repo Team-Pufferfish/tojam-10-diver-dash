@@ -25,6 +25,7 @@ var Game = (function (_super) {
         //resizes the game world to match the layer dimensions
         this.mapLayer.resizeWorld();
         this.createItems();
+        this.createDecorations();
         this.createDoors();
         //create player
         var result = this.findObjectsByType('playerStart', this.map, 'Objects');
@@ -61,10 +62,18 @@ var Game = (function (_super) {
         //create items
         this.items = this.game.add.group();
         this.items.enableBody = true;
-        var item;
         var result = this.findObjectsByType('item', this.map, 'Objects');
         result.forEach(function (element) {
             this.createFromTiledObject(element, this.items);
+        }, this);
+    };
+    Game.prototype.createDecorations = function () {
+        //create items
+        this.decorations = this.game.add.group();
+        this.decorations.enableBody = true;
+        var result = this.findObjectsByType('decoration', this.map, 'Objects');
+        result.forEach(function (element) {
+            this.createFromTiledObject(element, this.decorations);
         }, this);
     };
     Game.prototype.createDoors = function () {
