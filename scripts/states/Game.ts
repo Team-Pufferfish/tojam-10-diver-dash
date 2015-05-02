@@ -84,7 +84,6 @@ class Game extends Phaser.State {
 
             var player = new Player(result[i].x, result[i].y, this.game, pads[i]);
             player.itemsPointer = this.items;
-            player.sprite.body.setSize(21, 20);
             this.lights.push(player.sprite);
             this.players.push(player);
         }

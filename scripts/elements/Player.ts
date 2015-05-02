@@ -75,6 +75,7 @@ class Player  {
         this.sprite = this.game.add.sprite(x,y,'player');
         this.sprite.anchor.setTo(0.5,0.5);
         this.game.physics.arcade.enable(this.sprite);
+        this.sprite.body.setSize(15, 19);
         this.sprite.player = this;
         this.sprite.animations.add('swim',[1,2,3,4,5,4,3,2]);
         this.sprite.animations.add('rest',[0]);
