@@ -33,6 +33,7 @@ class Preload extends Phaser.State {
         this.load.image('player', 'assets/images/FatDiver1.png');
         this.load.image('seaweed','assets/images/seaweed.png');
         this.load.image('gold','assets/images/gold.png');
+        this.load.image('clam','assets/images/clam.png');
     }
 
     create() {
