@@ -155,10 +155,12 @@ class Game extends Phaser.State {
     }
 
     private collect(player, collectable) {
-        console.log('yummy!');
-
         //remove sprite
         collectable.destroy();
+
+        player.player.changeGold(1);
+
+        console.log('Cha-ching!' + player.player.gold);
     }
 
     private enterDoor(player, door) {

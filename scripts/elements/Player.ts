@@ -34,6 +34,7 @@ class Player  {
 
     heart: Heart;
     oxygenTank: OxygenTank;
+    gold: number = 0;
 
     initialTime: number;
 
@@ -64,6 +65,7 @@ class Player  {
         this.sprite = this.game.add.sprite(x,y,'player');
         this.sprite.anchor.setTo(0.5,0.5);
         this.game.physics.arcade.enable(this.sprite);
+        this.sprite.player = this;
     }
 
     private setupModel() {
@@ -84,6 +86,10 @@ class Player  {
     public setColour(colour: string){
         this.colour = colour; //eventually we should set the sprite colour here in a subroutine
 
+    }
+
+    public changeGold(gold: number){
+        this.gold += gold;
     }
 
     public setInitialOxygenLevel(initialLevel: number) :void{
