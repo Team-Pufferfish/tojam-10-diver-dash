@@ -21,6 +21,7 @@ class Player  {
 
     TANK_SIZE: number = 8000;
     INITIAL_HEART_RATE: number = 75;
+    BULLET_SPEED: number = 200;
 
     SHOW_DEBUG : boolean = false;
 
@@ -37,7 +38,9 @@ class Player  {
 
     heart: Heart;
     oxygenTank: OxygenTank;
+
     gold: number = 0;
+    itemsPointer: Phaser.Group;
 
     initialTime: number;
 
@@ -73,7 +76,6 @@ class Player  {
         this.sprite.animations.add('rest',[0]);
 
         this.bubbleEmmiter = this.game.add.emitter(0,0,15);
-
 
         this.bubbleEmmiter.makeParticles('bubble');
 
@@ -179,6 +181,10 @@ class Player  {
 
             this.sprite.animations.play('rest',10,true);
         }
+
+        if (this.cursors.down.justDown){
+            this.throwGold();
+        }
     }
 
     private setupControls() {
@@ -195,6 +201,33 @@ class Player  {
         this.cursors.up.onDown.add(()=>{
 
         },this)
+    }
+
+    private throwGold() {
+        if (this.gold > 0)
+        {
+            var bullet = this.game.add.sprite(0, 0, 'gold');
+
+            // Set its pivot point to the center of the bullet
+            bullet.anchor.setTo(0.5, 0.5);
+
+            this.itemsPointer.add(bullet);
+
+            // Enable physics on the bullet
+            this.game.physics.enable(bullet, Phaser.Physics.ARCADE);
+
+            bullet.body.setSize(10,10);
+
+            // Set the bullet position to the gun position.
+            bullet.reset(this.sprite.x + Math.cos(this.sprite.rotation-Math.PI/2)*25, this.sprite.y + Math.sin(this.sprite.rotation-Math.PI/2)*25);
+
+            // Shoot it
+            bullet.body.velocity.x = Math.cos(this.sprite.rotation-Math.PI/2)*this.BULLET_SPEED;
+            bullet.body.velocity.y = Math.sin(this.sprite.rotation-Math.PI/2)*this.BULLET_SPEED;
+
+            this.changeGold(-1);
+        }
+
     }
 
 }

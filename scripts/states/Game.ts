@@ -83,6 +83,7 @@ class Game extends Phaser.State {
         for (var i = 0; i < this.PLAYER_COUNT; i++) {
 
             var player = new Player(result[i].x, result[i].y, this.game, pads[i]);
+            player.itemsPointer = this.items;
             player.sprite.body.setSize(21, 20);
             this.lights.add(player.sprite);
             this.players.push(player);
@@ -117,7 +118,7 @@ class Game extends Phaser.State {
 
     update() {
         //collision
-
+        this.game.physics.arcade.overlap(this.items, this.mapLayer);
         for (var i = 0; i < this.PLAYER_COUNT; i++){
             this.game.physics.arcade.collide(this.players[i].sprite, this.mapLayer, this.environmentCollision,null,this);
             this.game.physics.arcade.overlap(this.players[i].sprite, this.mapLayer, this.environmentOverlap,null,this);
@@ -131,7 +132,7 @@ class Game extends Phaser.State {
         }
 
         this.updateCameraman();
-        this.updateLights();
+        //this.updateLights();
     }
 
     createItems() {
