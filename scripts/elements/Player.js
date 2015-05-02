@@ -39,6 +39,7 @@ var Player = (function () {
         this.sprite = this.game.add.sprite(x, y, 'player');
         this.sprite.anchor.setTo(0.5, 0.5);
         this.game.physics.arcade.enable(this.sprite);
+        this.sprite.player = this;
     };
     Player.prototype.setupModel = function () {
         var _this = this;

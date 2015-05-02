@@ -13,6 +13,9 @@
 
 class Game extends Phaser.State {
 
+    PLAYER_COUNT: number = 4;
+    LIGHT_RADIUS: number = 120;
+
     map:Phaser.Tilemap;
     mapLayer:Phaser.TilemapLayer;
     hazardLayer:Phaser.TilemapLayer;
@@ -20,17 +23,18 @@ class Game extends Phaser.State {
     decorations:Phaser.Group;
     doors:Phaser.Group;
     cursors:Phaser.CursorKeys;
-    player: Player;
-    player2: Player;
+    players: Player[];
 
     //Lighting model
     lights : Phaser.Group;
+
     shadowTexture : Phaser.BitmapData;
     lightSprite : Phaser.Image;
-    LIGHT_RADIUS:number;
 
     constructor() {
+
         super();
+        this.players = [];
     }
 
     create() {
@@ -49,24 +53,43 @@ class Game extends Phaser.State {
         this.createItems();
         this.createDecorations();
         this.createDoors();
+        this.setupLights();
 
         //create player
-        var result = this.findObjectsByType('playerStart', this.map, 'Objects');
-
-        this.player2 = new Player(result[1].x,result[1].y,this.game,this.game.input.gamepad.pad1);
-        this.player = new Player(result[0].x,result[0].y,this.game,this.game.input.gamepad.pad2);
-        this.player.sprite.body.setSize(21, 28);
-
-
-        //the camera will follow the player in the world
-        this.game.camera.follow(this.player.sprite);
+        this.createPlayers();
 
         //move player with cursor keys
         this.cursors = this.game.input.keyboard.createCursorKeys();
+    }
 
-        //Set up lights
-        this.LIGHT_RADIUS = 120;
-        // Create the shadow texture
+    private createPlayers() {
+        var result = this.findObjectsByType('playerStart', this.map, 'Objects');
+
+        var pads = [this.game.input.gamepad.pad1, this.game.input.gamepad.pad2, this.game.input.gamepad.pad3, this.game.input.gamepad.pad4];
+        for (var i = 0; i < this.PLAYER_COUNT; i++) {
+
+            var player = new Player(result[i].x, result[i].y, this.game, pads[i]);
+            player.sprite.body.setSize(21, 20);
+            this.lights.add(player.sprite);
+            this.players.push(player);
+        }
+
+        for (var i = 0; i < this.PLAYER_COUNT; i++){
+            var player = this.players[i];
+            player.otherPlayers = [];
+            for (var j = 0; j < this.PLAYER_COUNT; j++){
+                if (j != i){
+                    player.otherPlayers.push(this.players[j]);
+                }
+            }
+        }
+
+        //the camera will follow the player in the world
+        this.game.camera.follow(this.players[0].sprite);
+    }
+
+    private setupLights() {
+// Create the shadow texture
         this.shadowTexture = this.game.add.bitmapData(this.game.width, this.game.height);
         // Draw shadow
         // Create an object that will use the bitmap as a texture
@@ -77,23 +100,19 @@ class Game extends Phaser.State {
         this.lightSprite.blendMode = PIXI.blendModes.MULTIPLY;
 
         this.lights = this.game.add.group();
-        this.lights.add(this.player.sprite);
-        this.lights.add(this.player2.sprite);
     }
 
     update() {
         //collision
 
-        this.game.physics.arcade.collide(this.player.sprite, this.mapLayer, this.environmentCollision,null,this);
-        this.game.physics.arcade.overlap(this.player.sprite, this.items, this.collect, null, this);
-        this.game.physics.arcade.overlap(this.player.sprite, this.doors, this.enterDoor, null, this);
+        for (var i = 0; i < this.PLAYER_COUNT; i++){
+            this.game.physics.arcade.collide(this.players[i].sprite, this.mapLayer, this.environmentCollision,null,this);
+            this.game.physics.arcade.overlap(this.players[i].sprite, this.items, this.collect, null, this);
+            this.game.physics.arcade.overlap(this.players[i].sprite, this.doors, this.enterDoor, null, this);
 
-        this.game.physics.arcade.collide(this.player2.sprite, this.mapLayer, this.environmentCollision,null,this);
-        this.game.physics.arcade.overlap(this.player2.sprite, this.items, this.collect, null, this);
-        this.game.physics.arcade.overlap(this.player2.sprite, this.doors, this.enterDoor, null, this);
+            this.players[i].update();
+        }
 
-        this.player.update();
-        this.player2.update();
         this.updateLights();
     }
 
