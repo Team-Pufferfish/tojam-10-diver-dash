@@ -88,3 +88,5 @@ scripts/elements/*.js
 scripts/elements/*.js.map
 scripts/states/*.js
 scripts/states/*.js.map
+scripts/main.js
+scripts/main.js.map

@@ -21,6 +21,7 @@ class Game extends Phaser.State {
     PLAYER_COUNT: number = 4;
     LIGHT_RADIUS: number = 120;
     WATER_SPEED: number = 250;
+    level: number = 0;
 
     map:Phaser.Tilemap;
     mapLayer:Phaser.TilemapLayer;
@@ -46,10 +47,14 @@ class Game extends Phaser.State {
         this.lights = [];
     }
 
+    init(level) {
+        this.level = level;
+    }
+    
     create() {
-
-        this.map = this.game.add.tilemap('DiverLevel1');
+        this.map = this.game.add.tilemap('DiverLevel' + this.level);
         this.levelStartTime = this.game.time.time;
+
         //the first parameter is the tileset name as specified in Tiled, the second is the key to the asset
         this.map.addTilesetImage('RockTile', 'RockTile');
 
@@ -148,6 +153,10 @@ class Game extends Phaser.State {
         this.players.forEach(function (player) {
             player.updateCallout();
         });
+    }
+
+    private gameOver(){
+        this.game.state.start('Game',true,false,this.level+1);
     }
 
     createItems() {
