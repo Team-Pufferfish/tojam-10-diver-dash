@@ -280,15 +280,65 @@
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="45" gid="17" x="1570" y="2559"/>
-  <object id="46" gid="17" x="2016" y="2759"/>
-  <object id="47" gid="17" x="1885" y="2557"/>
-  <object id="48" gid="17" x="1467" y="2428"/>
-  <object id="49" gid="17" x="1275" y="2434"/>
-  <object id="50" gid="17" x="1152" y="2907"/>
-  <object id="51" gid="17" x="1663" y="2242"/>
-  <object id="52" gid="17" x="1631" y="2147"/>
-  <object id="53" gid="17" x="2050" y="2054"/>
-  <object id="54" gid="17" x="1733" y="2013"/>
+  <object id="45" name="Clam" type="decoration" gid="17" x="1570" y="2559">
+   <properties>
+    <property name="sprite" value="clam"/>
+    <property name="type" value="decoration"/>
+   </properties>
+  </object>
+  <object id="46" name="Clam" type="decoration" gid="17" x="2016" y="2759">
+   <properties>
+    <property name="sprite" value="clam"/>
+    <property name="type" value="decoration"/>
+   </properties>
+  </object>
+  <object id="47" name="Clam" type="decoration" gid="17" x="1885" y="2557">
+   <properties>
+    <property name="sprite" value="clam"/>
+    <property name="type" value="decoration"/>
+   </properties>
+  </object>
+  <object id="48" name="Clam" type="decoration" gid="17" x="1467" y="2428">
+   <properties>
+    <property name="sprite" value="clam"/>
+    <property name="type" value="decoration"/>
+   </properties>
+  </object>
+  <object id="49" name="Clam" type="decoration" gid="17" x="1275" y="2434">
+   <properties>
+    <property name="sprite" value="clam"/>
+    <property name="type" value="decoration"/>
+   </properties>
+  </object>
+  <object id="50" name="Clam" type="decoration" gid="17" x="1152" y="2907">
+   <properties>
+    <property name="sprite" value="clam"/>
+    <property name="type" value="decoration"/>
+   </properties>
+  </object>
+  <object id="51" name="Clam" type="decoration" gid="17" x="1663" y="2242">
+   <properties>
+    <property name="sprite" value="clam"/>
+    <property name="type" value="decoration"/>
+   </properties>
+  </object>
+  <object id="52" name="Clam" type="decoration" gid="17" x="1631" y="2147">
+   <properties>
+    <property name="sprite" value="clam"/>
+    <property name="type" value="decoration"/>
+   </properties>
+  </object>
+  <object id="53" name="Clam" type="decoration" gid="17" x="2050" y="2054">
+   <properties>
+    <property name="sprite" value="clam"/>
+    <property name="type" value="decoration"/>
+   </properties>
+  </object>
+  <object id="54" name="Clam" type="decoration" gid="17" x="1733" y="2013">
+   <properties>
+    <property name="sprite" value="clam"/>
+    <property name="type" value="decoration"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

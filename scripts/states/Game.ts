@@ -47,7 +47,13 @@ class Game extends Phaser.State {
         //create layer
         this.mapLayer = this.map.createLayer('Tiles');
 
-        this.map.setCollisionByExclusion([1,2,3,46,47,56],true,"Tiles");
+        this.map.setCollisionByExclusion([1,2,3,8,9,18,19,46,47,56],true,"Tiles");
+        //  This will set Tile ID 26 (the coin) to call the hitCoin function when collided with
+        this.map.setTileIndexCallback([8,9,18,19],this.environmentOverlap, this);
+
+        //  This will set the map location 2, 0 to call the function
+        //map.setTileLocationCallback(2, 0, 1, 1, hitCoin, this);
+
         this.mapLayer.resizeWorld();
 
         this.createItems();
@@ -113,6 +119,7 @@ class Game extends Phaser.State {
 
         for (var i = 0; i < this.PLAYER_COUNT; i++){
             this.game.physics.arcade.collide(this.players[i].sprite, this.mapLayer, this.environmentCollision,null,this);
+            this.game.physics.arcade.overlap(this.players[i].sprite, this.mapLayer, this.environmentOverlap,null,this);
             this.game.physics.arcade.overlap(this.players[i].sprite, this.items, this.collect, null, this);
             this.game.physics.arcade.overlap(this.players[i].sprite, this.doors, this.enterDoor, null, this);
 
@@ -199,6 +206,18 @@ class Game extends Phaser.State {
         }else if (tile.index == 36 || tile.index == 37){
             console.log("Escaped!!!");
         }
+    }
+
+    private environmentOverlap(player, tile) {
+
+       switch (tile.index){
+           case 8: player.body.velocity.y = -300; break;
+           case 9: player.body.velocity.y = 300; break;
+           case 18:player.body.velocity.x = -300; break;
+           case 19:player.body.velocity.x = 300; break;
+
+           console.log("Wooooahhh!");
+       }
     }
 
     updateLights(){
