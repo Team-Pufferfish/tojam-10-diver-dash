@@ -206,21 +206,38 @@ class Game extends Phaser.State {
 
     private environmentCollision(player, tile) {
         if (tile.index == 26){
-           player.player.callout("Ouch!!",calloutIntensity.speech);
+            player.player.addNervousness({callout: "OUCH!!!",
+                calloutIntensity: calloutIntensity.yell,
+                startTime: this.game.time.now,
+                multiplier: 1.5, timeout: 3000, name: 'spike'});
         }else if (tile.index == 36 || tile.index == 37){
             console.log("Escaped!!!");
         }
     }
 
     private environmentOverlap(player, tile) {
-
+        var nervousness = {callout: "AAAAAAAAhHHhhhHH!!!",
+            calloutIntensity: calloutIntensity.yell,
+            startTime: this.game.time.now,
+            multiplier: 1.3, timeout: 1000, name: 'flow'};
        switch (tile.index){
-           case 8: player.body.velocity.y = -this.WATER_SPEED; break;
-           case 9: player.body.velocity.y =  this.WATER_SPEED; break;
-           case 18:player.body.velocity.x = -this.WATER_SPEED; break;
-           case 19:player.body.velocity.x =  this.WATER_SPEED; break;
+           case 8: player.body.velocity.y = -this.WATER_SPEED;
+               if (player.player)
+               player.player.addNervousness(nervousness);
 
-           console.log("Wooooahhh!");
+               break;
+           case 9: player.body.velocity.y =  this.WATER_SPEED;
+               if (player.player)
+               player.player.addNervousness(nervousness);
+               break;
+           case 18:player.body.velocity.x = -this.WATER_SPEED;
+               if (player.player)
+                    player.player.addNervousness(nervousness);
+               break;
+           case 19:player.body.velocity.x =  this.WATER_SPEED;
+               if (player.player)
+               player.player.addNervousness(nervousness);
+               break;
        }
     }
 

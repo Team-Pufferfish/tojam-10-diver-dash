@@ -11,6 +11,15 @@
 
 enum calloutIntensity { thought, yell, speech};
 
+interface nervousness {
+    callout: string;
+    calloutIntensity: calloutIntensity;
+    startTime: number;
+    multiplier: number;
+    timeout : number;
+    name: string;
+}
+
 class Player  {
 
     MAX_BREATH :number = 200;
@@ -24,7 +33,7 @@ class Player  {
     TANK_SIZE: number = 8000;
     INITIAL_HEART_RATE: number = 75;
 
-    SHOW_DEBUG : boolean = false;
+    SHOW_DEBUG : boolean = true;
 
     name: string;
     colour: string;
@@ -36,6 +45,7 @@ class Player  {
     otherPlayers: Player[];
     currentCallout: Phaser.Sprite;
     currentCalloutText: Phaser.Text;
+    nervousnesses: nervousness[] = [];
 
     bubbleEmmiter;
 
@@ -59,11 +69,11 @@ class Player  {
     private setupDebug() {
         if (this.SHOW_DEBUG){
             this.initialTime = this.game.time.time;
-            this.oxyText = this.game.add.text(0, 0, 'oxy:', {});
+            this.oxyText = this.game.add.text(0, 0, 'oxy:', {font: '8px Arial'});
             this.oxyText.fill = '#000';
             this.oxyText.stroke = '#fff';
-            this.oxyText.strokeThickness = 2;
-            this.oxyText.fontSize = 20;
+            this.oxyText.strokeThickness = 1;
+            this.oxyText.fontSize = 12;
         }
 
     }
@@ -97,6 +107,23 @@ class Player  {
 
     }
 
+    public addNervousness(attributes: nervousness){
+        attributes.startTime = this.game.time.time;
+        var found = false;
+        this.nervousnesses.forEach((nerve,index) =>{
+           if(nerve.name === attributes.name){
+               nerve.startTime = attributes.startTime;
+               found = true;
+               this.callout(attributes.callout,attributes.calloutIntensity);
+           }
+        });
+        if (!found){
+            this.nervousnesses.push(attributes);
+        }
+
+
+    }
+
    public callout(text: string, intensity: calloutIntensity){
        this.currentCalloutText.text = text;
        this.currentCallout.alpha = 0.8;
@@ -112,6 +139,9 @@ class Player  {
         var onBreath = (bpm) => {
 
             var totalBreath = this.MAX_BREATH - bpm;
+
+
+            this.oxyText.text = 'bpm:' + this.oxygenTank.level / totalBreath;
 
             if (totalBreath < this.MIN_BREATH) {
                 totalBreath = this.MIN_BREATH;
@@ -144,11 +174,17 @@ class Player  {
         if (this.SHOW_DEBUG){
             this.oxyText.x = this.sprite.x;
             this.oxyText.y = this.sprite.y;
-            this.oxyText.text = 'oxy:' + this.oxygenTank.level;
+
         }
 
-        this.heart.changeHeartRateTo(this.sprite.body.speed / 4);
+        var nervousnessMultiplier = 1;
+        this.nervousnesses.forEach((nerve) => {
 
+            if (this.game.time.elapsedSince(nerve.startTime) < nerve.timeout || nerve.timeout === -1)
+                nervousnessMultiplier *= nerve.multiplier;
+        });
+
+        this.heart.changeHeartRateTo((this.INITIAL_HEART_RATE + (this.sprite.body.speed/3.0)) * nervousnessMultiplier);
 
         //position over head
         this.bubbleEmmiter.x = this.sprite.x + Math.cos(this.sprite.rotation-Math.PI/2)*15;
