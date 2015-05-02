@@ -10,6 +10,11 @@
 /// <reference path="../model/Heart.ts"/>
 /// <reference path="../model/OxygenTank.ts"/>
 
+interface death {
+    time: number;
+    reason: string;
+    isDead: boolean;
+}
 
 class Game extends Phaser.State {
 
@@ -26,6 +31,8 @@ class Game extends Phaser.State {
     cursors:Phaser.CursorKeys;
     players: Player[];
     cameraman: Phaser.Sprite;
+    levelStartTime: number;
+
 
     //Lighting model
     lights : Object[];
@@ -42,7 +49,7 @@ class Game extends Phaser.State {
     create() {
 
         this.map = this.game.add.tilemap('DiverLevel1');
-
+        this.levelStartTime = this.game.time.time;
         //the first parameter is the tileset name as specified in Tiled, the second is the key to the asset
         this.map.addTilesetImage('RockTile', 'RockTile');
 
@@ -128,6 +135,7 @@ class Game extends Phaser.State {
             this.game.physics.arcade.overlap(this.players[i].bubbleEmmiter, this.mapLayer);
 
             this.players[i].update();
+
         }
 
         this.updateCameraman();
@@ -256,6 +264,9 @@ class Game extends Phaser.State {
 
         // Iterate through each of the lights and draw the glow
         this.lights.forEach(function(light) {
+
+            if (light.player && light.player.mortality.isDead)
+                return;
             // Randomly change the radius each frame
             var radius = this.LIGHT_RADIUS + this.game.rnd.integerInRange(1,10);
             var screenX = light.x - this.lightSprite.x;

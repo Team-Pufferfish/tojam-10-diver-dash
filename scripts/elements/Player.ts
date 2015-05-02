@@ -19,6 +19,11 @@ interface nervousness {
     timeout : number;
     name: string;
 }
+interface death {
+    time: number;
+    reason: string;
+    isDead: boolean;
+}
 
 class Player  {
 
@@ -30,14 +35,15 @@ class Player  {
     ACCELERATION : number = 100;
     DRAG : number = 45;
 
-    TANK_SIZE: number = 8000;
-    INITIAL_HEART_RATE: number = 75;
+    TANK_SIZE: number = 1000;
+    INITIAL_HEART_RATE: number = 20;
     BULLET_SPEED: number = 200;
 
     SHOW_DEBUG : boolean = true;
 
     name: string;
     colour: string;
+    mortality: death;
     game: Phaser.Game;
     sprite: Phaser.Sprite;
     cursors:Phaser.CursorKeys;
@@ -62,7 +68,7 @@ class Player  {
 
         this.game = game;
         this.gamepad = gamepad;
-
+        this.mortality = {isDead: false, time: null, reason: null};
         this.setupSprite(x,y);
         this.setupModel();
         this.setupDebug();
@@ -81,6 +87,25 @@ class Player  {
 
     }
 
+    public kill(reason: string){
+        if (!this.mortality.isDead) {
+            //run animation, and whatever here
+            console.log(this.name + "has died because of ->" + reason);
+            this.mortality.reason = reason;
+            this.mortality.isDead = true;
+            this.mortality.time = this.game.time.time;
+            this.sprite.body.angularVelocity = 0;
+
+            this.sprite.animations.stop('swim');
+            var deathAnimation = this.sprite.animations.play('death',3);
+
+            deathAnimation.onComplete.add(function deathAnimationFinished(sprite,animation){
+                this.sprite.loadTexture('tank');
+                this.sprite.body.velocity = 0;
+            },this);
+        }
+    }
+
     private setupSprite(x,y){
         this.sprite = this.game.add.sprite(x,y,'player');
         this.sprite.anchor.setTo(0.5,0.5);
@@ -89,6 +114,7 @@ class Player  {
         this.sprite.player = this;
         this.sprite.animations.add('swim',[1,2,3,4,5,4,3,2]);
         this.sprite.animations.add('rest',[0]);
+        this.sprite.animations.add('death',[6]);
 
         this.bubbleEmmiter = this.game.add.emitter(0,0,15);
 
@@ -131,7 +157,8 @@ class Player  {
        this.currentCalloutText.text = text;
        this.currentCallout.alpha = 0.8;
        this.currentCalloutText.alpha = 0.8;
-
+        this.currentCallout.z = -1000;
+       this.currentCalloutText.z = -1000;
         this.game.add.tween(this.currentCalloutText).to({ alpha: 0},1500, Phaser.Easing.Quartic.In,true);
        this.game.add.tween(this.currentCallout).to({ alpha: 0},1500,Phaser.Easing.Quartic.In,true);
    }
@@ -141,7 +168,7 @@ class Player  {
         this.oxygenTank = new OxygenTank(this.TANK_SIZE);
         var onBreath = (bpm) => {
 
-            var totalBreath = this.MAX_BREATH - bpm;
+            var totalBreath = bpm;
 
 
             this.oxyText.text = 'bpm:' + this.oxygenTank.level / totalBreath;
@@ -153,6 +180,8 @@ class Player  {
             this.oxygenTank.use(totalBreath);
             this.bubbleEmmiter.flow(3000,150,2,5);
         };
+
+
         this.heart = new Heart(this.INITIAL_HEART_RATE, onBreath, this.game.time);
     }
 
@@ -170,37 +199,44 @@ class Player  {
     }
 
     update() {
-        this.heart.update();
-        this.oxygenTank.update();
-        this.updateControls();
 
-        if (this.SHOW_DEBUG){
-            this.oxyText.x = this.sprite.x;
-            this.oxyText.y = this.sprite.y;
+        if (!this.mortality.isDead) {
 
+            this.heart.update();
+            this.oxygenTank.update();
+            this.updateControls();
+
+            if (this.oxygenTank.level <= 0) {
+                this.kill("ran out of air");
+            }
+
+            if (this.SHOW_DEBUG) {
+                this.oxyText.x = this.sprite.x;
+                this.oxyText.y = this.sprite.y;
+
+            }
+
+            var nervousnessMultiplier = 1;
+            this.nervousnesses.forEach((nerve) => {
+
+                if (this.game.time.elapsedSince(nerve.startTime) < nerve.timeout || nerve.timeout === -1)
+                    nervousnessMultiplier *= nerve.multiplier;
+            });
+
+            this.heart.changeHeartRateTo((this.INITIAL_HEART_RATE + (this.sprite.body.speed / 2.0)) * nervousnessMultiplier);
+
+            //position over head
+            this.bubbleEmmiter.x = this.sprite.x + Math.cos(this.sprite.rotation - Math.PI / 2) * 15;
+            this.bubbleEmmiter.y = this.sprite.y + Math.sin(this.sprite.rotation - Math.PI / 2) * 15;
+
+            //var trackemitter = this.game.add.sprite(this.bubbleEmmiter.x,this.bubbleEmmiter.y,"bubble");
+
+
+            this.currentCallout.x = this.sprite.x - 55;
+            this.currentCallout.y = this.sprite.y - 70;
+            this.currentCalloutText.x = this.currentCallout.x + 50;
+            this.currentCalloutText.y = this.currentCallout.y + 10;
         }
-
-        var nervousnessMultiplier = 1;
-        this.nervousnesses.forEach((nerve) => {
-
-            if (this.game.time.elapsedSince(nerve.startTime) < nerve.timeout || nerve.timeout === -1)
-                nervousnessMultiplier *= nerve.multiplier;
-        });
-
-        this.heart.changeHeartRateTo((this.INITIAL_HEART_RATE + (this.sprite.body.speed/3.0)) * nervousnessMultiplier);
-
-        //position over head
-        this.bubbleEmmiter.x = this.sprite.x + Math.cos(this.sprite.rotation-Math.PI/2)*15;
-        this.bubbleEmmiter.y = this.sprite.y + Math.sin(this.sprite.rotation-Math.PI/2)*15;
-
-        //var trackemitter = this.game.add.sprite(this.bubbleEmmiter.x,this.bubbleEmmiter.y,"bubble");
-
-
-      this.currentCallout.x = this.sprite.x - 55;
-      this.currentCallout.y = this.sprite.y - 70;
-      this.currentCalloutText.x = this.currentCallout.x + 50;
-      this.currentCalloutText.y = this.currentCallout.y + 10;
-
     }
 
 
@@ -248,7 +284,7 @@ class Player  {
             this.sprite.animations.play('rest',10,true);
         }
 
-        if (this.cursors.down.justDown){
+        if (this.cursors.down.justDown || this.gamepad.isDown(Phaser.Game)){
             this.throwGold();
         }
     }

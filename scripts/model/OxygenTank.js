@@ -7,20 +7,11 @@
 var OxygenTank = (function () {
     function OxygenTank(initialLevel) {
         this.level = this.InitialLevel = initialLevel;
-        this.callbackAlarms = [];
     }
     OxygenTank.prototype.use = function (amount) {
         this.level = this.level - amount;
     };
-    OxygenTank.prototype.setupAlarm = function (levelToAlarmAt, callback) {
-        this.callbackAlarms.push({ callback: callback, alarmAt: levelToAlarmAt });
-    };
     OxygenTank.prototype.update = function () {
-        this.callbackAlarms.forEach(function (alarm) {
-            if (alarm.alarmAt <= this.level) {
-                alarm.callback();
-            }
-        });
     };
     return OxygenTank;
 })();
