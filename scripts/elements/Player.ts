@@ -22,7 +22,7 @@ class Player  {
     TANK_SIZE: number = 8000;
     INITIAL_HEART_RATE: number = 75;
 
-    SHOW_DEBUG : boolean = true;
+    SHOW_DEBUG : boolean = false;
 
     name: string;
     colour: string;
@@ -67,6 +67,8 @@ class Player  {
         this.sprite.anchor.setTo(0.5,0.5);
         this.game.physics.arcade.enable(this.sprite);
         this.sprite.player = this;
+        this.sprite.animations.add('swim',[1,2,3,4,5,4,3,2]);
+        this.sprite.animations.add('rest',[0]);
     }
 
     private setupModel() {
@@ -117,6 +119,7 @@ class Player  {
 
         if (this.cursors.up.isDown || this.gamepad.isDown(Phaser.Gamepad.XBOX360_A))
         {
+            this.sprite.animations.play('swim',10,true);
             this.game.physics.arcade.accelerationFromRotation(this.sprite.rotation - 1.5, this.MAX_SPEED, this.sprite.body.acceleration);
         }
         else
@@ -135,6 +138,7 @@ class Player  {
 
 
         }
+
         else if (this.cursors.right.isDown || this.gamepad.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_X) > 0.1)
         {
             if (this.sprite.body.speed <= 100) {
@@ -147,6 +151,11 @@ class Player  {
         else
         {
             this.sprite.body.angularVelocity = 0;
+        }
+
+        if (this.sprite.body.speed <= 20){
+
+            this.sprite.animations.play('rest',10,true);
         }
     }
 
