@@ -8,7 +8,7 @@
 /// <reference path="states/Boot.ts"/>
 /// <reference path="states/Preload.ts"/>
 /// <reference path="states/Game.ts"/>
-/// <reference path="states/Menu.ts"/>
+/// <reference path="states/MainMenu.ts"/>
 /// <reference path="states/Scores.ts"/>
 
 

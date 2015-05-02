@@ -21,7 +21,6 @@ class Game extends Phaser.State {
     PLAYER_COUNT: number = 4;
     LIGHT_RADIUS: number = 120;
     WATER_SPEED: number = 250;
-    LEVEL_OVER: boolean = false;
     level: number = 0;
 
     map:Phaser.Tilemap;
@@ -133,14 +132,6 @@ class Game extends Phaser.State {
     }
 
     update() {
-        //check if their all dead!
-        this.players.foreach(function(player){
-            this.LEVEL_OVER &= player.isDead();
-        });
-
-        if (this.LEVEL_OVER)
-            this.gameOver();
-
         //collision
         this.game.physics.arcade.overlap(this.items, this.mapLayer);
         for (var i = 0; i < this.PLAYER_COUNT; i++) {
