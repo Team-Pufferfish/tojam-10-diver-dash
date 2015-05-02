@@ -13,7 +13,7 @@
 
 class Game extends Phaser.State {
 
-    PLAYER_COUNT: number = 4;
+    PLAYER_COUNT: number = 1;
     LIGHT_RADIUS: number = 120;
     WATER_SPEED: number = 250;
 
@@ -56,16 +56,18 @@ class Game extends Phaser.State {
         //map.setTileLocationCallback(2, 0, 1, 1, hitCoin, this);
 
         this.mapLayer.resizeWorld();
+        this.lights = this.game.add.group();
 
         this.createItems();
         this.createDecorations();
         this.createDoors();
-        this.setupLights();
 
         //create player
         this.createPlayers();
         this.createCameraman();
 
+        //Add light layer
+        this.setupLights();
 
         //the camera will follow the player in the world
         this.game.camera.follow(this.cameraman);
@@ -111,8 +113,6 @@ class Game extends Phaser.State {
         // Set the blend mode to MULTIPLY. This will darken the colors of
         // everything below this sprite.
         this.lightSprite.blendMode = PIXI.blendModes.MULTIPLY;
-
-        this.lights = this.game.add.group();
     }
 
     update() {
@@ -123,6 +123,9 @@ class Game extends Phaser.State {
             this.game.physics.arcade.overlap(this.players[i].sprite, this.mapLayer, this.environmentOverlap,null,this);
             this.game.physics.arcade.overlap(this.players[i].sprite, this.items, this.collect, null, this);
             this.game.physics.arcade.overlap(this.players[i].sprite, this.doors, this.enterDoor, null, this);
+
+            this.game.physics.arcade.overlap(this.players[i].bubbleEmmiter, this.mapLayer, this.environmentOverlap,null,this);
+            this.game.physics.arcade.overlap(this.players[i].bubbleEmmiter, this.mapLayer);
 
             this.players[i].update();
         }

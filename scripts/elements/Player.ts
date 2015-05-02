@@ -78,13 +78,11 @@ class Player  {
         this.bubbleEmmiter.makeParticles('bubble');
 
         this.bubbleEmmiter.setRotation(0, 1);
-        this.bubbleEmmiter.setAlpha(0.1, 1, 3000);
-        this.bubbleEmmiter.setXSpeed(0,0);
-        this.bubbleEmmiter.setYSpeed(0,0);
-        this.bubbleEmmiter.gravity = 0;
-        this.bubbleEmmiter.setScale(0.1, 1, 0.1, 1, 2000, Phaser.Easing.Quintic.Out);
-
-
+        this.bubbleEmmiter.setAlpha(1, 0, 3000);
+        this.bubbleEmmiter.setXSpeed(0,7);
+        this.bubbleEmmiter.setYSpeed(0,7);
+        this.bubbleEmmiter.gravity = -10;
+        this.bubbleEmmiter.setScale(0.1, 1, 0.1, 1, 3000, Phaser.Easing.Quintic.Out);
     }
 
     private setupModel() {
@@ -98,7 +96,7 @@ class Player  {
             }
 
             this.oxygenTank.use(totalBreath);
-            this.bubbleEmmiter.flow(2000,250,2,5);
+            this.bubbleEmmiter.flow(3000,150,2,5);
         };
         this.heart = new Heart(this.INITIAL_HEART_RATE, onBreath, this.game.time);
     }
@@ -131,8 +129,10 @@ class Player  {
 
 
         //position over head
-        this.bubbleEmmiter.x = this.sprite.x;
-        this.bubbleEmmiter.y = this.sprite.y + 20;
+        this.bubbleEmmiter.x = this.sprite.x + Math.cos(this.sprite.rotation-Math.PI/2)*15;
+        this.bubbleEmmiter.y = this.sprite.y + Math.sin(this.sprite.rotation-Math.PI/2)*15;
+
+        //var trackemitter = this.game.add.sprite(this.bubbleEmmiter.x,this.bubbleEmmiter.y,"bubble");
     }
 
 
