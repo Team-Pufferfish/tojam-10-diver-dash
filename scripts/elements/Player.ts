@@ -60,7 +60,7 @@ class Player  {
     heart: Heart;
     oxygenTank: OxygenTank;
 
-    gold: number = 0;
+    gold: number = 15;
     itemsPointer: Phaser.Group;
 
     initialTime: number;

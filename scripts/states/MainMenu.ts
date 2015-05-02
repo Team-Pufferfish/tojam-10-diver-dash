@@ -3,7 +3,7 @@
  *
  */
  /// <reference path="../../bower_components/phaser/typescript/phaser.d.ts"/>
-class Menu extends Phaser.State {
+class MainMenu extends Phaser.State {
     constructor() {
         super();
     }
