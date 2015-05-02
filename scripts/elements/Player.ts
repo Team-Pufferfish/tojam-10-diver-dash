@@ -33,6 +33,8 @@ class Player  {
     oxyText: Phaser.Text;
     otherPlayers: Player[];
 
+    bubbleEmmiter;
+
     heart: Heart;
     oxygenTank: OxygenTank;
     gold: number = 0;
@@ -69,6 +71,23 @@ class Player  {
         this.sprite.player = this;
         this.sprite.animations.add('swim',[1,2,3,4,5,4,3,2]);
         this.sprite.animations.add('rest',[0]);
+
+        this.bubbleEmmiter = this.game.add.emitter(0,0,15);
+
+
+        this.bubbleEmmiter.makeParticles('bubble');
+
+        // emitter.minParticleSpeed.set(0, 300);
+        // emitter.maxParticleSpeed.set(0, 600);
+
+        this.bubbleEmmiter.setRotation(0, 1);
+        this.bubbleEmmiter.setAlpha(0.1, 1, 3000);
+        this.bubbleEmmiter.setXSpeed(0,0);
+        this.bubbleEmmiter.setYSpeed(0,0);
+        this.bubbleEmmiter.gravity = 0;
+        this.bubbleEmmiter.setScale(0.1, 1, 0.1, 1, 2000, Phaser.Easing.Quintic.Out);
+
+
     }
 
     private setupModel() {
@@ -82,6 +101,7 @@ class Player  {
             }
 
             this.oxygenTank.use(totalBreath);
+            this.bubbleEmmiter.flow(2000,250,2,5);
         };
         this.heart = new Heart(this.INITIAL_HEART_RATE, onBreath, this.game.time);
     }
@@ -111,6 +131,11 @@ class Player  {
         }
 
         this.heart.changeHeartRateTo(this.sprite.body.speed / 4);
+
+
+        //position over head
+        this.bubbleEmmiter.x = this.sprite.x;
+        this.bubbleEmmiter.y = this.sprite.y + 20;
     }
 
 
@@ -170,6 +195,9 @@ class Player  {
         // platforms may not need code like this.
         //  Game input
         this.cursors = this.game.input.keyboard.createCursorKeys();
+        this.cursors.up.onDown.add(()=>{
+
+        },this)
     }
 
 }
