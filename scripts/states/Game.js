@@ -32,7 +32,8 @@ var Game = (function (_super) {
         this.createDoors();
         //create player
         var result = this.findObjectsByType('playerStart', this.map, 'Objects');
-        this.player = new Player(result[0].x, result[0].y, this.game, this.game.input.gamepad.pad1);
+        this.player2 = new Player(result[1].x, result[1].y, this.game, this.game.input.gamepad.pad1);
+        this.player = new Player(result[0].x, result[0].y, this.game, this.game.input.gamepad.pad2);
         this.player.sprite.body.setSize(21, 28);
         //the camera will follow the player in the world
         this.game.camera.follow(this.player.sprite);
@@ -50,13 +51,18 @@ var Game = (function (_super) {
         this.lightSprite.blendMode = PIXI.blendModes.MULTIPLY;
         this.lights = this.game.add.group();
         this.lights.add(this.player.sprite);
+        this.lights.add(this.player2.sprite);
     };
     Game.prototype.update = function () {
         //collision
         this.game.physics.arcade.collide(this.player.sprite, this.mapLayer, this.environmentCollision, null, this);
         this.game.physics.arcade.overlap(this.player.sprite, this.items, this.collect, null, this);
         this.game.physics.arcade.overlap(this.player.sprite, this.doors, this.enterDoor, null, this);
+        this.game.physics.arcade.collide(this.player2.sprite, this.mapLayer, this.environmentCollision, null, this);
+        this.game.physics.arcade.overlap(this.player2.sprite, this.items, this.collect, null, this);
+        this.game.physics.arcade.overlap(this.player2.sprite, this.doors, this.enterDoor, null, this);
         this.player.update();
+        this.player2.update();
         this.updateLights();
     };
     Game.prototype.createItems = function () {

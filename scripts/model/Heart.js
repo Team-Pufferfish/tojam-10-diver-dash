@@ -11,7 +11,6 @@ var Heart = (function () {
     Heart.prototype.changeHeartRateTo = function (bpm) {
         //TODO: would be neat if this lowerered slowly instead of immediately
         this.bpm = bpm;
-        this.setupBeatLoop();
     };
     Heart.prototype.setupBeatLoop = function () {
         this.lastBeat = this.clock.time;

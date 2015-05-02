@@ -5,6 +5,7 @@
 /*create the reference paths for our components. this allows typescript to do intellisense-like code completion. should
  * probably be added for each file/class that is referenced below*/
 /// <reference path="../../bower_components/phaser/typescript/phaser.d.ts"/>
+/// <reference path="../../bower_components/phaser/typescript/phaser.comments.d.ts"/>
 /// <reference path="../model/Heart.ts"/>
 /// <reference path="../model/OxygenTank.ts"/>
 
@@ -13,12 +14,15 @@ class Player  {
     MAX_BREATH :number = 200;
     MIN_BREATH :number = 50;
 
-    MAX_SPEED : number = 200;
-    ROTATION_SPEED : number = 350;
+    MAX_SPEED : number = 100;
+    ROTATION_SPEED : number = 140;
     ACCELERATION : number = 100;
-    DRAG : number = 150;
+    DRAG : number = 45;
 
-    SHOW_DEBUG : boolean = false;
+    TANK_SIZE: number = 8000;
+    INITIAL_HEART_RATE: number = 75;
+
+    SHOW_DEBUG : boolean = true;
 
     name: string;
     colour: string;
@@ -32,16 +36,13 @@ class Player  {
     oxygenTank: OxygenTank;
 
     initialTime: number;
-    changed: boolean = false;
+
     constructor(x:number,y:number,game: Phaser.Game,gamepad: Phaser.SinglePad, colour? : string, group?:Phaser.Group){
 
         this.game = game;
-        this.sprite = this.game.add.sprite(x,y,'player');
-        this.sprite.anchor.setTo(0.5,0.5);
-        this.game.physics.arcade.enable(this.sprite);
-
         this.gamepad = gamepad;
 
+        this.setupSprite(x,y);
         this.setupModel();
         this.setupDebug();
         this.setupControls();
@@ -59,8 +60,14 @@ class Player  {
 
     }
 
+    private setupSprite(x,y){
+        this.sprite = this.game.add.sprite(x,y,'player');
+        this.sprite.anchor.setTo(0.5,0.5);
+        this.game.physics.arcade.enable(this.sprite);
+    }
+
     private setupModel() {
-        this.oxygenTank = new OxygenTank(60000);
+        this.oxygenTank = new OxygenTank(this.TANK_SIZE);
         var onBreath = (bpm) => {
 
             var totalBreath = this.MAX_BREATH - bpm;
@@ -71,7 +78,7 @@ class Player  {
 
             this.oxygenTank.use(totalBreath);
         };
-        this.heart = new Heart(80, onBreath, this.game.time);
+        this.heart = new Heart(this.INITIAL_HEART_RATE, onBreath, this.game.time);
     }
 
     public setColour(colour: string){
@@ -94,14 +101,12 @@ class Player  {
             this.oxyText.text = 'oxy:' + this.oxygenTank.level;
         }
 
-        if (this.game.time.elapsedSecondsSince(this.initialTime) >= 10 && this.changed === false){
-            this.heart.changeHeartRateTo(240);
-            this.changed = true;
-        }
 
 
-
+        this.heart.changeHeartRateTo(this.sprite.body.speed / 4);
     }
+
+
 
     private updateControls() {
 
@@ -116,11 +121,23 @@ class Player  {
 
         if (this.cursors.left.isDown || this.gamepad.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_X) < -0.1)
         {
-            this.sprite.body.angularVelocity = -this.ROTATION_SPEED;
+            if (this.sprite.body.speed <= 100) {
+                this.sprite.body.angularVelocity = -this.ROTATION_SPEED;
+            }
+            else {
+                this.sprite.body.angularVelocity = -this.sprite.body.speed * 2;
+            }
+
+
         }
         else if (this.cursors.right.isDown || this.gamepad.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_X) > 0.1)
         {
-            this.sprite.body.angularVelocity = this.ROTATION_SPEED;
+            if (this.sprite.body.speed <= 100) {
+                this.sprite.body.angularVelocity = this.ROTATION_SPEED;
+            }
+            else {
+                this.sprite.body.angularVelocity = this.sprite.body.speed * 2;
+            }
         }
         else
         {

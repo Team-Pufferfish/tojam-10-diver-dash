@@ -28,8 +28,6 @@ class Heart {
 
         //TODO: would be neat if this lowerered slowly instead of immediately
         this.bpm = bpm;
-        this.setupBeatLoop();
-
     }
 
     private setupBeatLoop() : void{
