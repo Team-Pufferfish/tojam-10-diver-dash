@@ -35,6 +35,7 @@ class Player  {
 
     heart: Heart;
     oxygenTank: OxygenTank;
+    gold: number = 0;
 
     initialTime: number;
 
@@ -86,6 +87,10 @@ class Player  {
     public setColour(colour: string){
         this.colour = colour; //eventually we should set the sprite colour here in a subroutine
 
+    }
+
+    public changeGold(gold: number){
+        this.gold += gold;
     }
 
     public setInitialOxygenLevel(initialLevel: number) :void{
