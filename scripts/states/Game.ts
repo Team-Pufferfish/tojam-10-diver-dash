@@ -24,6 +24,7 @@ class Game extends Phaser.State {
     doors:Phaser.Group;
     cursors:Phaser.CursorKeys;
     players: Player[];
+    cameraman: Phaser.Sprite;
 
     //Lighting model
     lights : Phaser.Group;
@@ -32,7 +33,6 @@ class Game extends Phaser.State {
     lightSprite : Phaser.Image;
 
     constructor() {
-
         super();
         this.players = [];
     }
@@ -57,6 +57,11 @@ class Game extends Phaser.State {
 
         //create player
         this.createPlayers();
+        this.createCameraman();
+
+
+        //the camera will follow the player in the world
+        this.game.camera.follow(this.cameraman);
 
         //move player with cursor keys
         this.cursors = this.game.input.keyboard.createCursorKeys();
@@ -83,9 +88,10 @@ class Game extends Phaser.State {
                 }
             }
         }
+    }
 
-        //the camera will follow the player in the world
-        this.game.camera.follow(this.players[0].sprite);
+    private createCameraman(){
+        this.cameraman = this.game.add.sprite(this.game.width/2, this.game.height/2);
     }
 
     private setupLights() {
@@ -113,6 +119,7 @@ class Game extends Phaser.State {
             this.players[i].update();
         }
 
+        this.updateCameraman();
         this.updateLights();
     }
 
@@ -231,5 +238,29 @@ class Game extends Phaser.State {
 
         // This just tells the engine it should update the texture cache
         this.shadowTexture.dirty = true;
+    }
+
+    updateCameraman(){
+        //THis function finds an appoorimate center between the players and
+        //moves the invisible spirite camerman to it's location. This should
+        // provide a camera that roughly follows the group.
+
+        var minY : number=-1;
+        var maxY : number=-1;
+        var minX : number=-1;
+        var maxX : number=-1;
+
+        this.players.forEach(function(player) {
+            if (player.sprite.x <= minX || minX == -1) minX = player.sprite.x;
+            if (player.sprite.y <= minY || minY == -1) minY = player.sprite.y;
+            if (player.sprite.x >= maxX || maxX == -1) maxX = player.sprite.x;
+            if (player.sprite.y >= maxY || maxY == -1) maxY = player.sprite.y;
+        }, this);
+
+        var camX = (minX + maxX) / 2;
+        var camY = (minY + maxY) / 2;
+
+        this.cameraman.x = camX;
+        this.cameraman.y = camY;
     }
 }
