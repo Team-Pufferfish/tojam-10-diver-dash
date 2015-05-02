@@ -77,9 +77,6 @@ class Player  {
 
         this.bubbleEmmiter.makeParticles('bubble');
 
-        // emitter.minParticleSpeed.set(0, 300);
-        // emitter.maxParticleSpeed.set(0, 600);
-
         this.bubbleEmmiter.setRotation(0, 1);
         this.bubbleEmmiter.setAlpha(0.1, 1, 3000);
         this.bubbleEmmiter.setXSpeed(0,0);

@@ -11,7 +11,7 @@ class OxygenTank {
     InitialLevel: number;
     level: number;
 
-    callbackAlarms : [any];
+    callbackAlarms : any[];
 
     constructor(initialLevel: number){
         this.level = this.InitialLevel = initialLevel;
