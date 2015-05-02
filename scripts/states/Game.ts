@@ -15,6 +15,7 @@ class Game extends Phaser.State {
 
     PLAYER_COUNT: number = 4;
     LIGHT_RADIUS: number = 120;
+    WATER_SPEED: number = 250;
 
     map:Phaser.Tilemap;
     mapLayer:Phaser.TilemapLayer;
@@ -211,10 +212,10 @@ class Game extends Phaser.State {
     private environmentOverlap(player, tile) {
 
        switch (tile.index){
-           case 8: player.body.velocity.y = -300; break;
-           case 9: player.body.velocity.y = 300; break;
-           case 18:player.body.velocity.x = -300; break;
-           case 19:player.body.velocity.x = 300; break;
+           case 8: player.body.velocity.y = -this.WATER_SPEED; break;
+           case 9: player.body.velocity.y =  this.WATER_SPEED; break;
+           case 18:player.body.velocity.x = -this.WATER_SPEED; break;
+           case 19:player.body.velocity.x =  this.WATER_SPEED; break;
 
            console.log("Wooooahhh!");
        }
