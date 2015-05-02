@@ -28,7 +28,7 @@ class Game extends Phaser.State {
     cameraman: Phaser.Sprite;
 
     //Lighting model
-    lights : Phaser.Group;
+    lights : Object[];
 
     shadowTexture : Phaser.BitmapData;
     lightSprite : Phaser.Image;
@@ -36,6 +36,7 @@ class Game extends Phaser.State {
     constructor() {
         super();
         this.players = [];
+        this.lights = [];
     }
 
     create() {
@@ -56,11 +57,10 @@ class Game extends Phaser.State {
         //map.setTileLocationCallback(2, 0, 1, 1, hitCoin, this);
 
         this.mapLayer.resizeWorld();
-        this.lights = this.game.add.group();
+        //this.lights = this.game.add.group();
 
-        this.createItems();
         this.createDecorations();
-        this.createDoors();
+        this.createItems();
 
         //create player
         this.createPlayers();
@@ -83,8 +83,9 @@ class Game extends Phaser.State {
         for (var i = 0; i < this.PLAYER_COUNT; i++) {
 
             var player = new Player(result[i].x, result[i].y, this.game, pads[i]);
+            player.itemsPointer = this.items;
             player.sprite.body.setSize(21, 20);
-            this.lights.add(player.sprite);
+            this.lights.push(player.sprite);
             this.players.push(player);
         }
 
@@ -117,7 +118,7 @@ class Game extends Phaser.State {
 
     update() {
         //collision
-
+        this.game.physics.arcade.overlap(this.items, this.mapLayer);
         for (var i = 0; i < this.PLAYER_COUNT; i++){
             this.game.physics.arcade.collide(this.players[i].sprite, this.mapLayer, this.environmentCollision,null,this);
             this.game.physics.arcade.overlap(this.players[i].sprite, this.mapLayer, this.environmentOverlap,null,this);
