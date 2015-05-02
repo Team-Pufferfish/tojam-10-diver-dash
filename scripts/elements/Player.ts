@@ -124,8 +124,8 @@ class Player  {
 
         this.bubbleEmmiter.setRotation(0, 1);
         this.bubbleEmmiter.setAlpha(1, 0, 3000);
-        this.bubbleEmmiter.setXSpeed(0,7);
-        this.bubbleEmmiter.setYSpeed(0,7);
+        this.bubbleEmmiter.setXSpeed(-7,7);
+        this.bubbleEmmiter.setYSpeed(-7,7);
         this.bubbleEmmiter.gravity = -10;
         this.bubbleEmmiter.setScale(0.1, 1, 0.1, 1, 3000, Phaser.Easing.Quintic.Out);
     }
@@ -244,8 +244,8 @@ class Player  {
         var safeLight = 175;
         var numPlayers = 4;
         var scaredDistance = safeLight * 2;
-        var worried = 0;
-        var scared = 0;
+        var avgDistance = 0;
+        var closestPlayer = 100000;
 
         var nervousnessWorried = {callout: "Getting separated...",
             calloutIntensity: calloutIntensity.speech,
@@ -259,26 +259,27 @@ class Player  {
 
         this.otherPlayers.forEach(function(otherPlayer){
             var howFar = Phaser.Math.distance(this.sprite.x,this.sprite.y,otherPlayer.sprite.x,otherPlayer.sprite.y);
-            if (howFar > safeLight){
-                worried += 1;
-            }
-            if (howFar > scaredDistance){
-                scared += 1;
-            }
+            avgDistance += howFar;
+            if (howFar < closestPlayer)
+                howFar = closestPlayer;
         },this);
 
-        if (scared >= numPlayers-1){
-            if (this.nervousLevel < 2)
-                this.addNervousness(nervousnessScared,true);
-            else
-                this.addNervousness(nervousnessScared,false);
+        avgDistance = avgDistance / numPlayers;
+
+        if (avgDistance >= scaredDistance || closestPlayer >= scaredDistance){
+            if (this.nervousLevel < 2) {
+                this.addNervousness(nervousnessScared, true);
+            }else {
+                this.addNervousness(nervousnessScared, false);
+            }
             this.nervousLevel = 2;
         }
-        else if (worried >= numPlayers-1){
-            if (this.nervousLevel < 1)
-                this.addNervousness(nervousnessWorried,true);
-            else
-                this.addNervousness(nervousnessWorried,false);
+        else if (avgDistance >= safeLight || closestPlayer >= safeLight){
+            if (this.nervousLevel < 1) {
+                this.addNervousness(nervousnessWorried, true);
+            }else {
+                this.addNervousness(nervousnessWorried, false);
+            }
             this.nervousLevel = 1;
         }else {
             this.nervousLevel = 0;
