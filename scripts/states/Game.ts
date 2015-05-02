@@ -18,7 +18,7 @@ interface death {
 
 class Game extends Phaser.State {
 
-    PLAYER_COUNT: number = 2;
+    PLAYER_COUNT: number = 4;
     LIGHT_RADIUS: number = 120;
     WATER_SPEED: number = 250;
 
@@ -79,6 +79,10 @@ class Game extends Phaser.State {
         //the camera will follow the player in the world
         this.game.camera.follow(this.cameraman);
 
+        this.players.forEach(function(player){
+           player.setupCallout();
+        });
+
         //move player with cursor keys
         this.cursors = this.game.input.keyboard.createCursorKeys();
     }
@@ -125,13 +129,13 @@ class Game extends Phaser.State {
     update() {
         //collision
         this.game.physics.arcade.overlap(this.items, this.mapLayer);
-        for (var i = 0; i < this.PLAYER_COUNT; i++){
-            this.game.physics.arcade.collide(this.players[i].sprite, this.mapLayer, this.environmentCollision,null,this);
-            this.game.physics.arcade.overlap(this.players[i].sprite, this.mapLayer, this.environmentOverlap,null,this);
+        for (var i = 0; i < this.PLAYER_COUNT; i++) {
+            this.game.physics.arcade.collide(this.players[i].sprite, this.mapLayer, this.environmentCollision, null, this);
+            this.game.physics.arcade.overlap(this.players[i].sprite, this.mapLayer, this.environmentOverlap, null, this);
             this.game.physics.arcade.overlap(this.players[i].sprite, this.items, this.collect, null, this);
             this.game.physics.arcade.overlap(this.players[i].sprite, this.doors, this.enterDoor, null, this);
 
-            this.game.physics.arcade.overlap(this.players[i].bubbleEmmiter, this.mapLayer, this.environmentOverlap,null,this);
+            this.game.physics.arcade.overlap(this.players[i].bubbleEmmiter, this.mapLayer, this.environmentOverlap, null, this);
             this.game.physics.arcade.overlap(this.players[i].bubbleEmmiter, this.mapLayer);
 
             this.players[i].update();
@@ -140,6 +144,10 @@ class Game extends Phaser.State {
 
         this.updateCameraman();
         this.updateLights();
+
+        this.players.forEach(function (player) {
+            player.updateCallout();
+        });
     }
 
     createItems() {
@@ -205,7 +213,7 @@ class Game extends Phaser.State {
 
         player.player.changeGold(1);
 
-        console.log('Cha-ching!' + player.player.gold);
+        player.player.callout(player.player.gold + "!");
     }
 
     private enterDoor(player, door) {
@@ -219,7 +227,7 @@ class Game extends Phaser.State {
                 startTime: this.game.time.now,
                 multiplier: 1.5, timeout: 3000, name: 'spike'});
         }else if (tile.index == 36 || tile.index == 37){
-            console.log("Escaped!!!");
+            player.player.callout("FREEEEDOM!!!!!");
         }
     }
 

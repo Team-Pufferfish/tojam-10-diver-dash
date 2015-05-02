@@ -39,7 +39,7 @@ class Player  {
     INITIAL_HEART_RATE: number = 20;
     BULLET_SPEED: number = 200;
 
-    SHOW_DEBUG : boolean = true;
+    SHOW_DEBUG : boolean = false;
 
     name: string;
     colour: string;
@@ -53,6 +53,7 @@ class Player  {
     currentCallout: Phaser.Sprite;
     currentCalloutText: Phaser.Text;
     nervousnesses: nervousness[] = [];
+    nervousLevel: number = 0;
 
     bubbleEmmiter;
 
@@ -111,6 +112,7 @@ class Player  {
         this.sprite.anchor.setTo(0.5,0.5);
         this.game.physics.arcade.enable(this.sprite);
         this.sprite.body.setSize(15, 19);
+        this.sprite.body.collideWorldBounds = true;
         this.sprite.player = this;
         this.sprite.animations.add('swim',[1,2,3,4,5,4,3,2]);
         this.sprite.animations.add('rest',[0]);
@@ -126,24 +128,26 @@ class Player  {
         this.bubbleEmmiter.setYSpeed(0,7);
         this.bubbleEmmiter.gravity = -10;
         this.bubbleEmmiter.setScale(0.1, 1, 0.1, 1, 3000, Phaser.Easing.Quintic.Out);
+    }
 
+    public setupCallout(){
         this.currentCallout = this.game.add.sprite(0,0,'callout-speech');
         this.currentCallout.alpha = 0;
         this.currentCallout.scale = {x: 3, y: 3};
 
-        this.currentCalloutText = this.game.add.text(0, 0, 'AHHHHH!', {font: '14px Arial'});
+        this.currentCalloutText = this.game.add.text(0, 0, 'We\'re trapped!', {font: '14px Arial'});
         this.currentCalloutText.alpha = 0;
-
     }
 
-    public addNervousness(attributes: nervousness){
+    public addNervousness(attributes: nervousness, doCallout: boolean=true){
         attributes.startTime = this.game.time.time;
         var found = false;
         this.nervousnesses.forEach((nerve,index) =>{
            if(nerve.name === attributes.name){
                nerve.startTime = attributes.startTime;
                found = true;
-               this.callout(attributes.callout,attributes.calloutIntensity);
+               if (doCallout)
+                this.callout(attributes.callout,attributes.calloutIntensity);
            }
         });
         if (!found){
@@ -157,9 +161,8 @@ class Player  {
        this.currentCalloutText.text = text;
        this.currentCallout.alpha = 0.8;
        this.currentCalloutText.alpha = 0.8;
-        this.currentCallout.z = -1000;
-       this.currentCalloutText.z = -1000;
-        this.game.add.tween(this.currentCalloutText).to({ alpha: 0},1500, Phaser.Easing.Quartic.In,true);
+
+       this.game.add.tween(this.currentCalloutText).to({ alpha: 0},1500, Phaser.Easing.Quartic.In,true);
        this.game.add.tween(this.currentCallout).to({ alpha: 0},1500,Phaser.Easing.Quartic.In,true);
    }
 
@@ -170,8 +173,8 @@ class Player  {
 
             var totalBreath = bpm;
 
-
-            this.oxyText.text = 'bpm:' + this.oxygenTank.level / totalBreath;
+            if (this.SHOW_DEBUG)
+                this.oxyText.text = 'bpm:' + this.oxygenTank.level / totalBreath;
 
             if (totalBreath < this.MIN_BREATH) {
                 totalBreath = this.MIN_BREATH;
@@ -215,6 +218,7 @@ class Player  {
                 this.oxyText.y = this.sprite.y;
 
             }
+            this.checkDistancesToFriends();
 
             var nervousnessMultiplier = 1;
             this.nervousnesses.forEach((nerve) => {
@@ -225,17 +229,59 @@ class Player  {
 
             this.heart.changeHeartRateTo((this.INITIAL_HEART_RATE + (this.sprite.body.speed / 2.0)) * nervousnessMultiplier);
 
-            //position over head
             this.bubbleEmmiter.x = this.sprite.x + Math.cos(this.sprite.rotation - Math.PI / 2) * 15;
             this.bubbleEmmiter.y = this.sprite.y + Math.sin(this.sprite.rotation - Math.PI / 2) * 15;
+    }
 
-            //var trackemitter = this.game.add.sprite(this.bubbleEmmiter.x,this.bubbleEmmiter.y,"bubble");
+    updateCallout(){
+        this.currentCallout.x = this.sprite.x - 55;
+        this.currentCallout.y = this.sprite.y - 70;
+        this.currentCalloutText.x = this.currentCallout.x + 50;
+        this.currentCalloutText.y = this.currentCallout.y + 10;
+    }
 
+    private checkDistancesToFriends(){
+        var safeLight = 175;
+        var numPlayers = 4;
+        var scaredDistance = safeLight * 2;
+        var worried = 0;
+        var scared = 0;
 
-            this.currentCallout.x = this.sprite.x - 55;
-            this.currentCallout.y = this.sprite.y - 70;
-            this.currentCalloutText.x = this.currentCallout.x + 50;
-            this.currentCalloutText.y = this.currentCallout.y + 10;
+        var nervousnessWorried = {callout: "Getting separated...",
+            calloutIntensity: calloutIntensity.speech,
+            startTime: this.game.time.now,
+            multiplier: 1.1, timeout: 1000, name: 'worried'};
+
+        var nervousnessScared = {callout: "Wait for me guys!",
+            calloutIntensity: calloutIntensity.yell,
+            startTime: this.game.time.now,
+            multiplier: 1.5, timeout: 1000, name: 'scared'};
+
+        this.otherPlayers.forEach(function(otherPlayer){
+            var howFar = Phaser.Math.distance(this.sprite.x,this.sprite.y,otherPlayer.sprite.x,otherPlayer.sprite.y);
+            if (howFar > safeLight){
+                worried += 1;
+            }
+            if (howFar > scaredDistance){
+                scared += 1;
+            }
+        },this);
+
+        if (scared >= numPlayers-1){
+            if (this.nervousLevel < 2)
+                this.addNervousness(nervousnessScared,true);
+            else
+                this.addNervousness(nervousnessScared,false);
+            this.nervousLevel = 2;
+        }
+        else if (worried >= numPlayers-1){
+            if (this.nervousLevel < 1)
+                this.addNervousness(nervousnessWorried,true);
+            else
+                this.addNervousness(nervousnessWorried,false);
+            this.nervousLevel = 1;
+        }else {
+            this.nervousLevel = 0;
         }
     }
 
