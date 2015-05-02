@@ -11,7 +11,6 @@ var Heart = (function () {
     Heart.prototype.changeHeartRateTo = function (bpm) {
         //TODO: would be neat if this lowerered slowly instead of immediately
         this.bpm = bpm;
-        this.setupBeatLoop();
     };
     Heart.prototype.setupBeatLoop = function () {
         this.lastBeat = this.clock.time;
@@ -22,7 +21,7 @@ var Heart = (function () {
     };
     Heart.prototype.update = function () {
         var elaspedSince = this.clock.elapsedSecondsSince(this.lastBeat);
-        if (elaspedSince > (this.bpm / 60)) {
+        if (elaspedSince > (60 / this.bpm)) {
             this.beat();
         }
     };

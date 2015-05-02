@@ -5,16 +5,29 @@
 /*create the reference paths for our components. this allows typescript to do intellisense-like code completion. should
  * probably be added for each file/class that is referenced below*/
 /// <reference path="../../bower_components/phaser/typescript/phaser.d.ts"/>
+/// <reference path="../model/Heart.ts"/>
+/// <reference path="../elements/Player.ts"/>
+/// <reference path="../model/Heart.ts"/>
+/// <reference path="../model/OxygenTank.ts"/>
+
 
 class Game extends Phaser.State {
 
     map:Phaser.Tilemap;
-    backgroundlayer:Phaser.TilemapLayer;
-    blockedLayer:Phaser.TilemapLayer;
+    mapLayer:Phaser.TilemapLayer;
+    hazardLayer:Phaser.TilemapLayer;
     items:Phaser.Group;
+    decorations:Phaser.Group;
     doors:Phaser.Group;
     cursors:Phaser.CursorKeys;
-    player:Phaser.Sprite;
+    player: Player;
+    player2: Player;
+
+    //Lighting model
+    lights : Phaser.Group;
+    shadowTexture : Phaser.BitmapData;
+    lightSprite : Phaser.Image;
+    LIGHT_RADIUS:number;
 
     constructor() {
         super();
@@ -22,68 +35,85 @@ class Game extends Phaser.State {
 
     create() {
 
-        this.map = this.game.add.tilemap('level1');
+        this.map = this.game.add.tilemap('DiverLevel1');
 
         //the first parameter is the tileset name as specified in Tiled, the second is the key to the asset
-        this.map.addTilesetImage('tiles', 'gameTiles');
+        this.map.addTilesetImage('RockTile', 'RockTile');
 
         //create layer
-        this.backgroundlayer = this.map.createLayer('backgroundLayer');
-        this.blockedLayer = this.map.createLayer('blockedLayer');
+        this.mapLayer = this.map.createLayer('Tiles');
 
-        //collision on blockedLayer
-        this.map.setCollisionBetween(1, 2000, true, 'blockedLayer');
-
-        //resizes the game world to match the layer dimensions
-        this.backgroundlayer.resizeWorld();
+        this.map.setCollisionByExclusion([1,2,3,46,47,56],true,"Tiles");
+        this.mapLayer.resizeWorld();
 
         this.createItems();
+        this.createDecorations();
         this.createDoors();
 
         //create player
-        var result = this.findObjectsByType('playerStart', this.map, 'objectsLayer');
-        this.player = this.game.add.sprite(result[0].x, result[0].y, 'player');
-        this.game.physics.arcade.enable(this.player);
+        var result = this.findObjectsByType('playerStart', this.map, 'Objects');
+
+        this.player2 = new Player(result[1].x,result[1].y,this.game,this.game.input.gamepad.pad1);
+        this.player = new Player(result[0].x,result[0].y,this.game,this.game.input.gamepad.pad2);
+        this.player.sprite.body.setSize(21, 28);
+
 
         //the camera will follow the player in the world
-        this.game.camera.follow(this.player);
+        this.game.camera.follow(this.player.sprite);
 
         //move player with cursor keys
         this.cursors = this.game.input.keyboard.createCursorKeys();
+
+        //Set up lights
+        this.LIGHT_RADIUS = 120;
+        // Create the shadow texture
+        this.shadowTexture = this.game.add.bitmapData(this.game.width, this.game.height);
+        // Draw shadow
+        // Create an object that will use the bitmap as a texture
+        this.lightSprite = this.game.add.image(0, 0, this.shadowTexture);
+
+        // Set the blend mode to MULTIPLY. This will darken the colors of
+        // everything below this sprite.
+        this.lightSprite.blendMode = PIXI.blendModes.MULTIPLY;
+
+        this.lights = this.game.add.group();
+        this.lights.add(this.player.sprite);
+        this.lights.add(this.player2.sprite);
     }
 
     update() {
         //collision
-        this.game.physics.arcade.collide(this.player, this.blockedLayer);
-        this.game.physics.arcade.overlap(this.player, this.items, this.collect, null, this);
-        this.game.physics.arcade.overlap(this.player, this.doors, this.enterDoor, null, this);
 
-        //player movement
-        this.player.body.velocity.y = 0;
-        this.player.body.velocity.x = 0;
+        this.game.physics.arcade.collide(this.player.sprite, this.mapLayer, this.environmentCollision,null,this);
+        this.game.physics.arcade.overlap(this.player.sprite, this.items, this.collect, null, this);
+        this.game.physics.arcade.overlap(this.player.sprite, this.doors, this.enterDoor, null, this);
 
-        if (this.cursors.up.isDown) {
-            this.player.body.velocity.y -= 50;
-        }
-        else if (this.cursors.down.isDown) {
-            this.player.body.velocity.y += 50;
-        }
-        if (this.cursors.left.isDown) {
-            this.player.body.velocity.x -= 50;
-        }
-        else if (this.cursors.right.isDown) {
-            this.player.body.velocity.x += 50;
-        }
+        this.game.physics.arcade.collide(this.player2.sprite, this.mapLayer, this.environmentCollision,null,this);
+        this.game.physics.arcade.overlap(this.player2.sprite, this.items, this.collect, null, this);
+        this.game.physics.arcade.overlap(this.player2.sprite, this.doors, this.enterDoor, null, this);
+
+        this.player.update();
+        this.player2.update();
+        this.updateLights();
     }
 
     createItems() {
         //create items
         this.items = this.game.add.group();
         this.items.enableBody = true;
-        var item;
-        var result = this.findObjectsByType('item', this.map, 'objectsLayer');
+        var result = this.findObjectsByType('item', this.map, 'Objects');
         result.forEach(function (element) {
             this.createFromTiledObject(element, this.items);
+        }, this);
+    }
+
+    createDecorations() {
+        //create items
+        this.decorations = this.game.add.group();
+        this.decorations.enableBody = true;
+        var result = this.findObjectsByType('decoration', this.map, 'Objects');
+        result.forEach(function (element) {
+            this.createFromTiledObject(element, this.decorations);
         }, this);
     }
 
@@ -91,7 +121,7 @@ class Game extends Phaser.State {
         //create doors
         this.doors = this.game.add.group();
         this.doors.enableBody = true;
-        var result = this.findObjectsByType('door', this.map, 'objectsLayer');
+        var result = this.findObjectsByType('door', this.map, 'Objects');
 
         result.forEach(function (element) {
             this.createFromTiledObject(element, this.doors);
@@ -102,7 +132,7 @@ class Game extends Phaser.State {
     //find objects in a Tiled layer that containt a property called "type" equal to a certain value
     private findObjectsByType(type, map, layer) {
         var result = [];
-        map.objects[layer].forEach(function (element) {
+        this.map.objects[layer].forEach(function (element) {
             if (element.properties.type === type) {
                 //Phaser uses top left, Tiled bottom left so we have to adjust
                 //also keep in mind that the cup images are a bit smaller than the tile which is 16x16
@@ -133,5 +163,52 @@ class Game extends Phaser.State {
 
     private enterDoor(player, door) {
         console.log('entering door that will take you to ' + door.targetTilemap + ' on x:' + door.targetX + ' and y:' + door.targetY);
+    }
+
+    private environmentCollision(player, tile) {
+        if (tile.index == 26){
+            console.log("Ouch!");
+        }else if (tile.index == 36 || tile.index == 37){
+            console.log("Escaped!!!");
+        }
+    }
+
+    updateLights(){
+        // This function updates the shadow texture (this.shadowTexture).
+        // First, it fills the entire texture with a dark shadow color.
+        // Then it draws a white circle centered on the pointer position.
+        // Because the texture is drawn to the screen using the MULTIPLY
+        // blend mode, the dark areas of the texture make all of the colors
+        // underneath it darker, while the white area is unaffected.
+        //move lightspirte
+
+        // Draw shadow
+        this.shadowTexture.context.fillStyle = 'rgb(0, 0, 0)';
+        this.shadowTexture.context.fillRect(0, 0, this.game.width, this.game.height);
+
+        // Iterate through each of the lights and draw the glow
+        this.lights.forEach(function(light) {
+            // Randomly change the radius each frame
+            var radius = this.LIGHT_RADIUS + this.game.rnd.integerInRange(1,10);
+            var screenX = light.x - this.lightSprite.x;
+            var screenY = light.y - this.lightSprite.y;
+            // Draw circle of light with a soft edge
+            var gradient =
+                this.shadowTexture.context.createRadialGradient(
+                    screenX, screenY,this.LIGHT_RADIUS * 0.25,
+                    screenX, screenY, radius);
+            gradient.addColorStop(0, 'rgba(255, 255, 255, 1.0)');
+            gradient.addColorStop(1, 'rgba(255, 255, 255, 0.0)');
+
+            this.shadowTexture.context.beginPath();
+            this.shadowTexture.context.fillStyle = gradient;
+            this.shadowTexture.context.arc(screenX, screenY, radius, 0, Math.PI*2);
+            this.shadowTexture.context.fill();
+        }, this);
+        this.lightSprite.x = this.camera.x;
+        this.lightSprite.y = this.camera.y;
+
+        // This just tells the engine it should update the texture cache
+        this.shadowTexture.dirty = true;
     }
 }

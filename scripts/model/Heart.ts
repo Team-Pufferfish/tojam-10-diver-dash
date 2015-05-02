@@ -28,8 +28,6 @@ class Heart {
 
         //TODO: would be neat if this lowerered slowly instead of immediately
         this.bpm = bpm;
-        this.setupBeatLoop();
-
     }
 
     private setupBeatLoop() : void{
@@ -46,7 +44,7 @@ class Heart {
     public update() {
         var elaspedSince = this.clock.elapsedSecondsSince(this.lastBeat);
 
-        if (elaspedSince > (this.bpm / 60)){
+        if (elaspedSince > (60/ this.bpm)){
             this.beat();
         }
     }

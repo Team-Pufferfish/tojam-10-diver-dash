@@ -28,12 +28,11 @@ class Preload extends Phaser.State {
 
     private loadGameAssets() {
         //load game assets
-        this.load.tilemap('level1', 'assets/tilemaps/level1.json', null, Phaser.Tilemap.TILED_JSON);
-        this.load.image('gameTiles', 'assets/images/tiles.png');
-        this.load.image('greencup', 'assets/images/greencup.png');
-        this.load.image('bluecup', 'assets/images/bluecup.png');
-        this.load.image('player', 'assets/images/player.png');
-        this.load.image('browndoor', 'assets/images/browndoor.png');
+        this.load.tilemap('DiverLevel1', 'assets/tilemaps/DiverLevel1.json', null, Phaser.Tilemap.TILED_JSON);
+        this.load.image('RockTile', 'assets/images/RockTile.png');
+        this.load.image('player', 'assets/images/FatDiver1.png');
+        this.load.image('seaweed','assets/images/seaweed.png');
+        this.load.image('gold','assets/images/gold.png');
     }
 
     create() {
