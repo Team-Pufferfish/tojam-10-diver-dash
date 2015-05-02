@@ -13,7 +13,7 @@
 
 class Game extends Phaser.State {
 
-    PLAYER_COUNT: number = 2;
+    PLAYER_COUNT: number = 4;
     LIGHT_RADIUS: number = 120;
     WATER_SPEED: number = 250;
 
@@ -197,7 +197,7 @@ class Game extends Phaser.State {
 
         player.player.changeGold(1);
 
-        console.log('Cha-ching!' + player.player.gold);
+        player.player.callout(player.player.gold + "!");
     }
 
     private enterDoor(player, door) {
@@ -211,7 +211,7 @@ class Game extends Phaser.State {
                 startTime: this.game.time.now,
                 multiplier: 1.5, timeout: 3000, name: 'spike'});
         }else if (tile.index == 36 || tile.index == 37){
-            console.log("Escaped!!!");
+            player.player.callout("FREEEEDOM!!!!!");
         }
     }
 

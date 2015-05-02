@@ -47,6 +47,7 @@ class Player  {
     currentCallout: Phaser.Sprite;
     currentCalloutText: Phaser.Text;
     nervousnesses: nervousness[] = [];
+    nervousLevel: number = 0;
 
     bubbleEmmiter;
 
@@ -110,14 +111,15 @@ class Player  {
 
     }
 
-    public addNervousness(attributes: nervousness){
+    public addNervousness(attributes: nervousness, doCallout: boolean=true){
         attributes.startTime = this.game.time.time;
         var found = false;
         this.nervousnesses.forEach((nerve,index) =>{
            if(nerve.name === attributes.name){
                nerve.startTime = attributes.startTime;
                found = true;
-               this.callout(attributes.callout,attributes.calloutIntensity);
+               if (doCallout)
+                this.callout(attributes.callout,attributes.calloutIntensity);
            }
         });
         if (!found){
@@ -132,7 +134,7 @@ class Player  {
        this.currentCallout.alpha = 0.8;
        this.currentCalloutText.alpha = 0.8;
 
-        this.game.add.tween(this.currentCalloutText).to({ alpha: 0},1500, Phaser.Easing.Quartic.In,true);
+       this.game.add.tween(this.currentCalloutText).to({ alpha: 0},1500, Phaser.Easing.Quartic.In,true);
        this.game.add.tween(this.currentCallout).to({ alpha: 0},1500,Phaser.Easing.Quartic.In,true);
    }
 
@@ -180,6 +182,8 @@ class Player  {
 
         }
 
+        this.checkDistancesToFriends()
+
         var nervousnessMultiplier = 1;
         this.nervousnesses.forEach((nerve) => {
 
@@ -201,6 +205,51 @@ class Player  {
       this.currentCalloutText.x = this.currentCallout.x + 50;
       this.currentCalloutText.y = this.currentCallout.y + 10;
 
+    }
+
+    private checkDistancesToFriends(){
+        var safeLight = 175;
+        var numPlayers = 4;
+        var scaredDistance = safeLight * 2;
+        var worried = 0;
+        var scared = 0;
+
+        var nervousnessWorried = {callout: "Getting separated...",
+            calloutIntensity: calloutIntensity.speech,
+            startTime: this.game.time.now,
+            multiplier: 1.1, timeout: 1000, name: 'worried'};
+
+        var nervousnessScared = {callout: "Wait for me guys!",
+            calloutIntensity: calloutIntensity.yell,
+            startTime: this.game.time.now,
+            multiplier: 1.5, timeout: 1000, name: 'scared'};
+
+        this.otherPlayers.forEach(function(otherPlayer){
+            var howFar = Phaser.Math.distance(this.sprite.x,this.sprite.y,otherPlayer.sprite.x,otherPlayer.sprite.y);
+            if (howFar > safeLight){
+                worried += 1;
+            }
+            if (howFar > scaredDistance){
+                scared += 1;
+            }
+        },this);
+
+        if (scared >= numPlayers-1){
+            if (this.nervousLevel < 2)
+                this.addNervousness(nervousnessScared,true);
+            else
+                this.addNervousness(nervousnessScared,false);
+            this.nervousLevel = 2;
+        }
+        else if (worried >= numPlayers-1){
+            if (this.nervousLevel < 1)
+                this.addNervousness(nervousnessWorried,true);
+            else
+                this.addNervousness(nervousnessWorried,false);
+            this.nervousLevel = 1;
+        }else {
+            this.nervousLevel = 0;
+        }
     }
 
 
