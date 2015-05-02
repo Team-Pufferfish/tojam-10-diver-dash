@@ -9,6 +9,8 @@
 /// <reference path="../model/Heart.ts"/>
 /// <reference path="../model/OxygenTank.ts"/>
 
+enum calloutIntensity { thought, yell, speech};
+
 class Player  {
 
     MAX_BREATH :number = 200;
@@ -32,6 +34,8 @@ class Player  {
     gamepad: Phaser.SinglePad;
     oxyText: Phaser.Text;
     otherPlayers: Player[];
+    currentCallout: Phaser.Sprite;
+    currentCalloutText: Phaser.Text;
 
     bubbleEmmiter;
 
@@ -83,7 +87,25 @@ class Player  {
         this.bubbleEmmiter.setYSpeed(0,7);
         this.bubbleEmmiter.gravity = -10;
         this.bubbleEmmiter.setScale(0.1, 1, 0.1, 1, 3000, Phaser.Easing.Quintic.Out);
+
+        this.currentCallout = this.game.add.sprite(0,0,'callout-speech');
+        this.currentCallout.alpha = 0;
+        this.currentCallout.scale = {x: 3, y: 3};
+
+        this.currentCalloutText = this.game.add.text(0, 0, 'AHHHHH!', {font: '14px Arial'});
+        this.currentCalloutText.alpha = 0;
+
     }
+
+   public callout(text: string, intensity: calloutIntensity){
+       this.currentCalloutText.text = text;
+       this.currentCallout.alpha = 0.8;
+       this.currentCalloutText.alpha = 0.8;
+
+        this.game.add.tween(this.currentCalloutText).to({ alpha: 0},1500, Phaser.Easing.Quartic.In,true);
+       this.game.add.tween(this.currentCallout).to({ alpha: 0},1500,Phaser.Easing.Quartic.In,true);
+   }
+
 
     private setupModel() {
         this.oxygenTank = new OxygenTank(this.TANK_SIZE);
@@ -133,6 +155,13 @@ class Player  {
         this.bubbleEmmiter.y = this.sprite.y + Math.sin(this.sprite.rotation-Math.PI/2)*15;
 
         //var trackemitter = this.game.add.sprite(this.bubbleEmmiter.x,this.bubbleEmmiter.y,"bubble");
+
+
+      this.currentCallout.x = this.sprite.x - 55;
+      this.currentCallout.y = this.sprite.y - 70;
+      this.currentCalloutText.x = this.currentCallout.x + 50;
+      this.currentCalloutText.y = this.currentCallout.y + 10;
+
     }
 
 

@@ -13,7 +13,7 @@
 
 class Game extends Phaser.State {
 
-    PLAYER_COUNT: number = 1;
+    PLAYER_COUNT: number = 2;
     LIGHT_RADIUS: number = 120;
     WATER_SPEED: number = 250;
 
@@ -206,7 +206,7 @@ class Game extends Phaser.State {
 
     private environmentCollision(player, tile) {
         if (tile.index == 26){
-            console.log("Ouch!");
+           player.player.callout("Ouch!!",calloutIntensity.speech);
         }else if (tile.index == 36 || tile.index == 37){
             console.log("Escaped!!!");
         }
