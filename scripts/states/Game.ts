@@ -72,6 +72,10 @@ class Game extends Phaser.State {
         //the camera will follow the player in the world
         this.game.camera.follow(this.cameraman);
 
+        this.players.forEach(function(player){
+           player.setupCallout();
+        });
+
         //move player with cursor keys
         this.cursors = this.game.input.keyboard.createCursorKeys();
     }
@@ -118,13 +122,13 @@ class Game extends Phaser.State {
     update() {
         //collision
         this.game.physics.arcade.overlap(this.items, this.mapLayer);
-        for (var i = 0; i < this.PLAYER_COUNT; i++){
-            this.game.physics.arcade.collide(this.players[i].sprite, this.mapLayer, this.environmentCollision,null,this);
-            this.game.physics.arcade.overlap(this.players[i].sprite, this.mapLayer, this.environmentOverlap,null,this);
+        for (var i = 0; i < this.PLAYER_COUNT; i++) {
+            this.game.physics.arcade.collide(this.players[i].sprite, this.mapLayer, this.environmentCollision, null, this);
+            this.game.physics.arcade.overlap(this.players[i].sprite, this.mapLayer, this.environmentOverlap, null, this);
             this.game.physics.arcade.overlap(this.players[i].sprite, this.items, this.collect, null, this);
             this.game.physics.arcade.overlap(this.players[i].sprite, this.doors, this.enterDoor, null, this);
 
-            this.game.physics.arcade.overlap(this.players[i].bubbleEmmiter, this.mapLayer, this.environmentOverlap,null,this);
+            this.game.physics.arcade.overlap(this.players[i].bubbleEmmiter, this.mapLayer, this.environmentOverlap, null, this);
             this.game.physics.arcade.overlap(this.players[i].bubbleEmmiter, this.mapLayer);
 
             this.players[i].update();
@@ -132,6 +136,10 @@ class Game extends Phaser.State {
 
         this.updateCameraman();
         this.updateLights();
+
+        this.players.forEach(function (player) {
+            player.updateCallout();
+        });
     }
 
     createItems() {

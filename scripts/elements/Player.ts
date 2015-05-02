@@ -34,7 +34,7 @@ class Player  {
     INITIAL_HEART_RATE: number = 75;
     BULLET_SPEED: number = 200;
 
-    SHOW_DEBUG : boolean = true;
+    SHOW_DEBUG : boolean = false;
 
     name: string;
     colour: string;
@@ -87,6 +87,7 @@ class Player  {
         this.sprite.anchor.setTo(0.5,0.5);
         this.game.physics.arcade.enable(this.sprite);
         this.sprite.body.setSize(15, 19);
+        this.sprite.body.collideWorldBounds = true;
         this.sprite.player = this;
         this.sprite.animations.add('swim',[1,2,3,4,5,4,3,2]);
         this.sprite.animations.add('rest',[0]);
@@ -101,14 +102,15 @@ class Player  {
         this.bubbleEmmiter.setYSpeed(0,7);
         this.bubbleEmmiter.gravity = -10;
         this.bubbleEmmiter.setScale(0.1, 1, 0.1, 1, 3000, Phaser.Easing.Quintic.Out);
+    }
 
+    public setupCallout(){
         this.currentCallout = this.game.add.sprite(0,0,'callout-speech');
         this.currentCallout.alpha = 0;
         this.currentCallout.scale = {x: 3, y: 3};
 
-        this.currentCalloutText = this.game.add.text(0, 0, 'AHHHHH!', {font: '14px Arial'});
+        this.currentCalloutText = this.game.add.text(0, 0, 'We\'re trapped!', {font: '14px Arial'});
         this.currentCalloutText.alpha = 0;
-
     }
 
     public addNervousness(attributes: nervousness, doCallout: boolean=true){
@@ -145,8 +147,8 @@ class Player  {
 
             var totalBreath = this.MAX_BREATH - bpm;
 
-
-            this.oxyText.text = 'bpm:' + this.oxygenTank.level / totalBreath;
+            if (this.SHOW_DEBUG)
+                this.oxyText.text = 'bpm:' + this.oxygenTank.level / totalBreath;
 
             if (totalBreath < this.MIN_BREATH) {
                 totalBreath = this.MIN_BREATH;
@@ -198,13 +200,13 @@ class Player  {
         this.bubbleEmmiter.y = this.sprite.y + Math.sin(this.sprite.rotation-Math.PI/2)*15;
 
         //var trackemitter = this.game.add.sprite(this.bubbleEmmiter.x,this.bubbleEmmiter.y,"bubble");
+    }
 
-
-      this.currentCallout.x = this.sprite.x - 55;
-      this.currentCallout.y = this.sprite.y - 70;
-      this.currentCalloutText.x = this.currentCallout.x + 50;
-      this.currentCalloutText.y = this.currentCallout.y + 10;
-
+    updateCallout(){
+        this.currentCallout.x = this.sprite.x - 55;
+        this.currentCallout.y = this.sprite.y - 70;
+        this.currentCalloutText.x = this.currentCallout.x + 50;
+        this.currentCalloutText.y = this.currentCallout.y + 10;
     }
 
     private checkDistancesToFriends(){
