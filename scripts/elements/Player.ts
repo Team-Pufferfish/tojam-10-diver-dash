@@ -231,6 +231,7 @@ class Player  {
 
             this.bubbleEmmiter.x = this.sprite.x + Math.cos(this.sprite.rotation - Math.PI / 2) * 15;
             this.bubbleEmmiter.y = this.sprite.y + Math.sin(this.sprite.rotation - Math.PI / 2) * 15;
+        }
     }
 
     updateCallout(){

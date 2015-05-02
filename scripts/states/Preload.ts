@@ -42,6 +42,6 @@ class Preload extends Phaser.State {
     }
 
     create() {
-        this.game.state.start("MainMenu");
+        this.game.state.start('Game',true,false,2);
     }
 }

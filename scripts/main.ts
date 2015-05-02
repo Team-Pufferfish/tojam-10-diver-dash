@@ -8,7 +8,7 @@
 /// <reference path="states/Boot.ts"/>
 /// <reference path="states/Preload.ts"/>
 /// <reference path="states/Game.ts"/>
-/// <reference path="states/MainMenu.ts"/>
+/// <reference path="states/Menu.ts"/>
 /// <reference path="states/Scores.ts"/>
 
 
@@ -24,9 +24,7 @@ class main {
     private addStates() {
         this.game.state.add('Boot', Boot);
         this.game.state.add('Preload', Preload);
-        this.game.state.add('MainMenu',MainMenu)
         this.game.state.add('Game', Game);
-        this.game.state.add('Scores', Scores);
     }
 
     start() {

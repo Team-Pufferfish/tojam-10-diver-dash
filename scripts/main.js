@@ -7,7 +7,7 @@
 /// <reference path="states/Boot.ts"/>
 /// <reference path="states/Preload.ts"/>
 /// <reference path="states/Game.ts"/>
-/// <reference path="states/MainMenu.ts"/>
+/// <reference path="states/Menu.ts"/>
 /// <reference path="states/Scores.ts"/>
 var main = (function () {
     function main() {
@@ -17,9 +17,7 @@ var main = (function () {
     main.prototype.addStates = function () {
         this.game.state.add('Boot', Boot);
         this.game.state.add('Preload', Preload);
-        this.game.state.add('MainMenu', MainMenu);
         this.game.state.add('Game', Game);
-        this.game.state.add('Scores', Scores);
     };
     main.prototype.start = function () {
         this.game.state.start('Boot');
