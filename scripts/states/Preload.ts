@@ -32,7 +32,10 @@ class Preload extends Phaser.State {
         this.load.tilemap('DiverLevel2', 'assets/tilemaps/DiverLevel2.json', null, Phaser.Tilemap.TILED_JSON);
         this.load.tilemap('DiverLevel0', 'assets/tilemaps/DiverLevel0.json', null, Phaser.Tilemap.TILED_JSON);
         this.load.image('RockTile', 'assets/images/RockTile.png');
-        this.load.spritesheet('player','assets/images/FatDiverShaded.png',24,37);
+        this.load.spritesheet('Player 1','assets/images/FatDiverShaded.png',24,37);
+        this.load.spritesheet('Player 2','assets/images/FatDiverShadedp2.png',24,37);
+        this.load.spritesheet('Player 3','assets/images/FatDiverShadedp3.png',24,37);
+        this.load.spritesheet('Player 4','assets/images/FatDiverShadedp4.png',24,37);
         this.load.image('seaweed','assets/images/seaweed.png');
         this.load.image('gold','assets/images/gold.png');
         this.load.image('clam','assets/images/clam.png');
@@ -41,6 +44,9 @@ class Preload extends Phaser.State {
         this.load.image('tank','assets/images/tank.png');
         this.load.image('heart','assets/images/heart.png');
         this.load.image('ui','assets/images/ui.png');
+        this.load.image('p2ui','assets/images/p2ui.png');
+        this.load.image('p3ui','assets/images/p3ui.png');
+        this.load.image('p4ui','assets/images/p4ui.png');
 
     }
 

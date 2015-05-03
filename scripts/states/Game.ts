@@ -19,7 +19,7 @@ interface gameData {
 
 class Game extends Phaser.State {
     gameState: gameData;
-    PLAYER_COUNT: number = 2;
+    PLAYER_COUNT: number =4;
     LIGHT_RADIUS: number = 120;
     WATER_SPEED: number = 250;
     GAME_OVER: boolean = false;

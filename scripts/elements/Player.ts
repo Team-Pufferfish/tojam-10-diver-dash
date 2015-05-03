@@ -24,8 +24,6 @@ interface death {
     time: number;
     reason: string;
     isDead: boolean;
-    isVictorius: boolean;
-    gold: number;
 }
 
 class Player  {
@@ -81,7 +79,7 @@ class Player  {
         this.gamepad = gamepad;
         this.calloutTexts = this.setupPlayerCalloutTexts();
 
-        this.mortality = {isDead: false,isVictorius:false,gold:0, time: 0, reason: "Won"};
+        this.mortality = {isDead: false, time: null, reason: null};
         this.setupSprite(x,y);
         this.setupBubbleEmitter();
         this.setupModel();
@@ -94,8 +92,7 @@ class Player  {
             "nervous": ["Where is everyone?","Hello!?!"],
             "scared": ["Oh shit I'm all alone now","I'm gonna die alone, aren't I?"],
             "shocked": ["AAAAAAHH!!","SHHIIIIIITTT!!!",'OOOH!!!!'],
-            "itemPickup": ["Look what I found!!!","Yes!!!","I found one","OOOhhh...SHINY!!"],
-            "escape": ["FREEEDOMM!!","The light at last!","Are we safe?","Score!"]
+            "itemPickup": ["Look what I found!!!","Yes!!!","I found one","OOOhhh...SHINY!!"]
         };
     }
     private setupDebug() {
@@ -111,24 +108,27 @@ class Player  {
     }
 
     private setupUI(){
-        
-        var scale = 1;       if (this.name === "Player 1"){
+
+        var scale = 1;
+        var padding = 10;
+
+       if (this.name === "Player 1"){
            this.ui = this.game.add.sprite(padding,padding,'ui');
            this.heartUI = this.game.add.sprite(padding + this.ui.width - 40,padding + 30,'heart');
        }
         if (this.name === "Player 2") {
-            this.ui = this.game.add.sprite(this.game.width - padding,padding,'ui');
+            this.ui = this.game.add.sprite(this.game.width - padding,padding,'p2ui');
             this.heartUI = this.game.add.sprite(this.game.width - padding - 40,padding + 30,'heart');
             this.ui.anchor.setTo(1,0);
         }
 
         if (this.name === "Player 3"){
-            this.ui = this.game.add.sprite(padding,this.game.height - padding,'ui');
+            this.ui = this.game.add.sprite(padding,this.game.height - padding,'p3ui');
             this.heartUI = this.game.add.sprite(padding + this.ui.width - 40,this.game.height - padding - 30,'heart');
             this.ui.anchor.setTo(0,1);
         }
         if (this.name === "Player 4"){
-            this.ui = this.game.add.sprite(this.game.width - padding,this.game.height - padding,'ui');
+            this.ui = this.game.add.sprite(this.game.width - padding,this.game.height - padding,'p4ui');
             this.heartUI = this.game.add.sprite(this.game.width - padding - 40,this.game.height - padding - 30,'heart')
             this.ui.anchor.setTo(1,1);
         }
@@ -149,7 +149,8 @@ class Player  {
     }
 
     private setupSprite(x,y){
-        this.sprite = this.game.add.sprite(x,y,'player');
+
+        this.sprite = this.game.add.sprite(x,y,this.name);
         this.sprite.anchor.setTo(0.5,0.5);
         this.game.physics.arcade.enable(this.sprite);
         this.sprite.body.setSize(15, 19);
@@ -257,13 +258,14 @@ class Player  {
         }
 
 
-        avgDistance = avgDistance / (this.otherPlayers.length + 1);
+        avgDistance = avgDistance / numPlayers;
 
-        if (avgDistance >= scaredDistance || closestPlayer >= scaredDistance){
-                this.addNervousness(nervousnessScared, true);
+        if (closestPlayer >= scaredDistance){
+            this.addNervousness(nervousnessScared, true);
+
         }
-        else if (avgDistance >= safeLight || closestPlayer >= safeLight){
-                this.addNervousness(nervousnessWorried, true);
+        else if (avgDistance >= safeLight || closestPlayer >= safeLight) {
+            this.addNervousness(nervousnessWorried, true);
         }
     }
 
@@ -430,29 +432,22 @@ class Player  {
         this.gold += gold;
     }
 
-    public makeDead(reason: string, victory: boolean){
+    public makeDead(reason: string){
         if (!this.mortality.isDead) {
             //run animation, and whatever here
-            console.log(this.name + "has left the game because of ->" + reason);
+            console.log(this.name + "has died because of ->" + reason);
             this.mortality.reason = reason;
             this.mortality.isDead = true;
             this.mortality.time = this.game.time.time;
-            this.mortality.isVictorius = victory;
-            this.mortality.gold = this.gold;
             this.sprite.body.angularVelocity = 0;
 
             this.sprite.animations.stop('swim');
+            var deathAnimation = this.sprite.animations.play('death',3);
 
-            if (!victory) {
-                var deathAnimation = this.sprite.animations.play('death', 3);
-
-                deathAnimation.onComplete.add(function deathAnimationFinished(sprite, animation) {
-                    this.sprite.loadTexture('tank');
-                    this.sprite.body.velocity = 0;
-                }, this);
-            }else{
-                this.game.add.tween(this.sprite).to({alpha: 0}, 500, Phaser.Easing.Quartic.In, true);
-            }
+            deathAnimation.onComplete.add(function deathAnimationFinished(sprite,animation){
+                this.sprite.loadTexture('tank');
+                this.sprite.body.velocity = 0;
+            },this);
         }
     }
 
