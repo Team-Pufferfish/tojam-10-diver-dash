@@ -23,6 +23,7 @@ interface death {
     time: number;
     reason: string;
     isDead: boolean;
+    gold: number;
 }
 
 class Player  {
@@ -77,7 +78,7 @@ class Player  {
         this.gamepad = gamepad;
         this.calloutTexts = this.setupPlayerCalloutTexts();
 
-        this.mortality = {isDead: false, time: null, reason: null};
+        this.mortality = {isDead: false, time: 0, reason: "Won"};
         this.setupSprite(x,y);
         this.setupBubbleEmitter();
         this.setupModel();
@@ -235,29 +236,17 @@ class Player  {
             var howFar = Phaser.Math.distance(this.sprite.x,this.sprite.y,this.otherPlayers[i].sprite.x,this.otherPlayers[i].sprite.y);
             avgDistance += howFar;
             if (howFar < closestPlayer)
-                howFar = closestPlayer;
+                closestPlayer = howFar;
         }
 
 
         avgDistance = avgDistance / numPlayers;
 
         if (avgDistance >= scaredDistance || closestPlayer >= scaredDistance){
-            if (this.nervousLevel < 2) {
                 this.addNervousness(nervousnessScared, true);
-            }else {
-                this.addNervousness(nervousnessScared, false);
-            }
-            this.nervousLevel = 2;
         }
         else if (avgDistance >= safeLight || closestPlayer >= safeLight){
-            if (this.nervousLevel < 1) {
                 this.addNervousness(nervousnessWorried, true);
-            }else {
-                this.addNervousness(nervousnessWorried, false);
-            }
-            this.nervousLevel = 1;
-        }else {
-            this.nervousLevel = 0;
         }
     }
 

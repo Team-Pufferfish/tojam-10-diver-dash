@@ -4,10 +4,11 @@
  */
  /// <reference path="../../bower_components/phaser/typescript/phaser.d.ts"/>
 class Scores extends Phaser.State {
+    gameState: gameData;
     level: number;
 
-    init(level){
-        this.level = level + 1;
+    init(gameState){
+        this.level = gameState.level + 1;
     }
 
     constructor() {
@@ -16,10 +17,23 @@ class Scores extends Phaser.State {
 
     create() {
         console.log("Hey you won or you all died");
+        var playerCount = 1;
+        this.gameState.playerDeaths.forEach(function(playerDeath){
+            if (playerDeath.isDead)
+                console.log("Player "+ playerCount + " died of " + playerDeath.reason + " at " + playerDeath.time);
+            else {
+                console.log("Player " + playerCount + " escaped with " + playerDeath.gold + " gold in " + playerDeath.time);
+                this.gameState.teamScore += playerDeath.gold;
+            }
+            playerCount++;
+        });
+
+
         this.startGame();
     }
 
     private startGame(){
-        this.game.state.start('Game',true,false,this.level);
+        this.gameState.playerDeaths = [];
+        this.game.state.start('Game',true,false,this.gameState);
     }
 }

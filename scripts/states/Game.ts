@@ -10,14 +10,15 @@
 /// <reference path="../model/Heart.ts"/>
 /// <reference path="../model/OxygenTank.ts"/>
 
-interface death {
-    time: number;
-    reason: string;
-    isDead: boolean;
+interface gameData {
+    playedCount: number;
+    playerDeaths: death[];
+    level: number;
+    teamScore: number;
 }
 
 class Game extends Phaser.State {
-
+    gameState: gameData;
     PLAYER_COUNT: number = 2;
     LIGHT_RADIUS: number = 120;
     WATER_SPEED: number = 250;
@@ -45,8 +46,9 @@ class Game extends Phaser.State {
         super();
     }
 
-    init(level) {
-        this.level = level;
+    init(gameState) {
+        this.gameState = gameState;
+        this.level = gameState.level;
     }
     
     create() {
@@ -154,15 +156,24 @@ class Game extends Phaser.State {
 
         }
 
-        if ( this.players[0].mortality.isDead){
-            this.gameOver();
-        }
         this.updateCameraman();
         this.updateLights();
 
+        var deadCount = 0;
+        var winCount = 0;
         this.players.forEach(function (player) {
             player.updateCallout();
+            if (player.mortality.isDead)
+                deadCount++;
         });
+
+        //gameoverconditions
+        if(deadCount + winCount >= this.PLAYER_COUNT){
+            this.players.forEach(function (player) {
+                this.gameState.playerDeaths.push(player.mortality);
+            });
+             this.gameOver();
+        }
     }
 
     private checkPlayerObjectCollisions(i) {
@@ -176,7 +187,7 @@ class Game extends Phaser.State {
     }
 
     private gameOver(){
-        this.game.state.start('Scores',true,false,this.level);
+        this.game.state.start('Scores',true,false,this.gameState);
     }
 
     createItems() {
