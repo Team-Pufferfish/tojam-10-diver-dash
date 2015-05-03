@@ -88,10 +88,10 @@ class Player  {
     }
     private setupPlayerCalloutTexts(){
         return {
-            "pain" : ["Ouch!!!","Mother *&^*er","That's it for me!","I'm out","I want my mommy"],
-            "nervous": ["Where is everyone?","Hello!?!"],
-            "scared": ["Oh shit I'm all alone now","I'm gonna die alone, aren't I?"],
-            "shocked": ["AAAAAAHH!!","SHHIIIIIITTT!!!",'OOOH!!!!'],
+            "pain" : ["Ouch!!!","Mother *&^*er","That's it for me!","I'm out","I want my mommy","AAARG!"],
+            "nervous": ["Where is everyone?","Hello!?!","Getting lost...","Getting seperated"],
+            "scared": ["Oh shit I'm all alone now","I'm gonna die alone, aren't I?","Gotta find the group!"],
+            "shocked": ["AAAAAAHH!!","SHHIIIIIITTT!!!",'OOOH!!!!',"WHEEEEEEEE!"],
             "itemPickup": ["Look what I found!!!","Yes!!!","I found one","OOOhhh...SHINY!!"],
             "escape": ["FREEEDOMM!!","The light at last!","Are we safe?","Score!"]
         };
@@ -335,7 +335,7 @@ class Player  {
             // Set its pivot point to the center of the bullet
             bullet.anchor.setTo(0.5, 0.5);
             bullet.lightStyle = 1;
-            //this.game.state.lights.push(bullet);
+            this.game.lights.push(bullet);
 
             this.itemsPointer.add(bullet);
 
