@@ -219,7 +219,6 @@ class Player  {
 
     private checkDistancesToFriends(){
         var safeLight = 175;
-        var numPlayers = 4;
         var scaredDistance = safeLight * 2;
         var avgDistance = 0;
         var closestPlayer = 100000;
@@ -242,7 +241,7 @@ class Player  {
         }
 
 
-        avgDistance = avgDistance / numPlayers;
+        avgDistance = avgDistance / (this.otherPlayers.length + 1);
 
         if (avgDistance >= scaredDistance || closestPlayer >= scaredDistance){
                 this.addNervousness(nervousnessScared, true);

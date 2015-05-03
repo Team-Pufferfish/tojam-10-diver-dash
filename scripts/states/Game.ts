@@ -119,8 +119,7 @@ class Game extends Phaser.State {
         }
 
         for (var i = 0; i < this.PLAYER_COUNT; i++) {
-
-            player.otherPlayers = this.findOtherPlayers(i);
+            this.players[i].otherPlayers = this.findOtherPlayers(i);
         }
 
 
@@ -128,9 +127,8 @@ class Game extends Phaser.State {
 
     private findOtherPlayers(playerID: number) : Player[] {
         var players = [];
-            var player = this.players[playerID];
             for (var j = 0; j < this.PLAYER_COUNT; j++){
-                if (player.name != this.players[j].name){
+                if (j != playerID){
                     players.push(this.players[j]);
                 }
             }
