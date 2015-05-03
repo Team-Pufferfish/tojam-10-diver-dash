@@ -67,6 +67,7 @@ class Player  {
     bubbleEmmiter;
     ui: Phaser.Sprite;
     heartUI: Phaser.Sprite;
+    h20Text: Phaser.Text;
 
     heart: Heart;
     oxygenTank: OxygenTank;
@@ -92,12 +93,12 @@ class Player  {
     }
     private setupPlayerCalloutTexts(){
         return {
-            "pain" : ["Ouch!!!","Mother *&^*er","That's it for me!","I'm out","I want my mommy","AAARG!"],
-            "nervous": ["Where is everyone?","Hello!?!","Getting lost...","Getting seperated"],
+            "pain" : ["Ouch!!!","Mother *&^*er","That's it for me!","I'm out","I want my mommy","AAARG!","BLAARRGG!"],
+            "nervous": ["Where is everyone?","Hello!?!","Getting lost...","Getting seperated","I swear they were here a minute ago"],
             "scared": ["Oh shit I'm all alone now","I'm gonna die alone, aren't I?","Gotta find the group!"],
-            "shocked": ["AAAAAAHH!!","SHHIIIIIITTT!!!",'OOOH!!!!',"WHEEEEEEEE!"],
-            "itemPickup": ["Look what I found!!!","Yes!!!","I found one","OOOhhh...SHINY!!"],
-            "escape": ["FREEEDOMM!!","The light at last!","Are we safe?","Score!"]
+            "shocked": ["AAAAAAHH!!","SHHIIIIIITTT!!!",'OOOH!!!!',"WHEEEEEEEE!","THIS IS KINDA FUUUUNNNN!!!!"],
+            "itemPickup": ["Look what I found!!!","I'd better not tell the others what I found","Yes!!!","I found one","OOOhhh...SHINY!!","My precious...."],
+            "escape": ["FREEEDOMM!!","The light at last!","Are we safe?","Score!","Touchdown!!!","I knew I'd make it!"]
         };
     }
     private setupDebug() {
@@ -120,12 +121,16 @@ class Player  {
        if (this.name === "Player 1"){
            this.ui = this.game.add.sprite(padding,padding,'ui');
            this.heartUI = this.game.add.sprite(padding + this.ui.width - 40,padding + 30,'heart');
+
            this.goldText = this.game.add.text(padding + 80, padding + 15, '00');
+
+           this.h20Text = this.game.add.text(padding + 130, padding + 15, '00');
        }
         if (this.name === "Player 2") {
             this.ui = this.game.add.sprite(this.game.width - padding,padding,'p2ui');
             this.heartUI = this.game.add.sprite(this.game.width - padding - 40,padding + 30,'heart');
             this.goldText = this.game.add.text(this.game.width - padding - 280, padding + 15, '00');
+            this.h20Text = this.game.add.text(this.game.width - padding - 230, padding + 15, '00');
 
             this.ui.anchor.setTo(1,0);
         }
@@ -134,6 +139,7 @@ class Player  {
             this.ui = this.game.add.sprite(padding,this.game.height - padding,'p3ui');
             this.heartUI = this.game.add.sprite(padding + this.ui.width - 40,this.game.height - padding - 30,'heart');
             this.goldText = this.game.add.text(padding + 80, this.game.height - padding - 40, '00');
+            this.h20Text = this.game.add.text(padding + 130, this.game.height - padding - 40, '00');
 
             this.ui.anchor.setTo(0,1);
         }
@@ -141,6 +147,7 @@ class Player  {
             this.ui = this.game.add.sprite(this.game.width - padding,this.game.height - padding,'p4ui');
             this.heartUI = this.game.add.sprite(this.game.width - padding - 40,this.game.height - padding - 30,'heart')
             this.goldText = this.game.add.text(this.game.width - padding - 280, this.game.height - padding - 40, '00');
+            this.h20Text = this.game.add.text(this.game.width - padding - 230, this.game.height - padding - 40, '00');
 
             this.ui.anchor.setTo(1,1);
         }
@@ -156,6 +163,12 @@ class Player  {
             this.goldText.fixedToCamera = true;
             this.goldText.fontSize =30;
             this.goldText.text = this.gold;
+
+
+            this.h20Text.fill = '#fff';
+            this.h20Text.fixedToCamera = true;
+            this.h20Text.fontSize =30;
+            this.h20Text.text = 'H2O: 100';
         }
         this.heartBeatAnimation()
     }
@@ -229,8 +242,7 @@ class Player  {
 
             var totalBreath = bpm;
 
-            if (this.SHOW_DEBUG)
-                this.oxyText.text = 'bpm:' + this.oxygenTank.level / totalBreath;
+                this.h20Text.text = 'H2O: ' + ((this.oxygenTank.level / this.oxygenTank.InitialLevel)* 100).toFixed(1);
 
             this.heartBeatAnimation(bpm);
 
