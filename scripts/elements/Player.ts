@@ -24,6 +24,9 @@ interface death {
     time: number;
     reason: string;
     isDead: boolean;
+    isVictorius: boolean;
+    gold: number;
+
 }
 
 class Player  {
@@ -89,11 +92,12 @@ class Player  {
     }
     private setupPlayerCalloutTexts(){
         return {
-            "pain" : ["Ouch!!!","Mother *&^*er","That's it for me!","I'm out","I want my mommy"],
-            "nervous": ["Where is everyone?","Hello!?!"],
-            "scared": ["Oh shit I'm all alone now","I'm gonna die alone, aren't I?"],
-            "shocked": ["AAAAAAHH!!","SHHIIIIIITTT!!!",'OOOH!!!!'],
-            "itemPickup": ["Look what I found!!!","Yes!!!","I found one","OOOhhh...SHINY!!"]
+            "pain" : ["Ouch!!!","Mother *&^*er","That's it for me!","I'm out","I want my mommy","AAARG!"],
+            "nervous": ["Where is everyone?","Hello!?!","Getting lost...","Getting seperated"],
+            "scared": ["Oh shit I'm all alone now","I'm gonna die alone, aren't I?","Gotta find the group!"],
+            "shocked": ["AAAAAAHH!!","SHHIIIIIITTT!!!",'OOOH!!!!',"WHEEEEEEEE!"],
+            "itemPickup": ["Look what I found!!!","Yes!!!","I found one","OOOhhh...SHINY!!"],
+            "escape": ["FREEEDOMM!!","The light at last!","Are we safe?","Score!"]
         };
     }
     private setupDebug() {
@@ -250,11 +254,12 @@ class Player  {
     }
 
     private checkDistancesToFriends(){
-        var safeLight = 175;
+
         var numPlayers = this.otherPlayers.length + 1;
+        var safeLight = 240;
         var scaredDistance = safeLight * 2;
         var avgDistance = 0;
-        var closestPlayer = 100000;
+        var closestPlayer = 100001;
 
         var nervousnessWorried = {callout: "nervous",
             calloutIntensity: calloutIntensity.speech,
@@ -267,8 +272,11 @@ class Player  {
             multiplier: 1.5, timeout: 1000, name: 'scared'};
 
         for (var i = 0; i < this.otherPlayers.length; i++){
-            var howFar = Phaser.Math.distance(this.sprite.x,this.sprite.y,this.otherPlayers[i].sprite.x,this.otherPlayers[i].sprite.y);
-            avgDistance += howFar;
+            var howFar = 100001;
+            if (!this.otherPlayers[i].mortality.isDead) {
+                var howFar = Phaser.Math.distance(this.sprite.x, this.sprite.y, this.otherPlayers[i].sprite.x, this.otherPlayers[i].sprite.y);
+                avgDistance += howFar;
+            }
             if (howFar < closestPlayer)
                 closestPlayer = howFar;
         }
@@ -365,6 +373,8 @@ class Player  {
 
             // Set its pivot point to the center of the bullet
             bullet.anchor.setTo(0.5, 0.5);
+            bullet.lightStyle = 1;
+            this.game.lights.push(bullet);
 
             this.itemsPointer.add(bullet);
 
@@ -449,22 +459,30 @@ class Player  {
         this.goldText.text = this.gold;
     }
 
-    public makeDead(reason: string){
+    public makeDead(reason: string, victory: boolean){
         if (!this.mortality.isDead) {
             //run animation, and whatever here
             console.log(this.name + "has died because of ->" + reason);
             this.mortality.reason = reason;
             this.mortality.isDead = true;
+            this.mortality.isVictorius = victory;
             this.mortality.time = this.game.time.time;
+            this.mortality.gold = this.gold;
             this.sprite.body.angularVelocity = 0;
 
             this.sprite.animations.stop('swim');
             var deathAnimation = this.sprite.animations.play('death',3);
 
-            deathAnimation.onComplete.add(function deathAnimationFinished(sprite,animation){
-                this.sprite.loadTexture('tank');
-                this.sprite.body.velocity = 0;
-            },this);
+            if (!victory) {
+                var deathAnimation = this.sprite.animations.play('death', 3);
+
+                deathAnimation.onComplete.add(function deathAnimationFinished(sprite, animation) {
+                    this.sprite.loadTexture('tank');
+                    this.sprite.body.velocity = 0;
+                }, this);
+            }else{
+                this.game.add.tween(this.sprite).to({alpha: 0}, 500, Phaser.Easing.Quartic.In, true);
+            }
         }
     }
 
