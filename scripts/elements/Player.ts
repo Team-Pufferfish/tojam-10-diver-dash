@@ -63,12 +63,14 @@ class Player  {
     callingOut: boolean = false;
     currentCalloutText: Phaser.Text;
     nervousnesses: nervousness[] = [];
+
     lastGoldThrow: number = 0;
     nervousLevel: number = 0;
     calloutTexts = {};
     bubbleEmmiter;
     ui: Phaser.Sprite;
     heartUI: Phaser.Sprite;
+    deadUI: Phaser.Sprite;
     h20Text: Phaser.Text;
 
     heart: Heart;
@@ -130,6 +132,8 @@ class Player  {
            this.goldText = this.game.add.text(padding + 80, padding + 15, '00');
 
            this.h20Text = this.game.add.text(padding + 130, padding + 15, '00');
+
+           this.deadUI = this.game.add.sprite(this.ui.x,this.ui.y,'deadUI');
        }
         if (this.name === "Player 2") {
             this.ui = this.game.add.sprite(this.game.width - padding,padding,'p2ui');
@@ -137,6 +141,8 @@ class Player  {
             this.goldText = this.game.add.text(this.game.width - padding - 280, padding + 15, '00');
             this.h20Text = this.game.add.text(this.game.width - padding - 230, padding + 15, '00');
 
+            this.deadUI = this.game.add.sprite(this.game.width - padding,padding,'deadUI');
+            this.deadUI.anchor.setTo(1,0);
             this.ui.anchor.setTo(1,0);
         }
 
@@ -146,7 +152,9 @@ class Player  {
             this.goldText = this.game.add.text(padding + 80, this.game.height - padding - 40, '00');
             this.h20Text = this.game.add.text(padding + 130, this.game.height - padding - 40, '00');
 
+            this.deadUI = this.game.add.sprite(padding,this.game.height - padding,'deadUI');
             this.ui.anchor.setTo(0,1);
+            this.deadUI.anchor.setTo(0,1);
         }
         if (this.name === "Player 4"){
             this.ui = this.game.add.sprite(this.game.width - padding,this.game.height - padding,'p4ui');
@@ -154,7 +162,9 @@ class Player  {
             this.goldText = this.game.add.text(this.game.width - padding - 280, this.game.height - padding - 40, '00');
             this.h20Text = this.game.add.text(this.game.width - padding - 230, this.game.height - padding - 40, '00');
 
+            this.deadUI = this.game.add.sprite(this.game.width - padding,this.game.height - padding,'deadUI');
             this.ui.anchor.setTo(1,1);
+            this.deadUI.setTo(1,1);
         }
         if (this.ui){
             this.ui.fixedToCamera = true;
@@ -174,6 +184,8 @@ class Player  {
             this.h20Text.fixedToCamera = true;
             this.h20Text.fontSize =30;
             this.h20Text.text = 'H2O: 100';
+            this.deadUI.fixedToCamera = true;
+            this.deadUI.alpha  = 0;
         }
         this.heartBeatAnimation()
     }
@@ -494,6 +506,7 @@ class Player  {
             this.mortality.time =this.game.time.elapsedSecondsSince(this.world.levelStartTime);
             this.mortality.gold = this.gold;
             this.sprite.body.angularVelocity = 0;
+            this.deadUI.alpha = 1;
 
             this.sprite.animations.stop('swim');
             var deathAnimation = this.sprite.animations.play('death',3);

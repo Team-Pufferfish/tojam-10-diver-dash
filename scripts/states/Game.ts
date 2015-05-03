@@ -93,6 +93,7 @@ class Game extends Phaser.State {
 
         //Add light layer
         this.setupLights();
+
         //the camera will follow the player in the world
         this.game.camera.follow(this.cameraman);
 
@@ -100,6 +101,7 @@ class Game extends Phaser.State {
            player.setupOverlays();
         });
 
+        this.addScreenControls();
         //move player with cursor keys
         this.cursors = this.game.input.keyboard.createCursorKeys();
 
@@ -110,6 +112,75 @@ class Game extends Phaser.State {
         this.game.add.tween(introText).to({alpha: 0}, 3000, Phaser.Easing.Quartic.In, true);
     }
 
+
+    private addScreenControls()
+    {
+        var controls = this.game.add.group();
+        var swim = this.game.add.group();
+        var throwGold = this.game.add.group();
+        var move = this.game.add.group();
+        
+        controls.add(swim);
+        controls.add(throwGold);
+        controls.add(move);
+        controls.x = 10;
+        controls.y = 80;
+        controls.alpha = 0.7
+
+        var swimButton = this.game.add.sprite(0,0,'xboxA');
+        swimButton.scale = {x: 0.5, y: 0.5};
+        var swimButtonText = this.game.add.text(50,5,'To swim');
+        swimButtonText.fill = '#000';
+        swimButtonText.stroke = '#fff';
+        swimButtonText.strokeThickness = 3;
+
+        swimButton.fixedToCamera = true;
+        swimButtonText.fixedToCamera = true;
+
+        swim.x = 0;
+        swim.y = 0;
+
+        
+        swim.add(swimButton);
+        swim.add(swimButtonText);
+
+
+        var throwGoldButton = this.game.add.sprite(0,0,'xboxB');
+        throwGoldButton.scale = {x: 0.5, y: 0.5};
+        var throwGoldButtonText = this.game.add.text(50,5,'To throw gold');
+        throwGoldButtonText.fill = '#000';
+        throwGoldButtonText.stroke = '#fff';
+        throwGoldButtonText.strokeThickness = 3;
+
+        throwGoldButton.fixedToCamera = true;
+        throwGoldButtonText.fixedToCamera = true;
+
+        throwGold.x = 0;
+        throwGold.y = 60;
+
+
+        throwGold.add(throwGoldButton);
+        throwGold.add(throwGoldButtonText);
+
+        var moveButton = this.game.add.sprite(0,0,'xboxStick');
+        moveButton.scale = {x: 0.3, y: 0.3};
+        var moveButtonText = this.game.add.text(50,5,'To move');
+        moveButtonText.fill = '#000';
+        moveButtonText.stroke = '#fff';
+        moveButtonText.strokeThickness = 3;
+
+        moveButton.fixedToCamera = true;
+        moveButtonText.fixedToCamera = true;
+
+        move.x = 0;
+        move.y = 120;
+
+
+        move.add(moveButton);
+        move.add(moveButtonText);
+        
+        
+    }
 
 
     private createPlayers() {

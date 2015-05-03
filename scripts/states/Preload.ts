@@ -56,6 +56,7 @@ class Preload extends Phaser.State {
         this.load.image('p2head','assets/images/p2head.png');
         this.load.image('p3head','assets/images/p3head.png');
         this.load.image('p4head','assets/images/p4head.png');
+        this.load.image('deadUI','assets/images/deadUI.png');
 
     }
 
