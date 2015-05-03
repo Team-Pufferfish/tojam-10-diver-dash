@@ -75,7 +75,6 @@ class Game extends Phaser.State {
 
         //Add light layer
         this.setupLights();
-
         //the camera will follow the player in the world
         this.game.camera.follow(this.cameraman);
 
@@ -89,7 +88,8 @@ class Game extends Phaser.State {
         var pads = [this.game.input.gamepad.pad1, this.game.input.gamepad.pad2, this.game.input.gamepad.pad3, this.game.input.gamepad.pad4];
         for (var i = 0; i < this.PLAYER_COUNT; i++) {
 
-            var player = new Player(result[i].x, result[i].y, this.game, pads[i]);
+            var player = new Player(result[i].x, result[i].y, this.game, pads[i],"Player " + (i + 1));
+
             player.itemsPointer = this.items;
             this.lights.push(player.sprite);
             this.players.push(player);

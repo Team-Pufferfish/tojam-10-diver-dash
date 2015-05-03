@@ -35,7 +35,7 @@ class Player  {
     ACCELERATION : number = 100;
     DRAG : number = 45;
 
-    TANK_SIZE: number = 1000;
+    TANK_SIZE: number = 8000;
     INITIAL_HEART_RATE: number = 20;
     BULLET_SPEED: number = 200;
 
@@ -53,8 +53,9 @@ class Player  {
     currentCallout: Phaser.Sprite;
     currentCalloutText: Phaser.Text;
     nervousnesses: nervousness[] = [];
-
+    lastGoldThrow: number = 0;
     bubbleEmmiter;
+    ui: Phaser.Sprite;
 
     heart: Heart;
     oxygenTank: OxygenTank;
@@ -64,10 +65,13 @@ class Player  {
 
     initialTime: number;
 
-    constructor(x:number,y:number,game: Phaser.Game,gamepad: Phaser.SinglePad, colour? : string, group?:Phaser.Group){
+    constructor(x:number,y:number,game: Phaser.Game,gamepad: Phaser.SinglePad, name:string,colour? : string, group?:Phaser.Group){
 
+        this.name = name;
         this.game = game;
         this.gamepad = gamepad;
+
+
         this.mortality = {isDead: false, time: null, reason: null};
         this.setupSprite(x,y);
         this.setupModel();
@@ -87,7 +91,24 @@ class Player  {
 
     }
 
-    public kill(reason: string){
+
+    public setupUI(){
+       if (this.name === "Player 1"){
+           this.ui = this.game.add.sprite(100,100,'ui');
+           this.ui.fixedToCamera = true;
+       }
+        if (this.name === "Player 2") {
+
+        }
+
+        if (this.name === "Player 3"){
+
+        }
+        if (this.name === "Player 4"){
+
+        }
+    }
+    public makeDead(reason: string){
         if (!this.mortality.isDead) {
             //run animation, and whatever here
             console.log(this.name + "has died because of ->" + reason);
@@ -207,7 +228,7 @@ class Player  {
             this.updateControls();
 
             if (this.oxygenTank.level <= 0) {
-                this.kill("ran out of air");
+                this.makeDead("ran out of air");
             }
 
             if (this.SHOW_DEBUG) {
@@ -246,7 +267,9 @@ class Player  {
         if (this.cursors.up.isDown || this.gamepad.isDown(Phaser.Gamepad.XBOX360_A))
         {
             this.sprite.animations.play('swim',10,true);
-            this.game.physics.arcade.accelerationFromRotation(this.sprite.rotation - 1.5, this.MAX_SPEED, this.sprite.body.acceleration);
+            var goldSpeed = -this.MAX_SPEED * (this.gold /5);
+            this.game.physics.arcade.accelerationFromRotation(this.sprite.rotation - 1.5, this.MAX_SPEED + goldSpeed, this.sprite.body.acceleration);
+
         }
         else
         {
@@ -259,7 +282,7 @@ class Player  {
                 this.sprite.body.angularVelocity = -this.ROTATION_SPEED;
             }
             else {
-                this.sprite.body.angularVelocity = -this.sprite.body.speed * 2;
+                this.sprite.body.angularVelocity = -this.sprite.body.speed * 2 - this.gold;
             }
 
 
@@ -271,7 +294,7 @@ class Player  {
                 this.sprite.body.angularVelocity = this.ROTATION_SPEED;
             }
             else {
-                this.sprite.body.angularVelocity = this.sprite.body.speed * 2;
+                this.sprite.body.angularVelocity = this.sprite.body.speed * 2 - this.gold;
             }
         }
         else
@@ -284,9 +307,11 @@ class Player  {
             this.sprite.animations.play('rest',10,true);
         }
 
-        if (this.cursors.down.justDown || this.gamepad.isDown(Phaser.Game)){
+        if (this.gamepad.isDown(Phaser.Gamepad.XBOX360_B) && (this.game.time.elapsedSecondsSince(this.lastGoldThrow) > 0.2 || this.lastGoldThrow === 0)){
             this.throwGold();
         }
+
+
     }
 
     private setupControls() {
@@ -306,8 +331,10 @@ class Player  {
     }
 
     private throwGold() {
+
         if (this.gold > 0)
         {
+            this.lastGoldThrow = this.game.time.time;
             var bullet = this.game.add.sprite(0, 0, 'gold');
 
             // Set its pivot point to the center of the bullet

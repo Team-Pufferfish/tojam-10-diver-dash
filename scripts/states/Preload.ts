@@ -38,6 +38,8 @@ class Preload extends Phaser.State {
         this.load.image('callout-speech','assets/images/speechBubble.png');
         this.load.image('tank','assets/images/tank.png');
 
+        this.load.image('ui','assets/images/ui.png');
+
     }
 
     create() {
