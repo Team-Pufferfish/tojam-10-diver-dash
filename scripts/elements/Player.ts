@@ -24,6 +24,9 @@ interface death {
     time: number;
     reason: string;
     isDead: boolean;
+    isVictorius: boolean;
+    gold: number;
+
 }
 
 class Player  {
@@ -439,22 +442,30 @@ class Player  {
         this.gold += gold;
     }
 
-    public makeDead(reason: string){
+    public makeDead(reason: string, victory: boolean){
         if (!this.mortality.isDead) {
             //run animation, and whatever here
             console.log(this.name + "has died because of ->" + reason);
             this.mortality.reason = reason;
             this.mortality.isDead = true;
+            this.mortality.isVictorius = victory;
             this.mortality.time = this.game.time.time;
+            this.mortality.gold = this.gold;
             this.sprite.body.angularVelocity = 0;
 
             this.sprite.animations.stop('swim');
             var deathAnimation = this.sprite.animations.play('death',3);
 
-            deathAnimation.onComplete.add(function deathAnimationFinished(sprite,animation){
-                this.sprite.loadTexture('tank');
-                this.sprite.body.velocity = 0;
-            },this);
+            if (!victory) {
+                var deathAnimation = this.sprite.animations.play('death', 3);
+
+                deathAnimation.onComplete.add(function deathAnimationFinished(sprite, animation) {
+                    this.sprite.loadTexture('tank');
+                    this.sprite.body.velocity = 0;
+                }, this);
+            }else{
+                this.game.add.tween(this.sprite).to({alpha: 0}, 500, Phaser.Easing.Quartic.In, true);
+            }
         }
     }
 
