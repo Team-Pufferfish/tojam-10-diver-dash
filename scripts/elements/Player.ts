@@ -164,7 +164,7 @@ class Player  {
 
             this.deadUI = this.game.add.sprite(this.game.width - padding,this.game.height - padding,'deadUI');
             this.ui.anchor.setTo(1,1);
-            this.deadUI.setTo(1,1);
+            this.deadUI.anchor.setTo(1,1);
         }
         if (this.ui){
             this.ui.fixedToCamera = true;
