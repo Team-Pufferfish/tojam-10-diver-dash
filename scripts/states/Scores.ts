@@ -6,7 +6,7 @@
 class Scores extends Phaser.State {
     gameState: gameData;
     level: number;
-    maxLevel: number = 3;
+    maxLevel: number = 2;
 
     init(gameState){
         this.gameState = gameState;
@@ -31,11 +31,13 @@ class Scores extends Phaser.State {
             playerCount++;
         },this);
 
+
         if (aVictory) {
-            console.log("Team Score: " + this.gameState.teamScore);
-            this.startGame();
+            console.log("Level Complete Team Score: " + this.gameState.teamScore);
+            this.game.time.events.add(3000,this.startGame,this);
         }else{
-            this.restartGame();
+            console.log("You Lose! Team Score: " + this.gameState.teamScore);
+            this.game.time.events.add(3000,this.restartGame,this);
         }
     }
 
@@ -48,17 +50,11 @@ class Scores extends Phaser.State {
             this.game.state.start('Game', true, false, this.gameState);
         }else{
             console.log("Game over, all levels done");
+            this.restartGame();
         }
     }
 
     private restartGame() {
-        this.gameState.playerDeaths = [];
-        this.gameState.level = 0;
-        this.gameState.teamScore = 0;
-
-        if (this.gameState.level <= this.maxLevel) {
-            console.log("Restart from Level: " + this.gameState.level);
-            this.game.state.start('Game', true, false, this.gameState);
-        }
+        this.game.state.start('MainMenu');
     }
 }

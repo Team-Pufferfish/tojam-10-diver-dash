@@ -24,7 +24,7 @@ class MainMenu extends Phaser.State {
     }
 
     private startGame(){
-        this.gameState = {playerCount: 2,playerDeaths:[],level:3,teamScore:0};
+        this.gameState = {playerCount: 4,playerDeaths:[],level:1,teamScore:0};
 
         this.game.state.start('Game',true,false,this.gameState);
     }
