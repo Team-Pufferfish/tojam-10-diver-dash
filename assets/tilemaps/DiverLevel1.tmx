@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" nextobjectid="55">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" nextobjectid="56">
  <tileset firstgid="1" source="RockTile.tsx"/>
  <layer name="Tiles" width="100" height="100">
   <data encoding="base64" compression="zlib">
@@ -294,6 +294,12 @@
   <object id="54" name="Clam" type="decoration" gid="17" x="1733" y="2013">
    <properties>
     <property name="sprite" value="clam"/>
+    <property name="type" value="decoration"/>
+   </properties>
+  </object>
+  <object id="55" name="lightSource" gid="27" x="1679" y="2015">
+   <properties>
+    <property name="lit" value="0"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>

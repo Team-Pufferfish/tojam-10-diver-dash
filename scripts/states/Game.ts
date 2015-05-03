@@ -17,6 +17,11 @@ interface gameData {
     teamScore: number;
 }
 
+interface lightSource {
+    radius:number;
+    colour:string;
+}
+
 class Game extends Phaser.State {
     gameState: gameData;
     PLAYER_COUNT: number =4;
@@ -39,6 +44,7 @@ class Game extends Phaser.State {
 
     //Lighting model
     lights : Object[];
+    lightStyles : lightSource[] = [];
 
     shadowTexture : Phaser.BitmapData;
     lightSprite : Phaser.Image;
@@ -66,15 +72,12 @@ class Game extends Phaser.State {
         //create layer
         this.mapLayer = this.map.createLayer('Tiles');
 
+        //Hit everything we don't consider walkable
         this.map.setCollisionByExclusion([1,2,3,8,9,18,19,46,47,56],true,"Tiles");
-        //  This will set Tile ID 26 (the coin) to call the hitCoin function when collided with
+        //Callback for specific tiles hit
         this.map.setTileIndexCallback([8,9,18,19],this.environmentOverlap, this);
 
-        //  This will set the map location 2, 0 to call the function
-        //map.setTileLocationCallback(2, 0, 1, 1, hitCoin, this);
-
         this.mapLayer.resizeWorld();
-        //this.lights = this.game.add.group();
 
         this.createDecorations();
         this.createItems();
@@ -114,6 +117,7 @@ class Game extends Phaser.State {
             var player = new Player(result[i].x, result[i].y, this.game, pads[i],"Player " + (i + 1));
 
             player.itemsPointer = this.items;
+            player.lightStyle = 0;
             this.lights.push(player.sprite);
             this.players.push(player);
         }
@@ -123,7 +127,7 @@ class Game extends Phaser.State {
         }
 
 
-        }
+    }
 
     private findOtherPlayers(playerID: number) : Player[] {
         var players = [];
@@ -150,6 +154,16 @@ class Game extends Phaser.State {
         // Set the blend mode to MULTIPLY. This will darken the colors of
         // everything below this sprite.
         this.lightSprite.blendMode = PIXI.blendModes.MULTIPLY;
+
+        var playerLight;
+        playerLight = {radius: this.LIGHT_RADIUS, color: "#FFFFFF"};
+
+        this.lightStyles.push(playerLight);
+
+        var goldLight;
+        goldLight = {radius: 15, color: "#FFE135"};//banana
+
+        this.lightStyles.push(goldLight);
     }
 
     update() {
@@ -205,6 +219,13 @@ class Game extends Phaser.State {
         result.forEach(function (element) {
             this.createFromTiledObject(element, this.items);
         }, this);
+
+        this.items.forEach(function(item){
+            item.anchor.setTo(0.5,0.5);
+            item.body.setSize(10,10);
+            item.lightStyle = 1;
+            this.lights.push(item);
+        },this);
     }
 
     createDecorations() {
@@ -215,19 +236,15 @@ class Game extends Phaser.State {
         result.forEach(function (element) {
             this.createFromTiledObject(element, this.decorations);
         }, this);
+
+        this.decorations.forEach(function(decor){
+            if (decor.lit != null) {
+                decor.anchor.setTo(0.5, 0.5);
+                decor.lightStyle = decor.lit;
+                this.lights.push(decor);
+            }
+        },this);
     }
-
-    createDoors() {
-        //create doors
-        this.doors = this.game.add.group();
-        this.doors.enableBody = true;
-        var result = this.findObjectsByType('door', this.map, 'Objects');
-
-        result.forEach(function (element) {
-            this.createFromTiledObject(element, this.doors);
-        }, this);
-    }
-
 
     //find objects in a Tiled layer that containt a property called "type" equal to a certain value
     private findObjectsByType(type, map, layer) {
@@ -261,10 +278,6 @@ class Game extends Phaser.State {
         player.player.changeGold(1);
 
         player.player.callout("itemPickup");
-    }
-
-    private enterDoor(player, door) {
-        console.log('entering door that will take you to ' + door.targetTilemap + ' on x:' + door.targetX + ' and y:' + door.targetY);
     }
 
     private environmentCollision(player, tile) {
@@ -315,20 +328,27 @@ class Game extends Phaser.State {
         // Draw shadow
         this.shadowTexture.context.fillStyle = 'rgb(0, 0, 0)';
         this.shadowTexture.context.fillRect(0, 0, this.game.width, this.game.height);
+        var lightStyleDefault = 0;
 
         // Iterate through each of the lights and draw the glow
         this.lights.forEach(function(light) {
 
             if (light.player && light.player.mortality.isDead)
                 return;
+            if (!light.alive)
+                return;
             // Randomly change the radius each frame
-            var radius = this.LIGHT_RADIUS + this.game.rnd.integerInRange(1,10);
+            if (light.lightStyle)
+                var lightSourceType = this.lightStyles[light.lightStyle];
+            else
+                var lightSourceType = this.lightStyles[lightStyleDefault];
+            var radius = lightSourceType.radius + this.game.rnd.integerInRange(1,0.08*lightSourceType.radius);
             var screenX = light.x - this.lightSprite.x;
             var screenY = light.y - this.lightSprite.y;
             // Draw circle of light with a soft edge
             var gradient =
                 this.shadowTexture.context.createRadialGradient(
-                    screenX, screenY,this.LIGHT_RADIUS * 0.25,
+                    screenX, screenY,lightSourceType.radius * 0.25,
                     screenX, screenY, radius);
             gradient.addColorStop(0, 'rgba(255, 255, 255, 1.0)');
             gradient.addColorStop(1, 'rgba(255, 255, 255, 0.0)');
