@@ -330,7 +330,8 @@ class Player  {
         if (this.cursors.up.isDown || this.gamepad.isDown(Phaser.Gamepad.XBOX360_A))
         {
             this.sprite.animations.play('swim',10,true);
-            var goldSpeed = -this.MAX_SPEED * (this.gold /5);
+            var goldSpeed = -this.MAX_SPEED * (this.gold / 5);
+            goldSpeed = (goldSpeed > -this.MAX_SPEED) ? goldSpeed : -this.MAX_SPEED + 20;
             this.game.physics.arcade.accelerationFromRotation(this.sprite.rotation - 1.5, this.MAX_SPEED + goldSpeed, this.sprite.body.acceleration);
 
         }
