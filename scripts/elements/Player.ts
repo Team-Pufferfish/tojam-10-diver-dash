@@ -8,6 +8,7 @@
 /// <reference path="../../bower_components/phaser/typescript/phaser.comments.d.ts"/>
 /// <reference path="../model/Heart.ts"/>
 /// <reference path="../model/OxygenTank.ts"/>
+/// <reference path="../states/Game.ts"/>
 
 enum calloutIntensity { thought, yell, speech};
 
@@ -50,6 +51,7 @@ class Player  {
     name: string;
     colour: string;
     mortality: death;
+    world: Game;
     game: Phaser.Game;
     sprite: Phaser.Sprite;
     cursors:Phaser.CursorKeys;
@@ -77,10 +79,11 @@ class Player  {
 
     initialTime: number;
 
-    constructor(x:number,y:number,game: Phaser.Game,gamepad: Phaser.SinglePad, name){
+    constructor(x:number,y:number,game: Phaser.Game,world:Game,gamepad: Phaser.SinglePad, name){
 
         this.name = name;
         this.game = game;
+        this.world = world;
         this.gamepad = gamepad;
         this.calloutTexts = this.setupPlayerCalloutTexts();
 
@@ -386,7 +389,7 @@ class Player  {
             // Set its pivot point to the center of the bullet
             bullet.anchor.setTo(0.5, 0.5);
             bullet.lightStyle = 1;
-            this.game.lights.push(bullet);
+            this.world.lights.push(bullet);
 
             this.itemsPointer.add(bullet);
 

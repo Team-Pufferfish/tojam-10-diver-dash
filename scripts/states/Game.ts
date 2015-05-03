@@ -114,7 +114,7 @@ class Game extends Phaser.State {
             this.game.input.gamepad.pad4];
         for (var i = 0; i < this.PLAYER_COUNT; i++) {
 
-            var player = new Player(result[i].x, result[i].y, this.game, pads[i],"Player " + (i + 1));
+            var player = new Player(result[i].x, result[i].y,this.game, this, pads[i],"Player " + (i + 1));
 
             player.itemsPointer = this.items;
             player.lightStyle = 0;
