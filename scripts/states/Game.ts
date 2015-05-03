@@ -193,7 +193,7 @@ class Game extends Phaser.State {
             this.players.forEach(function (player) {
                 this.gameState.playerDeaths.push(player.mortality);
             },this);
-             this.game.time.events.add(800,this.gameOver,this);
+             this.game.time.events.add(3000,this.gameOver,this);
         }
     }
 
@@ -202,7 +202,6 @@ class Game extends Phaser.State {
             this.game.physics.arcade.collide(this.players[i].sprite, this.mapLayer, this.environmentCollision, null, this);
             this.game.physics.arcade.overlap(this.players[i].sprite, this.mapLayer, this.environmentOverlap, null, this);
             this.game.physics.arcade.overlap(this.players[i].sprite, this.items, this.collect, null, this);
-            this.game.physics.arcade.overlap(this.players[i].sprite, this.doors, this.enterDoor, null, this);
 
             this.game.physics.arcade.overlap(this.players[i].bubbleEmmiter, this.mapLayer, this.environmentOverlap, null, this);
             this.game.physics.arcade.overlap(this.players[i].bubbleEmmiter, this.mapLayer);
@@ -295,7 +294,7 @@ class Game extends Phaser.State {
 
     private environmentOverlap(player, tile) {
         var nervousness = {callout: "shocked",
-            calloutIntensity: calloutIntensity.yell,
+            calloutIntensity: calloutIntensity.speech,
             startTime: this.game.time.now,
             multiplier: 1.3, timeout: 1000, name: 'flow'};
        switch (tile.index){
