@@ -18,7 +18,7 @@ interface death {
 
 class Game extends Phaser.State {
 
-    PLAYER_COUNT: number = 1;
+    PLAYER_COUNT: number = 2;
     LIGHT_RADIUS: number = 120;
     WATER_SPEED: number = 250;
     level: number = 0;
@@ -104,25 +104,27 @@ class Game extends Phaser.State {
             var player = new Player(result[i].x, result[i].y, this.game, pads[i],"Player " + (i + 1));
 
             player.itemsPointer = this.items;
-            player.otherPlayers = this.findOtherPlayers();
             this.lights.push(player.sprite);
             this.players.push(player);
+        }
 
+        for (var i = 0; i < this.PLAYER_COUNT; i++) {
+
+            player.otherPlayers = this.findOtherPlayers(i);
         }
 
 
-    }
+        }
 
-    private findOtherPlayers() : Player[] {
+    private findOtherPlayers(playerID: number) : Player[] {
         var players = [];
-        for (var i = 0; i < this.PLAYER_COUNT; i++){
-            var player = this.players[i];
+            var player = this.players[playerID];
             for (var j = 0; j < this.PLAYER_COUNT; j++){
-                if (j != i){
+                if (player.name != this.players[j].name){
                     players.push(this.players[j]);
                 }
             }
-        }
+
         return players;
     }
 

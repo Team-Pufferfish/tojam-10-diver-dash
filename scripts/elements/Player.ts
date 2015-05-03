@@ -231,12 +231,13 @@ class Player  {
             startTime: this.game.time.now,
             multiplier: 1.5, timeout: 1000, name: 'scared'};
 
-        this.otherPlayers.forEach(function(otherPlayer){
-            var howFar = Phaser.Math.distance(this.sprite.x,this.sprite.y,otherPlayer.sprite.x,otherPlayer.sprite.y);
+        for (var i = 0; i < this.otherPlayers.length; i++){
+            var howFar = Phaser.Math.distance(this.sprite.x,this.sprite.y,this.otherPlayers[i].sprite.x,this.otherPlayers[i].sprite.y);
             avgDistance += howFar;
             if (howFar < closestPlayer)
                 howFar = closestPlayer;
-        },this);
+        }
+
 
         avgDistance = avgDistance / numPlayers;
 
@@ -376,7 +377,11 @@ class Player  {
                 this.oxyText.y = this.sprite.y;
 
             }
-            this.checkDistancesToFriends();
+
+            if (this.otherPlayers){
+
+                this.checkDistancesToFriends();
+            }
 
             var nervousnessMultiplier = 1;
             this.nervousnesses.forEach((nerve) => {
