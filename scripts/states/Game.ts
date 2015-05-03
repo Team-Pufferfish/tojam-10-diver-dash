@@ -116,7 +116,7 @@ class Game extends Phaser.State {
         var result = this.findObjectsByType('playerStart', this.map, 'Objects');
         for (var i = 0; i < this.PLAYER_COUNT; i++) {
 
-            var player = new Player(result[i].x, result[i].y, this.game, this.playerOrder[i],"Player " + (i + 1));
+            var player = new Player(result[i].x, result[i].y, this.game,this, this.playerOrder[i],"Player " + (i + 1));
 
 
             player.itemsPointer = this.items;
