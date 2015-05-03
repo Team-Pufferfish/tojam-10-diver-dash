@@ -18,7 +18,7 @@ interface death {
 
 class Game extends Phaser.State {
 
-    PLAYER_COUNT: number = 4;
+    PLAYER_COUNT: number = 1;
     LIGHT_RADIUS: number = 120;
     WATER_SPEED: number = 250;
     level: number = 0;

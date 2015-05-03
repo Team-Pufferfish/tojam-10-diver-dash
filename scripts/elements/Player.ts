@@ -370,7 +370,7 @@ class Player  {
             this.sprite.animations.play('rest',10,true);
         }
 
-        if (this.gamepad.isDown(Phaser.Gamepad.XBOX360_B) && (this.game.time.elapsedSecondsSince(this.lastGoldThrow) > 0.2 || this.lastGoldThrow === 0)){
+        if ((this.gamepad.isDown(Phaser.Gamepad.XBOX360_B)|| this.cursors.down.isDown) && (this.game.time.elapsedSecondsSince(this.lastGoldThrow) > 0.2 || this.lastGoldThrow === 0)){
             this.throwGold();
         }
 
