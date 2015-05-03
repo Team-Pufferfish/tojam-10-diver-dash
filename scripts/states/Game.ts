@@ -198,13 +198,15 @@ class Game extends Phaser.State {
     }
 
     private checkPlayerObjectCollisions(i) {
-        this.game.physics.arcade.collide(this.players[i].sprite, this.mapLayer, this.environmentCollision, null, this);
-        this.game.physics.arcade.overlap(this.players[i].sprite, this.mapLayer, this.environmentOverlap, null, this);
-        this.game.physics.arcade.overlap(this.players[i].sprite, this.items, this.collect, null, this);
-        this.game.physics.arcade.overlap(this.players[i].sprite, this.doors, this.enterDoor, null, this);
+        if (!this.players[i].mortality.isDead) {
+            this.game.physics.arcade.collide(this.players[i].sprite, this.mapLayer, this.environmentCollision, null, this);
+            this.game.physics.arcade.overlap(this.players[i].sprite, this.mapLayer, this.environmentOverlap, null, this);
+            this.game.physics.arcade.overlap(this.players[i].sprite, this.items, this.collect, null, this);
+            this.game.physics.arcade.overlap(this.players[i].sprite, this.doors, this.enterDoor, null, this);
 
-        this.game.physics.arcade.overlap(this.players[i].bubbleEmmiter, this.mapLayer, this.environmentOverlap, null, this);
-        this.game.physics.arcade.overlap(this.players[i].bubbleEmmiter, this.mapLayer);
+            this.game.physics.arcade.overlap(this.players[i].bubbleEmmiter, this.mapLayer, this.environmentOverlap, null, this);
+            this.game.physics.arcade.overlap(this.players[i].bubbleEmmiter, this.mapLayer);
+        }
     }
 
     private gameOver(){
@@ -254,7 +256,8 @@ class Game extends Phaser.State {
                 //Phaser uses top left, Tiled bottom left so we have to adjust
                 //also keep in mind that the cup images are a bit smaller than the tile which is 16x16
                 //so they might not be placed in the exact position as in Tiled
-                element.y -= map.tileHeight;
+                element.y -= map.tileHeight/2;
+                element.x += map.tileHeight/2;
                 result.push(element);
             }
         });
