@@ -3,16 +3,29 @@
  *
  */
  /// <reference path="../../bower_components/phaser/typescript/phaser.d.ts"/>
+interface gameData {
+    playerCount: number;
+    playerDeaths: death[];
+    level: number;
+    teamScore: number;
+}
+
+
 class MainMenu extends Phaser.State {
+    gameState: gameData;
+
     constructor() {
         super();
     }
 
     create() {
+
         this.startGame();
     }
 
     private startGame(){
-        this.game.state.start('Game',true,false,1);
+        this.gameState = {playerCount: 2,playerDeaths:[],level:0,teamScore:0};
+
+        this.game.state.start('Game',true,false,this.gameState);
     }
 }

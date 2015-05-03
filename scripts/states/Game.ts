@@ -10,17 +10,19 @@
 /// <reference path="../model/Heart.ts"/>
 /// <reference path="../model/OxygenTank.ts"/>
 
-interface death {
-    time: number;
-    reason: string;
-    isDead: boolean;
+interface gameData {
+    playedCount: number;
+    playerDeaths: death[];
+    level: number;
+    teamScore: number;
 }
 
 class Game extends Phaser.State {
-
+    gameState: gameData;
     PLAYER_COUNT: number = 2;
     LIGHT_RADIUS: number = 120;
     WATER_SPEED: number = 250;
+    GAME_OVER: boolean = false;
     level: number = 0;
 
     map:Phaser.Tilemap;
@@ -45,13 +47,15 @@ class Game extends Phaser.State {
         super();
     }
 
-    init(level) {
-        this.level = level;
+    init(gameState) {
+        this.gameState = gameState;
+        this.level = gameState.level;
     }
     
     create() {
         this.players = [];
         this.lights = [];
+        this.GAME_OVER = false;
 
         this.map = this.game.add.tilemap('DiverLevel' + this.level);
         this.levelStartTime = this.game.time.time;
@@ -90,6 +94,12 @@ class Game extends Phaser.State {
 
         //move player with cursor keys
         this.cursors = this.game.input.keyboard.createCursorKeys();
+
+        //Flash Level
+        var introText = this.game.add.text(this.game.width/2,this.game.height/2,"Level " + this.gameState.level, {font: '72px Arial', fill:'#ffffff'});
+        introText.fixedToCamera = true;
+        introText.anchor.setTo(0.5,0.5);
+        this.game.add.tween(introText).to({alpha: 0}, 3000, Phaser.Easing.Quartic.In, true);
     }
 
 
@@ -154,15 +164,25 @@ class Game extends Phaser.State {
 
         }
 
-        if ( this.players[0].mortality.isDead){
-            this.gameOver();
-        }
         this.updateCameraman();
         this.updateLights();
 
+        var deadCount = 0;
+        var winCount = 0;
         this.players.forEach(function (player) {
             player.updateCallout();
+            if (player.mortality.isDead)
+                deadCount++;
         });
+
+        //gameoverconditions
+        if(deadCount + winCount >= this.PLAYER_COUNT && !this.GAME_OVER){
+            this.GAME_OVER = true;
+            this.players.forEach(function (player) {
+                this.gameState.playerDeaths.push(player.mortality);
+            },this);
+             this.game.time.events.add(800,this.gameOver,this);
+        }
     }
 
     private checkPlayerObjectCollisions(i) {
@@ -176,7 +196,7 @@ class Game extends Phaser.State {
     }
 
     private gameOver(){
-        this.game.state.start('Scores',true,false,this.level);
+        this.game.state.start('Scores',true,false,this.gameState);
     }
 
     createItems() {
@@ -252,9 +272,10 @@ class Game extends Phaser.State {
     private environmentCollision(player, tile) {
         if (tile.index == 26){
             player.player.callout("pain");
-            player.player.makeDead("Deadly Spikes!")
+            player.player.makeDead("Deadly Spikes!",false)
         }else if (tile.index == 36 || tile.index == 37){
-            player.player.callout("FREEEEDOM!!!!!");
+            player.player.callout("escape");
+            player.player.makeDead("Escaped!",true);
         }
     }
 
@@ -337,10 +358,12 @@ class Game extends Phaser.State {
         var maxX : number=-1;
 
         this.players.forEach(function(player) {
-            if (player.sprite.x <= minX || minX == -1) minX = player.sprite.x;
-            if (player.sprite.y <= minY || minY == -1) minY = player.sprite.y;
-            if (player.sprite.x >= maxX || maxX == -1) maxX = player.sprite.x;
-            if (player.sprite.y >= maxY || maxY == -1) maxY = player.sprite.y;
+            if (!player.mortality.isDead) {
+                if (player.sprite.x <= minX || minX == -1) minX = player.sprite.x;
+                if (player.sprite.y <= minY || minY == -1) minY = player.sprite.y;
+                if (player.sprite.x >= maxX || maxX == -1) maxX = player.sprite.x;
+                if (player.sprite.y >= maxY || maxY == -1) maxY = player.sprite.y;
+            }
         }, this);
 
         var camX = (minX + maxX) / 2;

@@ -23,6 +23,8 @@ interface death {
     time: number;
     reason: string;
     isDead: boolean;
+    isVictorius: boolean;
+    gold: number;
 }
 
 class Player  {
@@ -77,7 +79,7 @@ class Player  {
         this.gamepad = gamepad;
         this.calloutTexts = this.setupPlayerCalloutTexts();
 
-        this.mortality = {isDead: false, time: null, reason: null};
+        this.mortality = {isDead: false,isVictorius:false,gold:0, time: 0, reason: "Won"};
         this.setupSprite(x,y);
         this.setupBubbleEmitter();
         this.setupModel();
@@ -90,7 +92,8 @@ class Player  {
             "nervous": ["Where is everyone?","Hello!?!"],
             "scared": ["Oh shit I'm all alone now","I'm gonna die alone, aren't I?"],
             "shocked": ["AAAAAAHH!!","SHHIIIIIITTT!!!",'OOOH!!!!'],
-            "itemPickup": ["Look what I found!!!","Yes!!!","I found one","OOOhhh...SHINY!!"]
+            "itemPickup": ["Look what I found!!!","Yes!!!","I found one","OOOhhh...SHINY!!"],
+            "escape": ["FREEEDOMM!!","The light at last!","Are we safe?","Score!"]
         };
     }
     private setupDebug() {
@@ -107,7 +110,7 @@ class Player  {
 
     private setupUI(){
         
-        var scale = 0.45;
+        var scale = 0.60;
         var padding = 10;
         
        if (this.name === "Player 1"){
@@ -235,29 +238,17 @@ class Player  {
             var howFar = Phaser.Math.distance(this.sprite.x,this.sprite.y,this.otherPlayers[i].sprite.x,this.otherPlayers[i].sprite.y);
             avgDistance += howFar;
             if (howFar < closestPlayer)
-                howFar = closestPlayer;
+                closestPlayer = howFar;
         }
 
 
         avgDistance = avgDistance / numPlayers;
 
         if (avgDistance >= scaredDistance || closestPlayer >= scaredDistance){
-            if (this.nervousLevel < 2) {
                 this.addNervousness(nervousnessScared, true);
-            }else {
-                this.addNervousness(nervousnessScared, false);
-            }
-            this.nervousLevel = 2;
         }
         else if (avgDistance >= safeLight || closestPlayer >= safeLight){
-            if (this.nervousLevel < 1) {
                 this.addNervousness(nervousnessWorried, true);
-            }else {
-                this.addNervousness(nervousnessWorried, false);
-            }
-            this.nervousLevel = 1;
-        }else {
-            this.nervousLevel = 0;
         }
     }
 
@@ -424,22 +415,29 @@ class Player  {
         this.gold += gold;
     }
 
-    public makeDead(reason: string){
+    public makeDead(reason: string, victory: boolean){
         if (!this.mortality.isDead) {
             //run animation, and whatever here
-            console.log(this.name + "has died because of ->" + reason);
+            console.log(this.name + "has left the game because of ->" + reason);
             this.mortality.reason = reason;
             this.mortality.isDead = true;
             this.mortality.time = this.game.time.time;
+            this.mortality.isVictorius = victory;
+            this.mortality.gold = this.gold;
             this.sprite.body.angularVelocity = 0;
 
             this.sprite.animations.stop('swim');
-            var deathAnimation = this.sprite.animations.play('death',3);
 
-            deathAnimation.onComplete.add(function deathAnimationFinished(sprite,animation){
-                this.sprite.loadTexture('tank');
-                this.sprite.body.velocity = 0;
-            },this);
+            if (!victory) {
+                var deathAnimation = this.sprite.animations.play('death', 3);
+
+                deathAnimation.onComplete.add(function deathAnimationFinished(sprite, animation) {
+                    this.sprite.loadTexture('tank');
+                    this.sprite.body.velocity = 0;
+                }, this);
+            }else{
+                this.game.add.tween(this.sprite).to({alpha: 0}, 500, Phaser.Easing.Quartic.In, true);
+            }
         }
     }
 
