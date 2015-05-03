@@ -8,6 +8,7 @@
 /// <reference path="../../bower_components/phaser/typescript/phaser.comments.d.ts"/>
 /// <reference path="../model/Heart.ts"/>
 /// <reference path="../model/OxygenTank.ts"/>
+/// <reference path="../states/Game.ts"/>
 
 enum calloutIntensity { thought, yell, speech};
 
@@ -50,6 +51,7 @@ class Player  {
     name: string;
     colour: string;
     mortality: death;
+    world: Game;
     game: Phaser.Game;
     sprite: Phaser.Sprite;
     cursors:Phaser.CursorKeys;
@@ -77,10 +79,11 @@ class Player  {
 
     initialTime: number;
 
-    constructor(x:number,y:number,game: Phaser.Game,gamepad: Phaser.SinglePad, name){
+    constructor(x:number,y:number,game: Phaser.Game,world:Game,gamepad: Phaser.SinglePad, name){
 
         this.name = name;
         this.game = game;
+        this.world = world;
         this.gamepad = gamepad;
         this.calloutTexts = this.setupPlayerCalloutTexts();
 
@@ -98,7 +101,9 @@ class Player  {
             "scared": ["Oh shit I'm all alone now","I'm gonna die alone, aren't I?","Gotta find the group!"],
             "shocked": ["AAAAAAHH!!","SHHIIIIIITTT!!!",'OOOH!!!!',"WHEEEEEEEE!","THIS IS KINDA FUUUUNNNN!!!!"],
             "itemPickup": ["Look what I found!!!","I'd better not tell the others what I found","Yes!!!","I found one","OOOhhh...SHINY!!","My precious...."],
-            "escape": ["FREEEDOMM!!","The light at last!","Are we safe?","Score!","Kobe!","Touchdown!!!","I knew I'd make it!"]
+            "escape": ["FREEEDOMM!!","The light at last!","Are we safe?","Score!","Touchdown!!!","I knew I'd make it!"],
+            "air": ["GASP-","Can't...breathe...","My lungs!","No Air!"],
+            "lowair": ["Need air soon!","Going to die!","Air is low!"]
         };
     }
     private setupDebug() {
@@ -222,9 +227,13 @@ class Player  {
     private callout(calloutType: string, intensity: calloutIntensity){
 
         if (!this.callingOut) {
-        this.currentCalloutText.text = this.getRandomCalloutForType(calloutType);
-        this.currentCallout.alpha = 0.8;
-        this.currentCalloutText.alpha = 0.8;
+            this.currentCalloutText.text = this.getRandomCalloutForType(calloutType);
+            if (intensity === calloutIntensity.yell)
+                this.currentCalloutText.setStyle( {font: '14px Arial', fill:'#FF0000'});
+            else
+                this.currentCalloutText.setStyle( {font: '14px Arial', fill:'#OOOOOO'});
+            this.currentCallout.alpha = 0.8;
+            this.currentCalloutText.alpha = 0.8;
 
             var tween = this.game.add.tween(this.currentCalloutText).to({alpha: 0}, 1500, Phaser.Easing.Quartic.In, true);
             this.game.add.tween(this.currentCallout).to({alpha: 0}, 1500, Phaser.Easing.Quartic.In, true);
@@ -279,7 +288,7 @@ class Player  {
             multiplier: 1.1, timeout: 1000, name: 'worried'};
 
         var nervousnessScared = {callout: "scared",
-            calloutIntensity: calloutIntensity.yell,
+            calloutIntensity: calloutIntensity.speech,
             startTime: this.game.time.now,
             multiplier: 1.5, timeout: 1000, name: 'scared'};
 
@@ -386,7 +395,7 @@ class Player  {
             // Set its pivot point to the center of the bullet
             bullet.anchor.setTo(0.5, 0.5);
             bullet.lightStyle = 1;
-            this.game.lights.push(bullet);
+            this.world.lights.push(bullet);
 
             this.itemsPointer.add(bullet);
 
@@ -415,7 +424,10 @@ class Player  {
             this.updateControls();
 
             if (this.oxygenTank.level <= 0) {
-                this.makeDead("ran out of air");
+                this.callout("noair",calloutIntensity.yell);
+                this.makeDead("ran out of air",false);
+            }else if (this.oxygenTank.level < this.oxygenTank.InitialLevel *0.05) {
+                this.callout("lowair");
             }
 
             if (this.SHOW_DEBUG) {
@@ -478,7 +490,7 @@ class Player  {
             this.mortality.reason = reason;
             this.mortality.isDead = true;
             this.mortality.isVictorius = victory;
-            this.mortality.time = this.game.time.time;
+            this.mortality.time = (this.game.time.time - this.world.levelStartTime)/1000;
             this.mortality.gold = this.gold;
             this.sprite.body.angularVelocity = 0;
 
