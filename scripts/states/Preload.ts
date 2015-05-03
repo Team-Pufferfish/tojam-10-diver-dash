@@ -29,6 +29,7 @@ class Preload extends Phaser.State {
     private loadGameAssets() {
         //load game assets
         this.load.tilemap('DiverLevel1', 'assets/tilemaps/DiverLevel1.json', null, Phaser.Tilemap.TILED_JSON);
+        this.load.tilemap('DiverLevel2', 'assets/tilemaps/DiverLevel2.json', null, Phaser.Tilemap.TILED_JSON);
         this.load.image('RockTile', 'assets/images/RockTile.png');
         this.load.spritesheet('player','assets/images/FatDiverShaded.png',24,37);
         this.load.image('seaweed','assets/images/seaweed.png');
@@ -43,6 +44,6 @@ class Preload extends Phaser.State {
     }
 
     create() {
-        this.game.state.start('Game');
+        this.game.state.start('Game',true,false,1);
     }
 }
