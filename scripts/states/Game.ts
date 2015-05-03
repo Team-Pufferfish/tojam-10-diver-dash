@@ -85,36 +85,45 @@ class Game extends Phaser.State {
         this.game.camera.follow(this.cameraman);
 
         this.players.forEach(function(player){
-           player.setupCallout();
-            player.setupUI();
+           player.setupOverlays();
         });
 
         //move player with cursor keys
         this.cursors = this.game.input.keyboard.createCursorKeys();
     }
 
+
+
     private createPlayers() {
         var result = this.findObjectsByType('playerStart', this.map, 'Objects');
 
-        var pads = [this.game.input.gamepad.pad1, this.game.input.gamepad.pad2, this.game.input.gamepad.pad3, this.game.input.gamepad.pad4];
+        var pads = [this.game.input.gamepad.pad1, this.game.input.gamepad.pad2, this.game.input.gamepad.pad3,
+            this.game.input.gamepad.pad4];
         for (var i = 0; i < this.PLAYER_COUNT; i++) {
 
             var player = new Player(result[i].x, result[i].y, this.game, pads[i],"Player " + (i + 1));
 
             player.itemsPointer = this.items;
+            player.otherPlayers = this.findOtherPlayers();
             this.lights.push(player.sprite);
             this.players.push(player);
+
         }
 
+
+    }
+
+    private findOtherPlayers() : Player[] {
+        var players = [];
         for (var i = 0; i < this.PLAYER_COUNT; i++){
             var player = this.players[i];
-            player.otherPlayers = [];
             for (var j = 0; j < this.PLAYER_COUNT; j++){
                 if (j != i){
-                    player.otherPlayers.push(this.players[j]);
+                    players.push(this.players[j]);
                 }
             }
         }
+        return players;
     }
 
     private createCameraman(){
@@ -137,14 +146,8 @@ class Game extends Phaser.State {
         //collision
         this.game.physics.arcade.overlap(this.items, this.mapLayer);
         for (var i = 0; i < this.PLAYER_COUNT; i++) {
-            this.game.physics.arcade.collide(this.players[i].sprite, this.mapLayer, this.environmentCollision, null, this);
-            this.game.physics.arcade.overlap(this.players[i].sprite, this.mapLayer, this.environmentOverlap, null, this);
-            this.game.physics.arcade.overlap(this.players[i].sprite, this.items, this.collect, null, this);
-            this.game.physics.arcade.overlap(this.players[i].sprite, this.doors, this.enterDoor, null, this);
 
-            this.game.physics.arcade.overlap(this.players[i].bubbleEmmiter, this.mapLayer, this.environmentOverlap, null, this);
-            this.game.physics.arcade.overlap(this.players[i].bubbleEmmiter, this.mapLayer);
-
+            this.checkPlayerObjectCollisions(i);
             this.players[i].update();
 
         }
@@ -158,6 +161,16 @@ class Game extends Phaser.State {
         this.players.forEach(function (player) {
             player.updateCallout();
         });
+    }
+
+    private checkPlayerObjectCollisions(i) {
+        this.game.physics.arcade.collide(this.players[i].sprite, this.mapLayer, this.environmentCollision, null, this);
+        this.game.physics.arcade.overlap(this.players[i].sprite, this.mapLayer, this.environmentOverlap, null, this);
+        this.game.physics.arcade.overlap(this.players[i].sprite, this.items, this.collect, null, this);
+        this.game.physics.arcade.overlap(this.players[i].sprite, this.doors, this.enterDoor, null, this);
+
+        this.game.physics.arcade.overlap(this.players[i].bubbleEmmiter, this.mapLayer, this.environmentOverlap, null, this);
+        this.game.physics.arcade.overlap(this.players[i].bubbleEmmiter, this.mapLayer);
     }
 
     private gameOver(){
@@ -227,7 +240,7 @@ class Game extends Phaser.State {
 
         player.player.changeGold(1);
 
-        player.player.callout(player.player.gold + "!");
+        player.player.callout("itemPickup");
     }
 
     private enterDoor(player, door) {
@@ -236,7 +249,7 @@ class Game extends Phaser.State {
 
     private environmentCollision(player, tile) {
         if (tile.index == 26){
-            player.player.callout("Ouch!");
+            player.player.callout("pain");
             player.player.makeDead("Deadly Spikes!")
         }else if (tile.index == 36 || tile.index == 37){
             player.player.callout("FREEEEDOM!!!!!");
@@ -244,7 +257,7 @@ class Game extends Phaser.State {
     }
 
     private environmentOverlap(player, tile) {
-        var nervousness = {callout: "AAAAAAAAhHHhhhHH!!!",
+        var nervousness = {callout: "shocked",
             calloutIntensity: calloutIntensity.yell,
             startTime: this.game.time.now,
             multiplier: 1.3, timeout: 1000, name: 'flow'};
