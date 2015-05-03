@@ -62,7 +62,7 @@ class Player  {
     heart: Heart;
     oxygenTank: OxygenTank;
 
-    gold: number = 15;
+    gold: number = 0;
     itemsPointer: Phaser.Group;
 
     initialTime: number;
@@ -95,19 +95,33 @@ class Player  {
 
 
     public setupUI(){
+        
+        var scale = 0.45;
+        var padding = 10;
+        
        if (this.name === "Player 1"){
-           this.ui = this.game.add.sprite(100,100,'ui');
+           this.ui = this.game.add.sprite(padding,padding,'ui');
+           this.ui.scale.setTo(scale,scale);
            this.ui.fixedToCamera = true;
        }
         if (this.name === "Player 2") {
-
+            this.ui = this.game.add.sprite(this.game.width - padding,padding,'ui');
+            this.ui.anchor.setTo(1,0);
+            this.ui.scale.setTo(scale,scale);
+            this.ui.fixedToCamera = true;
         }
 
         if (this.name === "Player 3"){
-
+            this.ui = this.game.add.sprite(padding,this.game.height - padding,'ui');
+            this.ui.anchor.setTo(0,1);
+            this.ui.scale.setTo(scale,scale);
+            this.ui.fixedToCamera = true;
         }
         if (this.name === "Player 4"){
-
+            this.ui = this.game.add.sprite(this.game.width - padding,this.game.height - padding,'ui');
+            this.ui.anchor.setTo(1,1);
+            this.ui.scale.setTo(scale,scale);
+            this.ui.fixedToCamera = true;
         }
     }
     public makeDead(reason: string){

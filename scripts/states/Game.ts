@@ -85,6 +85,7 @@ class Game extends Phaser.State {
 
         this.players.forEach(function(player){
            player.setupCallout();
+            player.setupUI();
         });
 
         //move player with cursor keys
