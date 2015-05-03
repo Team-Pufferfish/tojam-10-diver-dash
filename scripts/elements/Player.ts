@@ -98,7 +98,7 @@ class Player  {
             "scared": ["Oh shit I'm all alone now","I'm gonna die alone, aren't I?","Gotta find the group!"],
             "shocked": ["AAAAAAHH!!","SHHIIIIIITTT!!!",'OOOH!!!!',"WHEEEEEEEE!","THIS IS KINDA FUUUUNNNN!!!!"],
             "itemPickup": ["Look what I found!!!","I'd better not tell the others what I found","Yes!!!","I found one","OOOhhh...SHINY!!","My precious...."],
-            "escape": ["FREEEDOMM!!","The light at last!","Are we safe?","Score!","Touchdown!!!","I knew I'd make it!"]
+            "escape": ["FREEEDOMM!!","The light at last!","Are we safe?","Score!","Kobe!","Touchdown!!!","I knew I'd make it!"]
         };
     }
     private setupDebug() {

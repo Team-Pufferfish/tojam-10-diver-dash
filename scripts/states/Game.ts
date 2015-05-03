@@ -40,7 +40,7 @@ class Game extends Phaser.State {
     players: Player[];
     cameraman: Phaser.Sprite;
     levelStartTime: number;
-
+    playerOrder = [];
 
     //Lighting model
     lights : Object[];
@@ -56,6 +56,11 @@ class Game extends Phaser.State {
     init(gameState) {
         this.gameState = gameState;
         this.level = gameState.level;
+        this.PLAYER_COUNT = gameState.playerOrder.length;
+
+        for (var i = 0; i < gameState.playerOrder.length; i++){
+            this.playerOrder.push(gameState.playerOrder[i]);
+        }
     }
     
     create() {
@@ -109,12 +114,9 @@ class Game extends Phaser.State {
 
     private createPlayers() {
         var result = this.findObjectsByType('playerStart', this.map, 'Objects');
-
-        var pads = [this.game.input.gamepad.pad1, this.game.input.gamepad.pad2, this.game.input.gamepad.pad3,
-            this.game.input.gamepad.pad4];
         for (var i = 0; i < this.PLAYER_COUNT; i++) {
 
-            var player = new Player(result[i].x, result[i].y, this.game, pads[i],"Player " + (i + 1));
+            var player = new Player(result[i].x, result[i].y, this.game, this.playerOrder[i],"Player " + (i + 1));
 
             player.itemsPointer = this.items;
             player.lightStyle = 0;

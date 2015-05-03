@@ -48,6 +48,14 @@ class Preload extends Phaser.State {
         this.load.image('p2ui','assets/images/p2ui.png');
         this.load.image('p3ui','assets/images/p3ui.png');
         this.load.image('p4ui','assets/images/p4ui.png');
+        this.load.image('xboxA','assets/images/xboxControllerButtonA.png');
+        this.load.image('xboxB','assets/images/xboxControllerButtonB.png');
+        this.load.image('xboxStick','assets/images/xboxControllerLeftThumbstick.png');
+        this.load.image('xboxStart','assets/images/xboxControllerStart.png');
+        this.load.image('p1head','assets/images/p1head.png');
+        this.load.image('p2head','assets/images/p2head.png');
+        this.load.image('p3head','assets/images/p3head.png');
+        this.load.image('p4head','assets/images/p4head.png');
 
     }
 
