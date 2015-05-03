@@ -490,7 +490,7 @@ class Player  {
             this.mortality.reason = reason;
             this.mortality.isDead = true;
             this.mortality.isVictorius = victory;
-            this.mortality.time = this.game.time.time;
+            this.mortality.time = (this.game.time.time - this.world.levelStartTime)/1000;
             this.mortality.gold = this.gold;
             this.sprite.body.angularVelocity = 0;
 

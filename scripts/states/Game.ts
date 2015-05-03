@@ -193,7 +193,7 @@ class Game extends Phaser.State {
             this.players.forEach(function (player) {
                 this.gameState.playerDeaths.push(player.mortality);
             },this);
-             this.game.time.events.add(3000,this.gameOver,this);
+             this.game.time.events.add(2000,this.gameOver,this);
         }
     }
 
