@@ -63,7 +63,7 @@ class MainMenu extends Phaser.State {
     }
 
     private startGame(){
-        this.gameState = {playerOrder: this.playerOrder,playerDeaths:[],level:3,teamScore:0};
+        this.gameState = {playerOrder: this.playerOrder,playerDeaths:[],level:1,teamScore:0};
 
         this.game.state.start('Game',true,false,this.gameState);
     }
