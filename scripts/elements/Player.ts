@@ -18,6 +18,7 @@ interface nervousness {
     multiplier: number;
     timeout : number;
     name: string;
+    called:boolean;
 }
 interface death {
     time: number;
@@ -63,6 +64,7 @@ class Player  {
     calloutTexts = {};
     bubbleEmmiter;
     ui: Phaser.Sprite;
+    heartUI: Phaser.Sprite;
 
     heart: Heart;
     oxygenTank: OxygenTank;
@@ -110,29 +112,40 @@ class Player  {
 
     private setupUI(){
         
-        var scale = 0.60;
-        var padding = 10;
-        
-       if (this.name === "Player 1"){
+        var scale = 1;       if (this.name === "Player 1"){
            this.ui = this.game.add.sprite(padding,padding,'ui');
+           this.heartUI = this.game.add.sprite(padding + this.ui.width - 40,padding + 30,'heart');
        }
         if (this.name === "Player 2") {
             this.ui = this.game.add.sprite(this.game.width - padding,padding,'ui');
+            this.heartUI = this.game.add.sprite(this.game.width - padding - 40,padding + 30,'heart');
             this.ui.anchor.setTo(1,0);
         }
 
         if (this.name === "Player 3"){
             this.ui = this.game.add.sprite(padding,this.game.height - padding,'ui');
+            this.heartUI = this.game.add.sprite(padding + this.ui.width - 40,this.game.height - padding - 30,'heart');
             this.ui.anchor.setTo(0,1);
         }
         if (this.name === "Player 4"){
             this.ui = this.game.add.sprite(this.game.width - padding,this.game.height - padding,'ui');
+            this.heartUI = this.game.add.sprite(this.game.width - padding - 40,this.game.height - padding - 30,'heart')
             this.ui.anchor.setTo(1,1);
         }
         if (this.ui){
-            this.ui.scale.setTo(scale,scale);
             this.ui.fixedToCamera = true;
+            this.heartUI.fixedToCamera = true;
+            this.heartUI.anchor.setTo(0.5,0.5);
         }
+        this.heartBeatAnimation()
+    }
+
+    private heartBeatAnimation(bpm:number){
+        var heart = this.heartUI;
+        console.log("started");
+        var tween = this.game.add.tween(this.heartUI.scale).to({x: 1.75,y:1.5}, 50, Phaser.Easing.Quartic.In, true);
+        tween.onComplete.add(function(){ this.game.add.tween(this.heartUI.scale).to({x: 1,y:1}, 50, Phaser.Easing.Quartic.In, true);}.bind(this))
+
     }
 
     private setupSprite(x,y){
@@ -198,6 +211,8 @@ class Player  {
             if (this.SHOW_DEBUG)
                 this.oxyText.text = 'bpm:' + this.oxygenTank.level / totalBreath;
 
+            this.heartBeatAnimation(bpm);
+
             if (totalBreath < this.MIN_BREATH) {
                 totalBreath = this.MIN_BREATH;
             }
@@ -219,6 +234,7 @@ class Player  {
 
     private checkDistancesToFriends(){
         var safeLight = 175;
+        var numPlayers = this.otherPlayers.length + 1;
         var scaredDistance = safeLight * 2;
         var avgDistance = 0;
         var closestPlayer = 100000;
