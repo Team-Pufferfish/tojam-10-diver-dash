@@ -218,10 +218,10 @@ class Player  {
     }
 
     private checkDistancesToFriends(){
-        var safeLight = 175;
+        var safeLight = 240;
         var scaredDistance = safeLight * 2;
         var avgDistance = 0;
-        var closestPlayer = 100000;
+        var closestPlayer = 100001;
 
         var nervousnessWorried = {callout: "nervous",
             calloutIntensity: calloutIntensity.speech,
@@ -234,8 +234,11 @@ class Player  {
             multiplier: 1.5, timeout: 1000, name: 'scared'};
 
         for (var i = 0; i < this.otherPlayers.length; i++){
-            var howFar = Phaser.Math.distance(this.sprite.x,this.sprite.y,this.otherPlayers[i].sprite.x,this.otherPlayers[i].sprite.y);
-            avgDistance += howFar;
+            var howFar = 100001;
+            if (!this.otherPlayers[i].mortality.isDead) {
+                var howFar = Phaser.Math.distance(this.sprite.x, this.sprite.y, this.otherPlayers[i].sprite.x, this.otherPlayers[i].sprite.y);
+                avgDistance += howFar;
+            }
             if (howFar < closestPlayer)
                 closestPlayer = howFar;
         }
@@ -331,6 +334,8 @@ class Player  {
 
             // Set its pivot point to the center of the bullet
             bullet.anchor.setTo(0.5, 0.5);
+            bullet.lightStyle = 1;
+            //this.game.state.lights.push(bullet);
 
             this.itemsPointer.add(bullet);
 

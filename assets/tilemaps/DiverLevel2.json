@@ -13,7 +13,7 @@
         }, 
         {
          "draworder":"topdown",
-         "height":100,
+         "height":0,
          "name":"Objects",
          "objects":[
                 {
@@ -810,15 +810,32 @@
                  "width":0,
                  "x":503,
                  "y":363
+                }, 
+                {
+                 "gid":27,
+                 "height":0,
+                 "id":48,
+                 "name":"lightSource",
+                 "properties":
+                    {
+                     "lit":"0",
+                     "type":"decoration"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":774,
+                 "y":913
                 }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
-         "width":100,
+         "width":0,
          "x":0,
          "y":0
         }],
- "nextobjectid":48,
+ "nextobjectid":49,
  "orientation":"orthogonal",
  "properties":
     {

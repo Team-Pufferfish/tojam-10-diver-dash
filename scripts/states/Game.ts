@@ -222,6 +222,7 @@ class Game extends Phaser.State {
 
         this.items.forEach(function(item){
             item.anchor.setTo(0.5,0.5);
+            item.body.setSize(10,10);
             item.lightStyle = 1;
             this.lights.push(item);
         },this);
@@ -235,19 +236,15 @@ class Game extends Phaser.State {
         result.forEach(function (element) {
             this.createFromTiledObject(element, this.decorations);
         }, this);
+
+        this.decorations.forEach(function(decor){
+            if (decor.lit != null) {
+                decor.anchor.setTo(0.5, 0.5);
+                decor.lightStyle = decor.lit;
+                this.lights.push(decor);
+            }
+        },this);
     }
-
-    createDoors() {
-        //create doors
-        this.doors = this.game.add.group();
-        this.doors.enableBody = true;
-        var result = this.findObjectsByType('door', this.map, 'Objects');
-
-        result.forEach(function (element) {
-            this.createFromTiledObject(element, this.doors);
-        }, this);
-    }
-
 
     //find objects in a Tiled layer that containt a property called "type" equal to a certain value
     private findObjectsByType(type, map, layer) {
@@ -281,10 +278,6 @@ class Game extends Phaser.State {
         player.player.changeGold(1);
 
         player.player.callout("itemPickup");
-    }
-
-    private enterDoor(player, door) {
-        console.log('entering door that will take you to ' + door.targetTilemap + ' on x:' + door.targetX + ' and y:' + door.targetY);
     }
 
     private environmentCollision(player, tile) {

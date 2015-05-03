@@ -844,6 +844,23 @@
                  "width":0,
                  "x":1733,
                  "y":2013
+                }, 
+                {
+                 "gid":27,
+                 "height":0,
+                 "id":55,
+                 "name":"lightSource",
+                 "properties":
+                    {
+                     "lit":"0",
+                     "type":"decoration"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1679,
+                 "y":2015
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -852,7 +869,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":55,
+ "nextobjectid":56,
  "orientation":"orthogonal",
  "properties":
     {
