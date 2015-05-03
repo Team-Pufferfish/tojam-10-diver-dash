@@ -25,6 +25,8 @@ class main {
         this.game.state.add('Boot', Boot);
         this.game.state.add('Preload', Preload);
         this.game.state.add('Game', Game);
+        this.game.state.add("Scores",Scores);
+        this.game.state.add("MainMenu",MainMenu)
     }
 
     start() {

@@ -13,6 +13,6 @@ class MainMenu extends Phaser.State {
     }
 
     private startGame(){
-        this.game.state.start('Game',true,false,2);
+        this.game.state.start('Game',true,false,1);
     }
 }

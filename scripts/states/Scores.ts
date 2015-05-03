@@ -15,6 +15,7 @@ class Scores extends Phaser.State {
     }
 
     create() {
+        console.log("Hey you won or you all died");
         this.startGame();
     }
 

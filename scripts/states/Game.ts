@@ -43,8 +43,6 @@ class Game extends Phaser.State {
 
     constructor() {
         super();
-        this.players = [];
-        this.lights = [];
     }
 
     init(level) {
@@ -52,6 +50,9 @@ class Game extends Phaser.State {
     }
     
     create() {
+        this.players = [];
+        this.lights = [];
+
         this.map = this.game.add.tilemap('DiverLevel' + this.level);
         this.levelStartTime = this.game.time.time;
 
@@ -148,6 +149,9 @@ class Game extends Phaser.State {
 
         }
 
+        if ( this.players[0].mortality.isDead){
+            this.gameOver();
+        }
         this.updateCameraman();
         this.updateLights();
 
@@ -157,7 +161,7 @@ class Game extends Phaser.State {
     }
 
     private gameOver(){
-        this.game.state.start('Game',true,false,this.level+1);
+        this.game.state.start('Scores',true,false,this.level);
     }
 
     createItems() {
@@ -232,10 +236,8 @@ class Game extends Phaser.State {
 
     private environmentCollision(player, tile) {
         if (tile.index == 26){
-            player.player.addNervousness({callout: "OUCH!!!",
-                calloutIntensity: calloutIntensity.yell,
-                startTime: this.game.time.now,
-                multiplier: 1.5, timeout: 3000, name: 'spike'});
+            player.player.callout("Ouch!");
+            player.player.makeDead("Deadly Spikes!")
         }else if (tile.index == 36 || tile.index == 37){
             player.player.callout("FREEEEDOM!!!!!");
         }
