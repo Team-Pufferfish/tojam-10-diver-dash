@@ -6,7 +6,7 @@
 class Scores extends Phaser.State {
     gameState: gameData;
     level: number;
-    maxLevel: number = 2;
+    maxLevel: number = 4;
 
     scoreTitle: Phaser.Text;
     scoreSummary: Phaser.Text;
