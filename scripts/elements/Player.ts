@@ -23,6 +23,7 @@ interface death {
     time: number;
     reason: string;
     isDead: boolean;
+    isVictorius: boolean;
     gold: number;
 }
 
@@ -78,7 +79,7 @@ class Player  {
         this.gamepad = gamepad;
         this.calloutTexts = this.setupPlayerCalloutTexts();
 
-        this.mortality = {isDead: false, time: 0, reason: "Won"};
+        this.mortality = {isDead: false,isVictorius:false,gold:0, time: 0, reason: "Won"};
         this.setupSprite(x,y);
         this.setupBubbleEmitter();
         this.setupModel();

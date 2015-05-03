@@ -22,6 +22,7 @@ class Game extends Phaser.State {
     PLAYER_COUNT: number = 2;
     LIGHT_RADIUS: number = 120;
     WATER_SPEED: number = 250;
+    GAME_OVER: boolean = false;
     level: number = 0;
 
     map:Phaser.Tilemap;
@@ -168,11 +169,11 @@ class Game extends Phaser.State {
         });
 
         //gameoverconditions
-        if(deadCount + winCount >= this.PLAYER_COUNT){
+        if(deadCount + winCount >= this.PLAYER_COUNT && !this.GAME_OVER){
             this.players.forEach(function (player) {
                 this.gameState.playerDeaths.push(player.mortality);
-            });
-             this.gameOver();
+            },this);
+             this.game.time.events.add(800,this.gameOver,this);
         }
     }
 

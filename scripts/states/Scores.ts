@@ -8,7 +8,7 @@ class Scores extends Phaser.State {
     level: number;
 
     init(gameState){
-        this.level = gameState.level + 1;
+        this.gameState = gameState;
     }
 
     constructor() {
@@ -28,12 +28,12 @@ class Scores extends Phaser.State {
             playerCount++;
         });
 
-
         this.startGame();
     }
 
     private startGame(){
         this.gameState.playerDeaths = [];
+        this.gameState.level += 1;
         this.game.state.start('Game',true,false,this.gameState);
     }
 }
