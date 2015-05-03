@@ -26,7 +26,7 @@ class Scores extends Phaser.State {
                 this.gameState.teamScore += playerDeath.gold;
             }
             playerCount++;
-        });
+        },this);
 
         this.startGame();
     }

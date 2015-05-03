@@ -166,6 +166,8 @@ class Game extends Phaser.State {
             player.updateCallout();
             if (player.mortality.isDead)
                 deadCount++;
+            if (player.mortality.isVictorius)
+                winCount++;
         });
 
         //gameoverconditions
@@ -266,7 +268,8 @@ class Game extends Phaser.State {
             player.player.callout("pain");
             player.player.makeDead("Deadly Spikes!")
         }else if (tile.index == 36 || tile.index == 37){
-            player.player.callout("FREEEEDOM!!!!!");
+            player.player.callout("escape");
+            player.player.mortality.isVictorius = true;
         }
     }
 

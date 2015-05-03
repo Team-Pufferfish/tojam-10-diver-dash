@@ -92,7 +92,8 @@ class Player  {
             "nervous": ["Where is everyone?","Hello!?!"],
             "scared": ["Oh shit I'm all alone now","I'm gonna die alone, aren't I?"],
             "shocked": ["AAAAAAHH!!","SHHIIIIIITTT!!!",'OOOH!!!!'],
-            "itemPickup": ["Look what I found!!!","Yes!!!","I found one","OOOhhh...SHINY!!"]
+            "itemPickup": ["Look what I found!!!","Yes!!!","I found one","OOOhhh...SHINY!!"],
+            "escape": ["FREEEDOMM!!","The light at last!","Are we safe?","Score!"]
         };
     }
     private setupDebug() {
