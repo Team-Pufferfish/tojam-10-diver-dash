@@ -55,6 +55,7 @@ class Game extends Phaser.State {
     create() {
         this.players = [];
         this.lights = [];
+        this.GAME_OVER = false;
 
         this.map = this.game.add.tilemap('DiverLevel' + this.level);
         this.levelStartTime = this.game.time.time;
@@ -93,6 +94,12 @@ class Game extends Phaser.State {
 
         //move player with cursor keys
         this.cursors = this.game.input.keyboard.createCursorKeys();
+
+        //Flash Level
+        var introText = this.game.add.text(this.game.width/2,this.game.height/2,"Level " + this.gameState.level, {font: '72px Arial', fill:'#ffffff'});
+        introText.fixedToCamera = true;
+        introText.anchor.setTo(0.5,0.5);
+        this.game.add.tween(introText).to({alpha: 0}, 3000, Phaser.Easing.Quartic.In, true);
     }
 
 
@@ -166,12 +173,11 @@ class Game extends Phaser.State {
             player.updateCallout();
             if (player.mortality.isDead)
                 deadCount++;
-            if (player.mortality.isVictorius)
-                winCount++;
         });
 
         //gameoverconditions
         if(deadCount + winCount >= this.PLAYER_COUNT && !this.GAME_OVER){
+            this.GAME_OVER = true;
             this.players.forEach(function (player) {
                 this.gameState.playerDeaths.push(player.mortality);
             },this);
@@ -266,10 +272,10 @@ class Game extends Phaser.State {
     private environmentCollision(player, tile) {
         if (tile.index == 26){
             player.player.callout("pain");
-            player.player.makeDead("Deadly Spikes!")
+            player.player.makeDead("Deadly Spikes!",false)
         }else if (tile.index == 36 || tile.index == 37){
             player.player.callout("escape");
-            player.player.mortality.isVictorius = true;
+            player.player.makeDead("Escaped!",true);
         }
     }
 
@@ -352,10 +358,12 @@ class Game extends Phaser.State {
         var maxX : number=-1;
 
         this.players.forEach(function(player) {
-            if (player.sprite.x <= minX || minX == -1) minX = player.sprite.x;
-            if (player.sprite.y <= minY || minY == -1) minY = player.sprite.y;
-            if (player.sprite.x >= maxX || maxX == -1) maxX = player.sprite.x;
-            if (player.sprite.y >= maxY || maxY == -1) maxY = player.sprite.y;
+            if (!player.mortality.isDead) {
+                if (player.sprite.x <= minX || minX == -1) minX = player.sprite.x;
+                if (player.sprite.y <= minY || minY == -1) minY = player.sprite.y;
+                if (player.sprite.x >= maxX || maxX == -1) maxX = player.sprite.x;
+                if (player.sprite.y >= maxY || maxY == -1) maxY = player.sprite.y;
+            }
         }, this);
 
         var camX = (minX + maxX) / 2;

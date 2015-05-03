@@ -110,7 +110,7 @@ class Player  {
 
     private setupUI(){
         
-        var scale = 0.45;
+        var scale = 0.60;
         var padding = 10;
         
        if (this.name === "Player 1"){
@@ -415,22 +415,29 @@ class Player  {
         this.gold += gold;
     }
 
-    public makeDead(reason: string){
+    public makeDead(reason: string, victory: boolean){
         if (!this.mortality.isDead) {
             //run animation, and whatever here
-            console.log(this.name + "has died because of ->" + reason);
+            console.log(this.name + "has left the game because of ->" + reason);
             this.mortality.reason = reason;
             this.mortality.isDead = true;
             this.mortality.time = this.game.time.time;
+            this.mortality.isVictorius = victory;
+            this.mortality.gold = this.gold;
             this.sprite.body.angularVelocity = 0;
 
             this.sprite.animations.stop('swim');
-            var deathAnimation = this.sprite.animations.play('death',3);
 
-            deathAnimation.onComplete.add(function deathAnimationFinished(sprite,animation){
-                this.sprite.loadTexture('tank');
-                this.sprite.body.velocity = 0;
-            },this);
+            if (!victory) {
+                var deathAnimation = this.sprite.animations.play('death', 3);
+
+                deathAnimation.onComplete.add(function deathAnimationFinished(sprite, animation) {
+                    this.sprite.loadTexture('tank');
+                    this.sprite.body.velocity = 0;
+                }, this);
+            }else{
+                this.game.add.tween(this.sprite).to({alpha: 0}, 500, Phaser.Easing.Quartic.In, true);
+            }
         }
     }
 
