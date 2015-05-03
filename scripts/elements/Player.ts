@@ -52,6 +52,7 @@ class Player  {
     cursors:Phaser.CursorKeys;
     gamepad: Phaser.SinglePad;
     oxyText: Phaser.Text;
+    goldText: Phaser.Text;
     otherPlayers: Player[];
     currentCallout: Phaser.Sprite;
     callingOut: boolean = false;
@@ -115,27 +116,42 @@ class Player  {
        if (this.name === "Player 1"){
            this.ui = this.game.add.sprite(padding,padding,'ui');
            this.heartUI = this.game.add.sprite(padding + this.ui.width - 40,padding + 30,'heart');
+           this.goldText = this.game.add.text(padding + 80, padding + 15, '00');
        }
         if (this.name === "Player 2") {
             this.ui = this.game.add.sprite(this.game.width - padding,padding,'p2ui');
             this.heartUI = this.game.add.sprite(this.game.width - padding - 40,padding + 30,'heart');
+            this.goldText = this.game.add.text(this.game.width - padding - 280, padding + 15, '00');
+
             this.ui.anchor.setTo(1,0);
         }
 
         if (this.name === "Player 3"){
             this.ui = this.game.add.sprite(padding,this.game.height - padding,'p3ui');
             this.heartUI = this.game.add.sprite(padding + this.ui.width - 40,this.game.height - padding - 30,'heart');
+            this.goldText = this.game.add.text(padding + 80, this.game.height - padding - 40, '00');
+
             this.ui.anchor.setTo(0,1);
         }
         if (this.name === "Player 4"){
             this.ui = this.game.add.sprite(this.game.width - padding,this.game.height - padding,'p4ui');
             this.heartUI = this.game.add.sprite(this.game.width - padding - 40,this.game.height - padding - 30,'heart')
+            this.goldText = this.game.add.text(this.game.width - padding - 280, this.game.height - padding - 40, '00');
+
             this.ui.anchor.setTo(1,1);
         }
         if (this.ui){
             this.ui.fixedToCamera = true;
             this.heartUI.fixedToCamera = true;
             this.heartUI.anchor.setTo(0.5,0.5);
+
+
+            this.goldText.fill = '#000';
+            this.goldText.stroke = '#fff';
+            this.goldText.strokeThickness = 1;
+            this.goldText.fixedToCamera = true;
+            this.goldText.fontSize =30;
+            this.goldText.text = this.gold;
         }
         this.heartBeatAnimation()
     }
@@ -430,6 +446,7 @@ class Player  {
 
     public changeGold(gold: number){
         this.gold += gold;
+        this.goldText.text = this.gold;
     }
 
     public makeDead(reason: string){
