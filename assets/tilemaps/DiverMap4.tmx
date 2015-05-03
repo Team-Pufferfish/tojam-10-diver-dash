@@ -3,460 +3,459 @@
  <tileset firstgid="1" source="RockTile.tsx"/>
  <layer name="Tiles" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJzNmsuOHMcVRKuHIuCVCdg7bfiAvLBo2AtTlP7/yzwNTEI5d+JERDY3XiSqKvM+4lFV2d0zn6/r+vQ8Pr+MT2Ps83Nd5czYGaNqUY/PIl/haOsSfoXZHVXPVOsEN+nm8tVI+rXeUV/SN2GlXDWchq5nk+t0O+WqcDlMSQuFqfWtwUWYkqaP1p18FK/T60ZbhS/pRaPFMM8dVuLp9GquGx4zr/FU1aA5l3PCZfZwvrXzFONqON5J1zRc77bOJxNPa42exPEEg+OgNFMan3JQdYlT8nnWotqub+JyWtdxIq9czeRH0oU8SPm07vo7/512DefWD6WpyifPKdb5Q70cnhY/4SVMjlfSNmF1/NO60oY0dPqnmm1th9tpqmomPdr6J97QOsURfsLteLfXFNNwUvGkV9KAzlUN17+ppWpPTai2WnPnKjbVVRq7GrQ2z52PqteJXq1njZfEzWE5qa2wtxo5vZzvtEY9EpeT+qdeNto4vwmr02tioXXKId2SL04H54+qQzhcz+QBrSX9KJ/8oppNPVXHaUZa0Tphd/yoB3mQNCJtXP7pNXlB+qh6jX+Ndg5L07vF2ep/olPC0WByeqgaxCP5obSb/CnX5Uw86nqeU57jc1K34TTzEo7UQ9WlnolX8sdhpPo0R1hOtFS5dKS5VsvUJ601GB2vE11UvZabqkM6NZyJf8O94Ui4nEcq1/VKWja1XO+EifIVr1TPDVcveZ20Sz2Ic9PnlJ/TlHxM/alu0q7lTzge0Sv1SZhczVY/d+44KfyU23AnnGlOrVGMOzqc7SB9CNtpjdN6jYaqB2mhdKW6iWfTU52neNVfHZs1V9OtN/43fFQNqknxja803+Akzol/4prwUC+KJQ0VxqSHi3c1G7+SDglD0pM0+ARxtE69mt6OT4ObsJO2ClPCceLt1MXN05F8aXRoOFDOnEv1XS+q0+qqtHF6OezJX9W/rUk+Oo2IL9VxtVrMhDOtuXopvvWTNEtD9Uhakl6OL2mg8JNGap3qNr46Xk4r4u16Ok7Ef+YoTdXR1Uv1FVbKc/qcxLZ+kH7EhwZxJC2bHk5Tt95qT1qp/AaLi6G8pI/i4OoRZ1fT9SBspA/FuutUZ/YjHxudGu3TmsOrMNG64tB43GIiPRNH6k16nvhF5xSr8Dmtqe6MVdo7rUiThDf1bzQ/OU+8yC/iTmuK00ks6Uzau56P+N/oQ5opHq3WNEfrp9yJr/OW+JCOJ/pO/xJ3qjWxPdq30VLlUw3qO+sRjwaXymlwOo6NBiou9VG6q1i19ohHpAXVdnOOR+pJ4wST6+d6tVoTFpWTcFEc6fQovllbXas6JzUajx3eR+q5OMehwaJ4ul4zjnq4ugk71Ui+uLpJV9JaYSDMpMmpr6SVwzRzCDNxTsPVITyP9KCj43mi4YmWLsf5k/RP/Olc4SMO5FPDZc6ltXnu6joeTnvS22nq9GlinI+ND40uJ5pRfntUPZ3mE0fjB+Gl3IZ347XTiTAkfek64XT9XZ0f0VJpOHWj2IQleUB4k5dN3eQR8XTzFNtgc5q4I/Vw3BzmqRPpm/BTjMLo4hTehFHVJB4OZ+rhahAXp6PzLuFJWhF35zFdO0yqp9ONNCD8rYdOB9ePPJj9U17KSXpMPi0OFavqpb50TXq7/Dmch6mfw6FwkR7Kv4S90TV5kfq49aQrcU99W8wq/hGcjcbNnPKvrem0ani549TSxahzdz2xfxZxKpbWiCvVUKPV8JRbg9HFED7iSZxmjOvntGs0ID2T5i7e9SJN2xpUK+muaih9aE7hPe1N166+ij3xRs05312Mw0D5Df7kr+OR9Eq1CW/SuNVm4nB4iY/DTLku3/EnrI1PTh/VW2notD3pQ9gVHsLSYFLr5C3p5vIJv4o74U082notNxejtHKaKI3UddOH6iq+Touks/OWYlXNhr/yiHxRtZ1Wac3VcBpSTYo5wZC4KJxJS8fRYVbDeXpSI2lHGjmtnMauX6rfekp90xxhU/gVRqo9h1pPOaRBOqf6Skvi6PRR9V1uq7MbTZyKebS+0ox4kxbq2uWq/lTvUxiOC3F3eYq/w9n0IW2Spk5Pwubwk0aOa1vX6Z/m2rpqjbRy1029pGGrm+s9exAPFUd5aqjaLofqqxzi+SM1KYbyiZ/Tdg7C7nqSt6mPula9KE6dTzwUp+oTz8bPpE+Li7RR+iRurm7y1GlDGiRMxMvVdpwcXqeDwtBo6PC5urTW4JtYqE7jCXlNa6R124tqUk+lg9Mq4SAtXZ85RzF0TOcpnvoTNlWPYkiD5Fmqq/LnXKNtw+sUJ2nuRuJAPBOehkejmcPXeEZxiYPjT7yU9sRDxT3ak65P8lSc08hhTTyI9xzUv/HX5TtOzsMT3ip+xpLWqZfjSLgoLuFotFYcXa9WM4dVaaG0eoRj4u2wqFiF1dV0+iTd2ppppBqTn9PF6a48dOvOqxRD/JJ+6pqOCkerQ4s35ataDQaHPfFx+J0e1GOt//Q8fnke/3ge7wt+TS+Fj3ITPuLaaOpqupzGKxpJu6TVl+fx7+fxn+fxcaw5LZVWFEdrjXYKA/FKeTTnfPwRfRMfhefux19exseL8Sf+LdZWOxWTeiWsVPf+jvj1eXwdI839KsbXcVRz7viv660fdI8ofRRP4q/WnYfJH6e/qkHn93vy7/9HY/ej4aI4J48e1cz1oL6uj8K33hH/fR7fnsdvL+Pbdv1trO0x+7oasx7V+m3Mfyh5k2akRRrJC6qnrh0m5f/uh7sfm0F5dN+l+4riqG9Tax5JR+qlYim/iVU9dz/Iu/tx7TPvTYzD4vxKNVxeo7PSdJ4r3RRGN0jrBv+am8/HHnv34L7Pvn+Ju21xy5+5J8+9vvl8QJ8JlveJh5pPPjtNqIfKpd4znnJn3+nHrvP9887T8/jnOF9r78a4bePdS/zffmDce5Enc06NdF8/4seJts4v8nq+r9Zz8LTpvM7X/P143//v++73MT/PV5z7rDD38+9bjX1fO9FKafQJ8tz93erb1EzYyY/di+nBtxe91r371+u1LytmafvB6ET3y5et//ycoc6dflOzpG2Knf0dpuSTwr38uOu7vpPNd89+r/60xayclfd0vd6HFD/Ct6+ve2L1JA5u3umVtKT6zl/FKWmvfN+/f6z7fL2jbtfrZ2TtI7eX+Hvsz9dr3+Y+9H67/rrNOW+UH41eM0ZppvIphjRTWChmrhPndT3fV/v7Z/dijuXN9PHjVvdpXC/v9n1acZzvK6e100XlNH4kzVK8q6+u90Gfr9b7Z98z5p693lkr/na9/Vyg9qXlyf6Zdse5/Hi63n4vSve006PRl3o1NdK8wjlr0uerpce+r6z5/X22npe5/365Xt/f9+fu+4jd/dzfa/seNp+PxK9ZU9orPZUfLo/Onc+zx3w+dt3m87D/xrVru8+v353m+2p5sp61ve7y5f319jmi3w0U/8RZ3btUk/KoL3lHtaif+v1qPSP7u+p2/fms7N8Hb9frd938vLV03nvvvuyfq/fPC7dLf74iTUhHmqNa5EHjG+FwuCaG+b7a/dg/3+779v7s3Oc/bLXmd0i3J+++7M/EGuRne9/SOd3Xal71nXXVWrpPKH76sfRf75rlzf79b/9OPn3c31/fr7d7stJh9bhdr5+X+/H30UPp6vRK3qlrmnPjUX/mNX0/Xx7sv1PNPeaP6+3+sH8nX/f//h197z0/y83fA9ac+k5IepMO836Y587vxnfC4jxQHNx+/m4c5x6z/Fi19v3D/ca7/165Pwurz/4+nM8HcU33I3noNFIa0nXrp8K/n6v9Y+63t+v1vr3y7n6sz6trD/950/U28p/G/Ly+XW/fWasv8Uj+NHnOJ+dz43/j+x6z/341/waxv0fWvr3n/THG7Xqt/e3Fn6n5fBZuMNY+tPclzo5j8kzp13rm6sw1NWbs8iP9LWLuyesZUr+X09/V1e/ta9yfxd9fxtP153tq11nhJ56U12jV3M8p3uWrfmt+15X+LqH+v4C0cfxU/zWUvx9EvLo/FXd1DyeNCKeKc7HkPWF1tRP3xNP5QXmpH+WQByrOaes0Vhgot+E3tXGaEreWe4uRrlXezP8f5pnhgg==
+   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
   </data>
  </layer>
  <objectgroup name="Objects">
-  <object id="1" name="playerStart" gid="7" x="2921" y="3058">
+  <object id="1" name="playerStart" gid="7" x="1632" y="2177">
    <properties>
     <property name="type" value="playerStart"/>
    </properties>
   </object>
-  <object id="2" name="playerStart" gid="7" x="2974" y="3042">
+  <object id="2" name="playerStart" gid="7" x="1727" y="2179">
    <properties>
     <property name="type" value="playerStart"/>
    </properties>
   </object>
-  <object id="3" name="playerStart" gid="7" x="3008" y="2998">
+  <object id="3" name="playerStart" gid="7" x="1821" y="2179">
    <properties>
     <property name="type" value="playerStart"/>
    </properties>
   </object>
-  <object id="4" name="playerStart" gid="7" x="3013" y="2947">
+  <object id="4" name="playerStart" gid="7" x="1918" y="2178">
    <properties>
     <property name="type" value="playerStart"/>
    </properties>
   </object>
-  <object id="5" name="gold" gid="6" x="2560" y="2946">
+  <object id="5" name="gold" gid="6" x="1760" y="1867">
    <properties>
     <property name="sprite" value="gold"/>
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="6" name="gold" gid="6" x="2433" y="2912">
+  <object id="6" name="gold" gid="6" x="1788" y="1887">
    <properties>
     <property name="sprite" value="gold"/>
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="7" name="gold" gid="6" x="2529" y="2755">
+  <object id="7" name="gold" gid="6" x="1768" y="1930">
    <properties>
     <property name="sprite" value="gold"/>
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="8" name="gold" gid="6" x="2690" y="2779">
+  <object id="8" name="gold" gid="6" x="1787" y="1969">
    <properties>
     <property name="sprite" value="gold"/>
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="9" name="gold" gid="6" x="2694" y="2748">
+  <object id="9" name="gold" gid="6" x="1773" y="2003">
    <properties>
     <property name="sprite" value="gold"/>
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="10" name="gold" gid="6" x="2662" y="2784">
+  <object id="10" name="gold" gid="6" x="1774" y="1698">
    <properties>
     <property name="sprite" value="gold"/>
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="11" name="gold" gid="6" x="2474" y="3068">
+  <object id="11" name="gold" gid="6" x="1774" y="1764">
    <properties>
     <property name="sprite" value="gold"/>
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="12" name="gold" gid="6" x="2496" y="3053">
+  <object id="12" name="gold" gid="6" x="1771" y="1615">
    <properties>
     <property name="sprite" value="gold"/>
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="13" name="gold" gid="6" x="2398" y="3074">
+  <object id="13" name="gold" gid="6" x="1670" y="1620">
    <properties>
     <property name="sprite" value="gold"/>
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="14" name="gold" gid="6" x="2483" y="3053">
+  <object id="14" name="gold" gid="6" x="1565" y="1647">
    <properties>
     <property name="sprite" value="gold"/>
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="15" name="gold" gid="6" x="2483" y="2604">
+  <object id="15" name="gold" gid="6" x="1500" y="1677">
    <properties>
     <property name="sprite" value="gold"/>
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="16" name="gold" gid="6" x="2439" y="2605">
+  <object id="16" name="gold" gid="6" x="1438" y="1628">
    <properties>
     <property name="sprite" value="gold"/>
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="17" name="gold" gid="6" x="2342" y="2718">
+  <object id="17" name="gold" gid="6" x="1279" y="1640">
    <properties>
     <property name="sprite" value="gold"/>
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="18" name="gold" gid="6" x="2212" y="2726">
+  <object id="18" name="gold" gid="6" x="1280" y="1637">
    <properties>
     <property name="sprite" value="gold"/>
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="19" name="gold" gid="6" x="2257" y="2926">
+  <object id="19" name="gold" gid="6" x="1317" y="1515">
    <properties>
     <property name="sprite" value="gold"/>
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="20" name="gold" gid="6" x="2249" y="2932">
+  <object id="20" name="gold" gid="6" x="1315" y="1442">
    <properties>
     <property name="sprite" value="gold"/>
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="21" name="gold" gid="6" x="2239" y="2921">
+  <object id="21" name="gold" gid="6" x="1317" y="1316">
    <properties>
     <property name="sprite" value="gold"/>
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="22" name="gold" gid="6" x="2148" y="2557">
+  <object id="22" name="gold" gid="6" x="1442" y="1313">
    <properties>
     <property name="sprite" value="gold"/>
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="23" name="gold" gid="6" x="1954" y="2813">
+  <object id="23" name="gold" gid="6" x="1942" y="1281">
    <properties>
     <property name="sprite" value="gold"/>
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="24" name="gold" gid="6" x="1961" y="2630">
+  <object id="24" name="gold" gid="6" x="1979" y="1338">
    <properties>
     <property name="sprite" value="gold"/>
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="25" name="gold" gid="6" x="1964" y="2666">
+  <object id="25" name="gold" gid="6" x="1999" y="1306">
    <properties>
     <property name="sprite" value="gold"/>
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="26" name="gold" gid="6" x="1965" y="2708">
+  <object id="26" name="gold" gid="6" x="1956" y="1306">
    <properties>
     <property name="sprite" value="gold"/>
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="27" name="gold" gid="6" x="2759" y="3072">
+  <object id="27" name="gold" gid="6" x="1914" y="1282">
    <properties>
     <property name="sprite" value="gold"/>
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="28" name="gold" gid="6" x="3041" y="2630">
+  <object id="28" name="gold" gid="6" x="1881" y="1256">
    <properties>
     <property name="sprite" value="gold"/>
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="29" name="gold" gid="6" x="3020" y="2650">
+  <object id="29" name="gold" gid="6" x="1953" y="1297">
    <properties>
     <property name="sprite" value="gold"/>
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="30" name="gold" gid="6" x="3035" y="2660">
+  <object id="30" name="gold" gid="6" x="1984" y="1372">
    <properties>
     <property name="sprite" value="gold"/>
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="31" name="gold" gid="6" x="2115" y="2885">
+  <object id="31" name="gold" gid="6" x="1985" y="1368">
    <properties>
     <property name="sprite" value="gold"/>
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="32" name="gold" gid="6" x="2107" y="2879">
+  <object id="32" name="gold" gid="6" x="1986" y="1357">
    <properties>
     <property name="sprite" value="gold"/>
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="33" name="gold" gid="6" x="2259" y="2922">
+  <object id="33" name="gold" gid="6" x="1885" y="1289">
    <properties>
     <property name="sprite" value="gold"/>
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="34" name="gold" gid="6" x="2267" y="2933">
+  <object id="34" name="gold" gid="6" x="1937" y="1317">
    <properties>
     <property name="sprite" value="gold"/>
     <property name="type" value="item"/>
    </properties>
   </object>
-  <object id="35" name="seaweed" gid="16" x="2825" y="3012">
+  <object id="35" name="gold" gid="6" x="1937" y="1277">
+   <properties>
+    <property name="sprite" value="gold"/>
+    <property name="type" value="item"/>
+   </properties>
+  </object>
+  <object id="36" name="gold" gid="6" x="1921" y="2051">
+   <properties>
+    <property name="sprite" value="gold"/>
+    <property name="type" value="item"/>
+   </properties>
+  </object>
+  <object id="37" name="gold" gid="6" x="1825" y="2056">
+   <properties>
+    <property name="sprite" value="gold"/>
+    <property name="type" value="item"/>
+   </properties>
+  </object>
+  <object id="38" name="gold" gid="6" x="1725" y="2055">
+   <properties>
+    <property name="sprite" value="gold"/>
+    <property name="type" value="item"/>
+   </properties>
+  </object>
+  <object id="39" name="gold" gid="6" x="1635" y="2053">
+   <properties>
+    <property name="sprite" value="gold"/>
+    <property name="type" value="item"/>
+   </properties>
+  </object>
+  <object id="40" name="seaweed" gid="16" x="1670" y="2096">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="36" name="seaweed" gid="16" x="2823" y="3049">
+  <object id="41" name="seaweed" gid="16" x="1794" y="2079">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="37" name="seaweed" gid="16" x="3031" y="2832">
+  <object id="42" name="seaweed" gid="16" x="1695" y="2017">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="38" name="seaweed" gid="16" x="2882" y="2881">
+  <object id="43" name="seaweed" gid="16" x="1791" y="1959">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="39" name="seaweed" gid="16" x="2814" y="2799">
+  <object id="44" name="seaweed" gid="16" x="1743" y="1881">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="40" name="seaweed" gid="16" x="2327" y="2776">
+  <object id="45" name="seaweed" gid="16" x="1803" y="1774">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="41" name="seaweed" gid="16" x="2359" y="2753">
+  <object id="46" name="seaweed" gid="16" x="1734" y="1575">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="42" name="seaweed" gid="16" x="2385" y="2625">
+  <object id="47" name="seaweed" gid="16" x="1722" y="1581">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="43" name="seaweed" gid="16" x="2361" y="2637">
+  <object id="48" name="seaweed" gid="16" x="1702" y="1658">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="44" name="seaweed" gid="16" x="2294" y="2597">
+  <object id="49" name="seaweed" gid="16" x="1716" y="1630">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="45" name="seaweed" gid="16" x="2066" y="2628">
+  <object id="50" name="seaweed" gid="16" x="1565" y="1730">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="46" name="seaweed" gid="16" x="2045" y="2603">
+  <object id="51" name="seaweed" gid="16" x="1501" y="1601">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="47" name="seaweed" gid="16" x="1994" y="2708">
+  <object id="52" name="seaweed" gid="16" x="1433" y="1702">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="48" name="seaweed" gid="16" x="1974" y="2824">
+  <object id="53" name="seaweed" gid="16" x="1362" y="1595">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="49" name="seaweed" gid="16" x="1988" y="2890">
+  <object id="54" name="seaweed" gid="16" x="1387" y="1609">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="50" name="seaweed" gid="16" x="2097" y="2696">
+  <object id="55" name="seaweed" gid="16" x="1400" y="1577">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="51" name="seaweed" gid="16" x="2214" y="2798">
+  <object id="56" name="seaweed" gid="16" x="1432" y="1568">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="52" name="seaweed" gid="16" x="2087" y="3013">
+  <object id="57" name="seaweed" gid="16" x="1387" y="1607">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="53" name="seaweed" gid="16" x="2100" y="2998">
+  <object id="58" name="seaweed" gid="16" x="1270" y="1657">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="54" name="seaweed" gid="16" x="2013" y="3104">
+  <object id="59" name="seaweed" gid="16" x="1243" y="1627">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="55" name="seaweed" gid="16" x="1884" y="2705">
+  <object id="60" name="seaweed" gid="16" x="1257" y="1605">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="56" name="seaweed" gid="16" x="1926" y="2703">
+  <object id="61" name="seaweed" gid="16" x="1364" y="1345">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="57" name="seaweed" gid="16" x="1856" y="2696">
+  <object id="62" name="seaweed" gid="16" x="1384" y="1367">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="58" name="seaweed" gid="16" x="2225" y="2652">
+  <object id="63" name="seaweed" gid="16" x="1403" y="1371">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="59" name="seaweed" gid="16" x="2673" y="2749">
+  <object id="64" name="seaweed" gid="16" x="1522" y="1274">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="60" name="seaweed" gid="16" x="2645" y="2765">
+  <object id="65" name="seaweed" gid="16" x="1582" y="1337">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="61" name="seaweed" gid="16" x="3033" y="2603">
+  <object id="66" name="seaweed" gid="16" x="1767" y="1281">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="62" name="seaweed" gid="16" x="2995" y="2616">
+  <object id="67" name="seaweed" gid="16" x="1798" y="1251">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="63" name="seaweed" gid="16" x="2927" y="2404">
+  <object id="68" name="seaweed" gid="16" x="1910" y="1358">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="64" name="seaweed" gid="16" x="2984" y="2441">
+  <object id="69" name="seaweed" gid="16" x="1920" y="1358">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="65" name="seaweed" gid="16" x="2991" y="2424">
+  <object id="70" name="seaweed" gid="16" x="1923" y="1361">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="66" name="seaweed" gid="16" x="2995" y="2405">
+  <object id="71" name="seaweed" gid="16" x="1945" y="1382">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="67" name="seaweed" gid="16" x="3003" y="2390">
+  <object id="72" name="seaweed" gid="16" x="1993" y="1391">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="68" name="seaweed" gid="16" x="2935" y="2364">
+  <object id="73" name="seaweed" gid="16" x="2045" y="1372">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="69" name="seaweed" gid="16" x="2656" y="3052">
+  <object id="74" name="seaweed" gid="16" x="2018" y="1325">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="70" name="seaweed" gid="16" x="2529" y="2847">
+  <object id="75" name="seaweed" gid="16" x="2035" y="1329">
    <properties>
     <property name="sprite" value="seaweed"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
-  <object id="71" name="exit" gid="27" x="2961" y="2342">
+  <object id="76" name="exit" gid="27" x="2000" y="1248">
    <properties>
     <property name="lit" value="0"/>
-    <property name="type" value="decoration"/>
-   </properties>
-  </object>
-  <object id="72" gid="17" x="2286" y="2856">
-   <properties>
-    <property name="lit" value="1"/>
-    <property name="sprite" value="clam"/>
-    <property name="type" value="decoration"/>
-   </properties>
-  </object>
-  <object id="73" gid="17" x="2891" y="2912">
-   <properties>
-    <property name="sprite" value="clam"/>
-    <property name="type" value="decoration"/>
-   </properties>
-  </object>
-  <object id="74" gid="17" x="2268" y="2595">
-   <properties>
-    <property name="sprite" value="clam"/>
-    <property name="type" value="decoration"/>
-   </properties>
-  </object>
-  <object id="75" gid="17" x="2996" y="2432">
-   <properties>
-    <property name="sprite" value="clam"/>
-    <property name="type" value="decoration"/>
-   </properties>
-  </object>
-  <object id="76" gid="17" x="2995" y="2398">
-   <properties>
-    <property name="sprite" value="clam"/>
     <property name="type" value="decoration"/>
    </properties>
   </object>
