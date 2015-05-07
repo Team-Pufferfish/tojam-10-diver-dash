@@ -7,31 +7,20 @@
 /// <reference path="../../bower_components/phaser/typescript/phaser.d.ts"/>
 class OxygenTank {
 
-
     InitialLevel: number;
     level: number;
 
-    callbackAlarms : [any];
-
     constructor(initialLevel: number){
         this.level = this.InitialLevel = initialLevel;
-        this.callbackAlarms = [];
     }
 
     use(amount: number){
         this.level = this.level - amount;
     }
 
-    setupAlarm(levelToAlarmAt: number, callback : () => void) : void {
-        this.callbackAlarms.push({callback: callback, alarmAt: levelToAlarmAt});
-    }
 
     update() {
-        this.callbackAlarms.forEach(function(alarm){
-            if (alarm.alarmAt <= this.level){
-                alarm.callback();
-            }
-        });
+
     }
 
 }
