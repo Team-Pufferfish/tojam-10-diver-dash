@@ -15,7 +15,10 @@ class MainMenu extends Phaser.State {
     gameState: gameData;
     playerOrder;
 
+    cursors: Phaser.CursorKeys;
 
+    spacebar;
+    enter;
 
     constructor() {
         super();
@@ -25,15 +28,14 @@ class MainMenu extends Phaser.State {
 
 
         this.playerOrder = [];
-
+        this.spacebar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        this.enter = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         var aButtonGroup = this.game.add.group();
 
         var aButton = this.game.add.sprite(0,0,'xboxA');
         aButton.scale = {x: 0.5, y: 0.5};
-        var aButtonText = this.game.add.text(50,5,'To Join');
-        aButtonText.fill = '#000';
-        aButtonText.stroke = '#fff';
-        aButtonText.strokeThickness = 3;
+        var aButtonText = this.game.add.text(50,5,'(Or Space) To Join');
+        aButtonText.fill = '#fff'
 
         aButtonGroup.x = 50;
         aButtonGroup.y = 50;
@@ -44,11 +46,8 @@ class MainMenu extends Phaser.State {
 
         var startButton = this.game.add.sprite(0,0,'xboxStart');
         startButton.scale = {x: 0.5, y: 0.5};
-        var startButtonText = this.game.add.text(50,5,'To Start');
-        startButtonText.fill = '#000';
-        startButtonText.stroke = '#fff';
-        startButtonText.strokeThickness = 3;
-
+        var startButtonText = this.game.add.text(50,5,'(Or Enter) To Start');
+        startButtonText.fill = '#fff';
         startButtonGroup.x = 50;
         startButtonGroup.y = 100;
         startButtonGroup.add(startButton);
@@ -56,9 +55,11 @@ class MainMenu extends Phaser.State {
 
         var text = this.game.add.text(0,0,'Treasure Divers....Escape!?');
         text.fontSize = 50;
+        text.fill = "#fff";
         text.x = (this.game.width / 2) - (text.width / 2);
         text.y = this.game.height / 2;
         this.game.input.gamepad.start();
+        this.cursors = this.game.input.keyboard.createCursorKeys();
 
     }
 
@@ -76,9 +77,7 @@ class MainMenu extends Phaser.State {
             p1group.add((p1art));
             var p1text = this.game.add.text(0,160,'Player 1 has Joined!');
             p1text.fontSize = 24;
-            p1text.fill = '#000';
-            p1text.stroke = '#fff';
-            p1text.strokeThickness = 3;
+            p1text.fill = '#fff';
             p1group.add(p1text);
 
             p1group.x = 100; p1group.y = 600;
@@ -91,9 +90,7 @@ class MainMenu extends Phaser.State {
             p1group.add((p1art));
             var p1text = this.game.add.text(0,160,'Player 2 has Joined!');
             p1text.fontSize = 24;
-            p1text.fill = '#000';
-            p1text.stroke = '#fff';
-            p1text.strokeThickness = 3;
+            p1text.fill = '#fff';
             p1group.add(p1text);
 
             p1group.x = 400; p1group.y = 600;
@@ -107,9 +104,7 @@ class MainMenu extends Phaser.State {
             p1group.add((p1art));
             var p1text = this.game.add.text(0,160,'Player 3 has Joined!');
             p1text.fontSize = 24;
-            p1text.fill = '#000';
-            p1text.stroke = '#fff';
-            p1text.strokeThickness = 3;
+            p1text.fill = '#fff';
             p1group.add(p1text);
 
             p1group.x = 700; p1group.y = 600;
@@ -123,9 +118,7 @@ class MainMenu extends Phaser.State {
             p1group.add((p1art));
             var p1text = this.game.add.text(0,160,'Player 4 has Joined!');
             p1text.fontSize = 24;
-            p1text.fill = '#000';
-            p1text.stroke = '#fff';
-            p1text.strokeThickness = 3;
+            p1text.fill = '#fff';
             p1group.add(p1text);
 
             p1group.x = 1100; p1group.y = 600;
@@ -164,6 +157,19 @@ class MainMenu extends Phaser.State {
 
             this.startGame();
         }
+
+        if (this.spacebar.isDown && this.playerOrder.indexOf(this.game.input.gamepad.pad1) == -1){
+
+            this.playerOrder.push(this.game.input.gamepad.pad1);
+            this.addPlayerToScreen();
+            //this.startGame();
+        }
+
+        if (this.enter.isDown){
+            this.startGame();
+        }
+
+
 
     }
 }
